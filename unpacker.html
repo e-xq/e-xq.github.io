@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>解包脚本 · XuanQian</title>
+<link rel="icon" type="image/webp" href="right_icon_6f50e56a_inverted.webp">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Display:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+<style>
+  @font-face{font-family:'U5Font';src:url('U5Font_Round_7744b500.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap}
+  :root{--primary:#0057D9;--on-primary:#fff;--primary-container:#D8E2FF;--on-primary-container:#001551;--secondary:#C0006A;--on-secondary:#fff;--secondary-container:#FFD8E8;--on-secondary-container:#3D0021;--surface:#F8F9FF;--on-surface:#1A1C27;--on-surface-variant:#44464F;--outline-variant:#C6C6D0;--surface-low:#F2F3FA;--surface-container:#EBEBF4;--r-xl:28px;--r-lg:16px;--r-md:12px}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'U5Font','Google Sans','Noto Sans SC',sans-serif;background:var(--surface);color:var(--on-surface);min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+  .page-content{flex:1}
+  .top-app-bar{position:sticky;top:0;z-index:100;background:var(--surface-low);border-bottom:1px solid var(--outline-variant);height:64px;display:flex;align-items:center;padding:0 16px;gap:12px}
+  .menu-btn{width:40px;height:40px;border:none;background:none;cursor:pointer;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--on-surface);transition:background .15s;flex-shrink:0}
+  .menu-btn:hover{background:var(--surface-container)}
+  .menu-btn .material-icons-round{font-size:24px}
+  .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:200;opacity:0;pointer-events:none;transition:opacity .25s}
+  .drawer-overlay.open{opacity:1;pointer-events:all}
+  .drawer{position:fixed;top:0;left:0;bottom:0;width:300px;background:var(--surface-low);z-index:201;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;border-radius:0 var(--r-xl) var(--r-xl) 0;overflow:hidden}
+  .drawer.open{transform:translateX(0)}
+  .drawer-header{padding:24px 20px 16px;border-bottom:1px solid var(--outline-variant);display:flex;align-items:center;gap:12px}
+  .drawer-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;background:var(--primary-container);flex-shrink:0}
+  .drawer-name{font-size:16px;font-weight:500}
+  .drawer-sub{font-size:12px;color:var(--on-surface-variant);margin-top:2px}
+  .drawer-body{flex:1;overflow-y:auto;padding:8px 0}
+  .drawer-section-label{font-size:11px;font-weight:700;color:var(--on-surface-variant);letter-spacing:.8px;padding:12px 20px 4px;text-transform:uppercase}
+  .drawer-item{display:flex;align-items:center;gap:14px;padding:12px 20px;cursor:pointer;border-radius:var(--r-md);margin:2px 8px;transition:background .12s;text-decoration:none;color:var(--on-surface)}
+  .drawer-item:hover{background:var(--surface-container)}
+  .drawer-item .material-icons-round{font-size:20px;color:var(--on-surface-variant);flex-shrink:0}
+  .drawer-item-text{flex:1}
+  .drawer-item-title{font-size:14px;font-weight:500}
+  .drawer-item-sub{font-size:12px;color:var(--on-surface-variant);margin-top:1px}
+  .bar-title{font-family:'U5Font','Google Sans Display','Noto Sans SC',sans-serif;font-size:20px;font-weight:500;flex:1}
+  .main{max-width:960px;width:100%;margin:0;padding:32px 16px 56px}
+  .page-title{font-size:26px;font-weight:700;margin-bottom:8px;animation:fadeUp .4s ease-out both}
+  .page-sub{font-size:14px;color:var(--on-surface-variant);margin-bottom:32px;animation:fadeUp .4s .08s ease-out both}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+  .card{background:var(--surface-low);border:1px solid var(--outline-variant);border-radius:var(--r-lg);padding:24px;display:flex;flex-direction:column;gap:14px;transition:box-shadow .2s,transform .2s;text-decoration:none;color:var(--on-surface);animation:fadeUp .4s .12s ease-out both}
+  .card:hover{box-shadow:0 4px 20px rgba(0,87,217,.10);transform:translateY(-2px)}
+  .card-header{display:flex;align-items:center;gap:14px}
+  .card-icon{width:48px;height:48px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+  .card-icon.blue{background:var(--primary-container);color:var(--primary)}
+  .card-icon.pink{background:var(--secondary-container);color:var(--secondary)}
+  .card-name{font-size:16px;font-weight:600}
+  .card-ver{font-size:12px;color:var(--on-surface-variant);margin-top:2px}
+  .card-desc{font-size:13px;color:var(--on-surface-variant);line-height:1.6}
+  .card-footer{display:flex;align-items:center;justify-content:flex-end}
+  .btn-filled{display:flex;align-items:center;gap:6px;padding:9px 18px;background:var(--primary);color:var(--on-primary);border:none;border-radius:100px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;text-decoration:none;transition:filter .15s}
+  .btn-filled:hover{filter:brightness(1.08)}
+  .btn-filled .material-icons-round{font-size:16px}
+  footer{text-align:center;padding:24px 16px;font-size:12px;color:var(--on-surface-variant);border-top:1px solid var(--outline-variant)}
+  @media(max-width:600px){
+    .main{padding:24px 12px 40px}
+    .page-title{font-size:22px}
+    .cards{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<header class="top-app-bar">
+  <button class="menu-btn" onclick="openDrawer()"><span class="material-icons-round">menu</span></button>
+  <div class="bar-title">解包脚本</div>
+</header>
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<nav class="drawer" id="drawer">
+  <div class="drawer-header">
+    <img class="drawer-avatar" src="8yspqt5zfm-300x300.webp" alt="XuanQian">
+    <div><div class="drawer-name">XuanQian</div><div class="drawer-sub">蛋仔派对爱好者 / 工具开发者</div></div>
+  </div>
+  <div class="drawer-body">
+    <div class="drawer-section-label">导航</div>
+    <a class="drawer-item" href="index.html">
+      <span class="material-icons-round">home</span>
+      <div class="drawer-item-text"><div class="drawer-item-title">主页</div><div class="drawer-item-sub">返回首页</div></div>
+    </a>
+    <div class="drawer-section-label">工具</div>
+    <a class="drawer-item" href="https://e-xq.github.io/ef" target="_blank" rel="noopener">
+      <span class="material-icons-round">travel_explore</span>
+      <div class="drawer-item-text"><div class="drawer-item-title">蛋仔派对资源获取器</div><div class="drawer-item-sub">在线获取游戏资源</div></div>
+      <span class="material-icons-round" style="font-size:16px;color:#999">open_in_new</span>
+    </a>
+    <div class="drawer-section-label">脚本</div>
+    <a class="drawer-item" href="unpacker.html">
+      <span class="material-icons-round">folder_zip</span>
+      <div class="drawer-item-text"><div class="drawer-item-title">解包脚本</div><div class="drawer-item-sub">NPK / PPK 文件解包</div></div>
+      <span class="material-icons-round" style="font-size:16px;color:#999">chevron_right</span>
+    </a>
+  </div>
+</nav>
+<div class="page-content">
+<div class="main">
+  <div class="page-title">解包脚本</div>
+  <div class="page-sub">蛋仔派对 NPK / PPK 文件解包工具，基于 Python 开发。</div>
+  <div class="cards">
+    <a class="card" href="npk.html">
+      <div class="card-header">
+        <div class="card-icon blue"><span class="material-icons-round">inventory_2</span></div>
+        <div><div class="card-name">NPK 文件解包</div><div class="card-ver">NpkUnlocker</div></div>
+      </div>
+      <div class="card-desc">解包蛋仔派对 NPK 资源文件，依赖 zstandard、tqdm。</div>
+      <div class="card-footer"><span class="btn-filled"><span class="material-icons-round">chevron_right</span>查看详情</span></div>
+    </a>
+    <a class="card" href="ppk.html">
+      <div class="card-header">
+        <div class="card-icon pink"><span class="material-icons-round">folder_zip</span></div>
+        <div><div class="card-name">PPK 文件解包</div><div class="card-ver">PPK Unlocker</div></div>
+      </div>
+      <div class="card-desc">解包蛋仔派对 PPK 资源文件，依赖 zstandard。</div>
+      <div class="card-footer"><span class="btn-filled" style="background:var(--secondary)"><span class="material-icons-round">chevron_right</span>查看详情</span></div>
+    </a>
+  </div>
+</div>
+</div>
+<footer>© 2026 XuanQian · 基于 GitHub Pages 托管</footer>
+<script>
+function openDrawer(){document.getElementById("drawer").classList.add("open");document.getElementById("drawer-overlay").classList.add("open");document.body.style.overflow="hidden"}
+function closeDrawer(){document.getElementById("drawer").classList.remove("open");document.getElementById("drawer-overlay").classList.remove("open");document.body.style.overflow=""}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDrawer()});
+</script>
+</body>
+</html>
