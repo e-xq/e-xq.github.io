@@ -159,13 +159,6 @@
         <span class="material-icons-round">photo_library</span>悬铅的游戏实况截图
       </div>
       <div class="gallery-viewport" id="gallery-viewport">
-        <img class="gallery-img active" src="Screenshot/IMG_0236.PNG" alt="截图 1" loading="eager">
-        <img class="gallery-img" src="Screenshot/IMG_0235.PNG" alt="截图 2" loading="lazy">
-        <img class="gallery-img" src="Screenshot/IMG_0234.PNG" alt="截图 3" loading="lazy">
-        <img class="gallery-img" src="Screenshot/IMG_0232.PNG" alt="截图 4" loading="lazy">
-        <img class="gallery-img" src="Screenshot/IMG_0231.PNG" alt="截图 5" loading="lazy">
-        <img class="gallery-img" src="Screenshot/IMG_0101.PNG" alt="截图 6" loading="lazy">
-        <img class="gallery-img" src="Screenshot/IMG_0079.PNG" alt="截图 7" loading="lazy">
         <div class="gallery-arrows">
           <button class="gallery-arrow" onclick="galleryPrev()"><span class="material-icons-round">chevron_left</span></button>
           <button class="gallery-arrow" onclick="galleryNext()"><span class="material-icons-round">chevron_right</span></button>
@@ -184,18 +177,35 @@ function openDrawer(){document.getElementById("drawer").classList.add("open");do
 function closeDrawer(){document.getElementById("drawer").classList.remove("open");document.getElementById("drawer-overlay").classList.remove("open");document.body.style.overflow=""}
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDrawer()});
 
-const imgs=document.querySelectorAll(".gallery-img");
+const vp=document.getElementById("gallery-viewport");
 const nav=document.getElementById("gallery-nav");
-let cur=0,autoTimer;
+let imgs=[],cur=0,autoTimer;
 
-imgs.forEach((_,i)=>{
-  const d=document.createElement("button");
-  d.className="gallery-dot"+(i===0?" active":"");
-  d.onclick=()=>goTo(i);
-  nav.appendChild(d);
-});
+async function initGallery(){
+  try{
+    const res=await fetch("https://api.github.com/repos/e-xq/e-xq.github.io/contents/Screenshot");
+    const files=await res.json();
+    const images=files.filter(f=>/\.(png|jpg|jpeg|webp|gif)$/i.test(f.name)).sort((a,b)=>a.name.localeCompare(b.name));
+    if(!images.length)return;
+    images.forEach((f,i)=>{
+      const img=document.createElement("img");
+      img.className="gallery-img"+(i===0?" active":"");
+      img.src="Screenshot/"+f.name;
+      img.alt="截图 "+(i+1);
+      img.loading=i===0?"eager":"lazy";
+      vp.insertBefore(img,vp.querySelector(".gallery-arrows"));
+      imgs.push(img);
+      const d=document.createElement("button");
+      d.className="gallery-dot"+(i===0?" active":"");
+      d.onclick=()=>goTo(i);
+      nav.appendChild(d);
+    });
+    resetAuto();
+  }catch(e){console.warn("gallery load failed",e)}
+}
 
 function goTo(n){
+  if(!imgs.length)return;
   imgs[cur].classList.remove("active");
   nav.children[cur].classList.remove("active");
   cur=(n+imgs.length)%imgs.length;
@@ -208,7 +218,6 @@ function galleryPrev(){goTo(cur-1)}
 function resetAuto(){clearInterval(autoTimer);autoTimer=setInterval(()=>goTo(cur+1),4000)}
 
 // 触摸/滑动支持
-const vp=document.getElementById("gallery-viewport");
 let tx=0;
 vp.addEventListener("touchstart",e=>{tx=e.touches[0].clientX},{passive:true});
 vp.addEventListener("touchend",e=>{
@@ -222,7 +231,7 @@ vp.addEventListener("wheel",e=>{
   e.deltaY>0?galleryNext():galleryPrev();
 },{passive:false});
 
-resetAuto();
+initGallery();
 </script>
 </body>
 </html>
