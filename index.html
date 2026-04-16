@@ -12,7 +12,7 @@
   :root{--primary:#0057D9;--on-primary:#fff;--primary-container:#D8E2FF;--on-primary-container:#001551;--secondary:#C0006A;--on-secondary:#fff;--secondary-container:#FFD8E8;--on-secondary-container:#3D0021;--surface:#F8F9FF;--on-surface:#1A1C27;--on-surface-variant:#44464F;--outline-variant:#C6C6D0;--surface-low:#F2F3FA;--surface-container:#EBEBF4;--r-xl:28px;--r-lg:16px;--r-md:12px;--r-sm:8px}
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{font-family:'U5Font','Google Sans','Noto Sans SC',sans-serif;background:var(--surface);color:var(--on-surface);min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;transition:background .3s;position:relative}
+  body{font-family:'U5Font','Google Sans','Noto Sans SC',sans-serif;background:var(--surface);color:var(--on-surface);min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;position:relative}
   body.menu-open{overflow:hidden}
   .bg-video{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-2;opacity:0.2;pointer-events:none}
   @media (max-width:768px){.bg-video{display:none}}
@@ -41,48 +41,50 @@
   .drawer-item-text{flex:1}
   .drawer-item-title{font-size:14px;font-weight:500}
   .drawer-item-sub{font-size:12px;color:var(--on-surface-variant);margin-top:1px}
-  .hero-section{will-change:transform,opacity;transition:opacity .4s ease,transform .4s ease}
-  .hero-wrap{max-width:1400px;width:100%;margin:0 auto;padding:85px 48px 48px 32px;display:flex;gap:80px;align-items:center}
+  
+  .fade-section{opacity:0;transform:translateY(20px) scale(0.96);transition:opacity 0.6s cubic-bezier(0.2,0,0,1),transform 0.6s cubic-bezier(0.2,0,0,1);cursor:pointer}
+  .fade-section.in-view{opacity:1;transform:translateY(0) scale(1)}
+  .hero-wrap{max-width:1400px;width:100%;margin:0 auto;padding:85px 48px 80px 32px;display:flex;gap:80px;align-items:center}
   .hero-left{flex:0 0 380px;display:flex;flex-direction:column;gap:16px;align-items:flex-start;justify-content:center}
-  .hero-avatar{width:96px;height:96px;border-radius:50%;object-fit:cover;background:var(--primary-container);box-shadow:0 4px 24px rgba(0,87,217,.18);animation:fadeUp .5s ease-out both}
-  .hero-name{font-family:'U5Font','Google Sans Display','Noto Sans SC',sans-serif;font-size:32px;font-weight:700;animation:fadeUp .5s .08s ease-out both;line-height:1.2}
-  .hero-welcome{font-family:'U5Font','Google Sans Display','Noto Sans SC',sans-serif;font-size:32px;font-weight:700;color:var(--primary);animation:fadeUp .5s .14s ease-out both;line-height:1.2}
-  .hero-bio-label{font-size:15px;font-weight:700;color:var(--on-surface);animation:fadeUp .5s .2s ease-out both}
-  .hero-sub{font-size:14px;color:var(--on-surface-variant);line-height:1.8;animation:fadeUp .5s .16s ease-out both}
-  .hero-chips{display:flex;gap:8px;flex-wrap:wrap;animation:fadeUp .5s .24s ease-out both}
+  .hero-avatar{width:96px;height:96px;border-radius:50%;object-fit:cover;background:var(--primary-container);box-shadow:0 4px 24px rgba(0,87,217,.18)}
+  .hero-name{font-family:'U5Font','Google Sans Display','Noto Sans SC',sans-serif;font-size:32px;font-weight:700;line-height:1.2}
+  .hero-welcome{font-family:'U5Font','Google Sans Display','Noto Sans SC',sans-serif;font-size:32px;font-weight:700;color:var(--primary);line-height:1.2}
+  .hero-bio-label{font-size:15px;font-weight:700;color:var(--on-surface)}
+  .hero-sub{font-size:14px;color:var(--on-surface-variant);line-height:1.8}
+  .hero-chips{display:flex;gap:8px;flex-wrap:wrap}
   .hero-chip{display:flex;align-items:center;gap:5px;padding:5px 12px;background:var(--surface-container);border-radius:100px;font-size:12px;color:var(--on-surface-variant);border:1px solid var(--outline-variant)}
   .hero-chip .material-icons-round{font-size:14px;color:var(--primary)}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-  .gallery{flex:1;min-width:0;animation:fadeUp .5s .3s ease-out both}
+  .gallery{flex:1;min-width:0}
   .gallery-title{font-size:15px;font-weight:600;color:var(--on-surface);margin-bottom:12px;display:flex;align-items:center;gap:8px}
   .gallery-title .material-icons-round{font-size:18px;color:var(--primary)}
   .gallery-viewport{position:relative;width:100%;border-radius:var(--r-lg);overflow:hidden;background:#000;aspect-ratio:2266/1488;box-shadow:0 8px 32px rgba(0,0,0,.14)}
   .gallery-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s ease}
   .gallery-img.active{opacity:1}
   .gallery-nav{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px}
-  .gallery-dot{width:8px;height:8px;border-radius:50%;background:var(--outline-variant);border:none;cursor:pointer;padding:0;transition:background .2s,transform .2s;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+  .gallery-dot{width:8px;height:8px;border-radius:50%;background:var(--outline-variant);border:none;cursor:pointer;padding:0;transition:background .2s,transform .2s;flex-shrink:0}
   .gallery-dot.active{background:var(--primary);transform:scale(1.3)}
   .gallery-arrows{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 10px;pointer-events:none}
-  .gallery-arrow{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.82);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--on-surface);pointer-events:all;transition:background .15s;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+  .gallery-arrow{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.82);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--on-surface);pointer-events:all;transition:background .15s}
   .gallery-arrow:hover{background:#fff}
   .gallery-arrow .material-icons-round{font-size:20px}
   footer{text-align:center;padding:24px 16px;font-size:12px;color:var(--on-surface-variant);border-top:1px solid var(--outline-variant)}
-  .section-divider{max-width:1400px;width:100%;margin:0 auto;padding:0 32px}
-  .section-divider hr{border:none;border-top:1px solid var(--outline-variant)}
-  .unpacker-section{will-change:transform,opacity;transition:opacity .4s ease,transform .4s ease}
-  .section-wrap{max-width:1400px;width:100%;margin:0 auto;padding:64px 32px 64px}
+  .section-spacer{height:80px}
+  .section-wrap{max-width:1400px;width:100%;margin:0 auto;padding:0 32px 64px}
   .section-title{font-size:22px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:10px}
   .section-title .material-icons-round{font-size:24px;color:var(--primary)}
   .section-sub{font-size:14px;color:var(--on-surface-variant);margin-bottom:24px}
-  .unpack-tabs{display:flex;gap:8px;margin-bottom:20px}
-  .unpack-tab{display:flex;align-items:center;gap:8px;padding:9px 20px;border-radius:100px;border:1.5px solid var(--outline-variant);background:var(--surface);cursor:pointer;font-size:14px;font-weight:500;font-family:inherit;color:var(--on-surface-variant);transition:all .15s;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-  .unpack-tab:hover{background:var(--surface-container);border-color:var(--primary);color:var(--on-surface)}
-  .unpack-tab.active{background:var(--primary-container);border-color:var(--primary);color:var(--on-primary-container);font-weight:600}
+  .unpack-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+  .unpack-tab{display:flex;align-items:center;gap:8px;padding:9px 20px;border-radius:100px;border:1.5px solid var(--outline-variant);background:var(--surface);cursor:pointer;font-size:14px;font-weight:500;color:var(--on-surface-variant);transition:all .15s}
   .unpack-tab .material-icons-round{font-size:18px}
+  .unpack-tab:hover{background:var(--surface-container);border-color:var(--primary);color:var(--on-surface)}
+  .unpack-tab.active{background:var(--primary-container);border-color:var(--primary);color:var(--on-primary-container);font-weight:500}
   .unpack-tab.npk-tab.active{background:var(--primary-container);border-color:var(--primary);color:var(--on-primary-container)}
   .unpack-tab.ppk-tab.active{background:var(--secondary-container);border-color:var(--secondary);color:var(--on-secondary-container)}
-  .unpack-panel{display:none;flex-direction:column;gap:16px;animation:fadeUp .3s ease-out both}
+  .unpack-tab.filelist-tab.active{background:var(--primary-container);border-color:var(--primary);color:var(--on-primary-container)}
+  .unpack-tab.map-tab.active{background:var(--secondary-container);border-color:var(--secondary);color:var(--on-secondary-container)}
+  .unpack-panel{display:none;flex-direction:column;gap:16px;animation:panelFade 0.25s ease-out}
   .unpack-panel.active{display:flex}
+  @keyframes panelFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
   .u-info-card{background:var(--surface-low);border:1px solid var(--outline-variant);border-radius:var(--r-lg);padding:20px;display:flex;align-items:center;gap:16px}
   .u-icon{width:48px;height:48px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
   .u-icon.blue{background:var(--primary-container);color:var(--primary)}
@@ -95,7 +97,7 @@
   .u-dep-label::after{content:'';flex:1;height:1px;background:var(--outline-variant)}
   .u-cmd{background:var(--surface-container);border-radius:var(--r-sm);padding:11px 14px;display:flex;align-items:center;gap:8px;font-family:monospace;font-size:13px}
   .u-cmd-text{flex:1;word-break:break-all}
-  .u-copy-btn{background:none;border:none;cursor:pointer;display:flex;align-items:center;padding:4px;border-radius:var(--r-sm);transition:background .15s;flex-shrink:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+  .u-copy-btn{background:none;border:none;cursor:pointer;display:flex;align-items:center;padding:4px;border-radius:var(--r-sm);transition:background .15s;flex-shrink:0}
   .u-copy-btn.blue{color:var(--primary)}.u-copy-btn.blue:hover{background:var(--primary-container);border-radius:var(--r-sm)}
   .u-copy-btn.pink{color:var(--secondary)}.u-copy-btn.pink:hover{background:var(--secondary-container);border-radius:var(--r-sm)}
   .u-copy-btn .material-icons-round{font-size:18px}
@@ -113,11 +115,11 @@
   .u-latest-info{flex:1;min-width:0}
   .u-latest-ver{font-size:14px;font-weight:600}
   .u-latest-fname{font-size:12px;color:var(--on-surface-variant);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .u-btn-dl{display:flex;align-items:center;gap:6px;padding:8px 16px;border:none;border-radius:100px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;text-decoration:none;transition:filter .15s;flex-shrink:0;color:#fff;-webkit-tap-highlight-color:transparent}
+  .u-btn-dl{display:flex;align-items:center;gap:6px;padding:8px 16px;border:none;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;text-decoration:none;transition:filter .15s;flex-shrink:0;color:#fff}
   .u-btn-dl.blue{background:var(--primary)}.u-btn-dl.pink{background:var(--secondary)}
   .u-btn-dl:hover{filter:brightness(1.08)}
   .u-btn-dl .material-icons-round{font-size:15px}
-  .u-hist-toggle{padding:10px 18px;display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--on-surface-variant);transition:background .12s;border-bottom:1px solid var(--outline-variant);user-select:none;-webkit-tap-highlight-color:transparent}
+  .u-hist-toggle{padding:10px 18px;display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--on-surface-variant);transition:background .12s;border-bottom:1px solid var(--outline-variant);user-select:none}
   .u-hist-toggle:hover{background:var(--surface-container)}
   .u-hist-toggle .chevron{font-size:18px;transition:transform .2s}
   .u-hist-toggle.open .chevron{transform:rotate(180deg)}
@@ -128,28 +130,29 @@
   .u-hist-row:hover{background:var(--surface-container)}
   .u-hist-ver{font-size:13px;font-weight:500;flex:1}
   .u-hist-fname{font-size:11px;color:var(--on-surface-variant)}
-  .u-btn-sm{display:flex;align-items:center;gap:4px;padding:5px 12px;background:var(--surface-container);color:var(--on-surface);border:1px solid var(--outline-variant);border-radius:100px;font-size:12px;font-weight:500;font-family:inherit;cursor:pointer;text-decoration:none;transition:background .15s;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+  .u-btn-sm{display:flex;align-items:center;gap:4px;padding:5px 12px;background:var(--surface-container);color:var(--on-surface);border:1px solid var(--outline-variant);border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;text-decoration:none;transition:background .15s}
   .u-btn-sm.blue:hover{background:var(--primary-container);color:var(--primary);border-color:var(--primary-container)}
   .u-btn-sm.pink:hover{background:var(--secondary-container);color:var(--secondary);border-color:var(--secondary-container)}
   .u-state{padding:20px;text-align:center;color:var(--on-surface-variant);font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px}
   .u-spinner{width:16px;height:16px;border:2px solid var(--outline-variant);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0}
   .u-spinner.blue{border-top-color:var(--primary)}.u-spinner.pink{border-top-color:var(--secondary)}
   @keyframes spin{to{transform:rotate(360deg)}}
+  .sub-tabs{margin:8px 0 0 0;display:flex;gap:8px;flex-wrap:wrap}
+  .sub-tab{padding:6px 16px;border-radius:100px;border:1.5px solid var(--outline-variant);background:var(--surface);cursor:pointer;font-size:13px;font-weight:500;color:var(--on-surface-variant);transition:all .12s;display:flex;align-items:center;gap:6px}
+  .sub-tab .material-icons-round{font-size:16px}
+  .sub-tab:hover{background:var(--surface-container);border-color:var(--secondary);color:var(--on-surface)}
+  .sub-tab.active{background:var(--secondary-container);border-color:var(--secondary);color:var(--on-secondary-container);font-weight:500}
   #snackbar{position:fixed;bottom:24px;left:50%;background:#1A1C27;color:#F8F9FF;padding:12px 20px;border-radius:12px;font-size:14px;z-index:500;pointer-events:none;display:flex;align-items:center;gap:8px;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.28);opacity:0;visibility:hidden;transform:translateX(-50%) translateY(80px);max-width:90vw;will-change:transform,opacity}
   #snackbar.show{visibility:visible;animation:snackIn .35s cubic-bezier(.34,1.56,.64,1) forwards}
   #snackbar.hide{visibility:visible;animation:snackOut .3s ease-in forwards}
   @keyframes snackIn{from{transform:translateX(-50%) translateY(80px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
   @keyframes snackOut{from{transform:translateX(-50%) translateY(0);opacity:1}to{transform:translateX(-50%) translateY(80px);opacity:0}}
-  #snackbar .material-icons-round{font-size:18px;color:#A8C7FA}
-  .mobile-device .hero-avatar,.mobile-device .hero-name,.mobile-device .hero-welcome,.mobile-device .hero-bio-label,.mobile-device .hero-sub,.mobile-device .hero-chips,.mobile-device .gallery{animation:none !important;opacity:1 !important;transform:none !important}
   @media (max-width:768px){
     .hero-wrap{flex-direction:column;padding:32px 16px;gap:32px;align-items:center}
     .hero-left{flex:none;width:100%;max-width:400px;align-items:center;text-align:center}
     .hero-chips{justify-content:center}
     .gallery{width:100%}
-    .github-btn span:not(.material-icons-round){display:none}
-    .section-divider{padding:0 16px}
-    .section-wrap{padding:48px 16px 48px}
+    .section-wrap{padding:0 16px 48px}
     .section-title{font-size:19px}
     .u-latest{flex-wrap:wrap}
     .u-btn-dl{width:100%;justify-content:center}
@@ -172,7 +175,6 @@
     <span class="material-icons-round">code</span><span>GitHub</span><span class="material-icons-round" style="font-size:14px">open_in_new</span>
   </a>
 </header>
-
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
 <nav class="drawer" id="drawer">
   <div class="drawer-header">
@@ -207,11 +209,15 @@
       <div class="drawer-item-text"><div class="drawer-item-title">解包脚本</div><div class="drawer-item-sub">NPK / PPK 文件解包</div></div>
       <span class="material-icons-round" style="font-size:16px;color:#999">chevron_right</span>
     </a>
+    <a class="drawer-item" href="#auto-unpacker-section" onclick="closeDrawer()">
+      <span class="material-icons-round">description</span>
+      <div class="drawer-item-text"><div class="drawer-item-title">自动解包脚本</div><div class="drawer-item-sub">编辑器自动解包</div></div>
+      <span class="material-icons-round" style="font-size:16px;color:#999">chevron_right</span>
+    </a>
   </div>
 </nav>
-
 <div class="page-content">
-  <div id="hero-section" class="hero-section">
+  <div id="hero-section" class="fade-section">
     <div class="hero-wrap">
       <div class="hero-left">
         <img class="hero-avatar" src="8yspqt5zfm-300x300.webp" alt="XuanQian">
@@ -227,9 +233,7 @@
         </div>
       </div>
       <div class="gallery">
-        <div class="gallery-title">
-          <span class="material-icons-round">photo_library</span>悬铅的游戏实况截图
-        </div>
+        <div class="gallery-title"><span class="material-icons-round">photo_library</span>悬铅的游戏实况截图</div>
         <div class="gallery-viewport" id="gallery-viewport">
           <div class="gallery-arrows">
             <button class="gallery-arrow" onclick="galleryPrev()"><span class="material-icons-round">chevron_left</span></button>
@@ -240,20 +244,14 @@
       </div>
     </div>
   </div>
-
-  <div class="section-divider"><hr></div>
-
-  <div id="unpacker-section" class="unpacker-section">
+  <div class="section-spacer"></div>
+  <div id="unpacker-section" class="fade-section">
     <div class="section-wrap">
       <div class="section-title"><span class="material-icons-round">folder_zip</span>解包脚本</div>
       <div class="section-sub">蛋仔派对 NPK / PPK 文件解包工具，基于 Python 开发。</div>
       <div class="unpack-tabs">
-        <button class="unpack-tab npk-tab active" onclick="switchTab('npk')">
-          <span class="material-icons-round">inventory_2</span>NPK 解包
-        </button>
-        <button class="unpack-tab ppk-tab" onclick="switchTab('ppk')">
-          <span class="material-icons-round">folder_zip</span>PPK 解包
-        </button>
+        <button class="unpack-tab npk-tab active" data-tab="npk"><span class="material-icons-round">inventory_2</span>NPK 解包</button>
+        <button class="unpack-tab ppk-tab" data-tab="ppk"><span class="material-icons-round">folder_zip</span>PPK 解包</button>
       </div>
       <div class="unpack-panel active" id="panel-npk">
         <div class="u-info-card">
@@ -265,7 +263,7 @@
           <div class="u-cmd">
             <span class="material-icons-round" style="font-size:15px;color:var(--on-surface-variant);flex-shrink:0">terminal</span>
             <span class="u-cmd-text" id="npk-cmd-text">pip install zstandard tqdm</span>
-            <button class="u-copy-btn blue" onclick="uCopy('npk-cmd-text','blue')" title="复制"><span class="material-icons-round">content_copy</span></button>
+            <button class="u-copy-btn blue" onclick="uCopy('npk-cmd-text','blue')"><span class="material-icons-round">content_copy</span></button>
           </div>
         </div>
         <div class="u-dl-card">
@@ -283,7 +281,7 @@
           <div class="u-cmd">
             <span class="material-icons-round" style="font-size:15px;color:var(--on-surface-variant);flex-shrink:0">terminal</span>
             <span class="u-cmd-text" id="ppk-cmd-text">pip install zstandard</span>
-            <button class="u-copy-btn pink" onclick="uCopy('ppk-cmd-text','pink')" title="复制"><span class="material-icons-round">content_copy</span></button>
+            <button class="u-copy-btn pink" onclick="uCopy('ppk-cmd-text','pink')"><span class="material-icons-round">content_copy</span></button>
           </div>
         </div>
         <div class="u-dl-card">
@@ -293,233 +291,95 @@
       </div>
     </div>
   </div>
+  <div class="section-spacer"></div>
+  <div id="auto-unpacker-section" class="fade-section">
+    <div class="section-wrap">
+      <div class="section-title"><span class="material-icons-round">description</span>自动解包脚本</div>
+      <div class="section-sub">蛋仔编辑器自动解包脚本，基于 Python 开发。</div>
+      <div class="unpack-tabs">
+        <button class="unpack-tab filelist-tab active" data-tab="filelist"><span class="material-icons-round">description</span>File_List 版本</button>
+        <button class="unpack-tab map-tab" data-tab="map"><span class="material-icons-round">description</span>Map 版本</button>
+      </div>
+      <div class="unpack-panel active" id="panel-filelist">
+        <div class="u-info-card">
+          <div class="u-icon blue"><span class="material-icons-round">description</span></div>
+          <div><div class="u-info-name">File List 提取</div><div class="u-info-sub">根据文件列表批量解包</div><div class="u-info-desc">读取指定的文件列表，自动提取资源。适用于已知资源路径的批量处理。</div></div>
+        </div>
+        <div class="u-dl-card">
+          <div class="u-dl-hdr"><span class="material-icons-round" style="color:var(--primary)">download</span><span style="flex:1">下载</span><span class="u-badge blue">Python</span></div>
+          <div id="auto-filelist-dl"><div class="u-state"><div class="u-spinner blue"></div>加载中...</div></div>
+        </div>
+      </div>
+      <div class="unpack-panel" id="panel-map">
+        <div class="u-info-card">
+          <div class="u-icon pink"><span class="material-icons-round">description</span></div>
+          <div><div class="u-info-name">Map 提取（多版本）</div><div class="u-info-sub">基于地图资源索引解包</div><div class="u-info-desc">通过解析地图文件索引，支持多种提取模式。选择下方子版本下载。</div></div>
+        </div>
+        <div class="sub-tabs">
+          <button class="sub-tab active" data-sub="filter"><span class="material-icons-round">filter_alt</span>字符串提取</button>
+          <button class="sub-tab" data-sub="root"><span class="material-icons-round">folder</span>根目录提取</button>
+          <button class="sub-tab" data-sub="full"><span class="material-icons-round">all_inclusive</span>全部提取</button>
+        </div>
+        <div class="u-dl-card" id="auto-map-card">
+          <div class="u-dl-hdr"><span class="material-icons-round" style="color:var(--secondary)">download</span><span style="flex:1">下载 · <span id="auto-sub-label">字符串提取</span></span><span class="u-badge pink">Python</span></div>
+          <div id="auto-map-dl"><div class="u-state"><div class="u-spinner pink"></div>加载中...</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
 <footer>© 2026 XuanQian · 基于 GitHub Pages 托管</footer>
-
 <div id="snackbar"><span class="material-icons-round" id="snackbar-icon">check_circle</span><span id="snackbar-text"></span></div>
-
 <script>
-(function(){
-  if(/Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-    document.body.classList.add('mobile-device');
-  }
-})();
+  function openDrawer(){if(_animRaf)cancelAnimationFrame(_animRaf);const d=document.getElementById('drawer'),ov=document.getElementById('drawer-overlay');d.style.transition='';d.style.transform='';d.classList.add('open');_tdrawerOpen=true;ov.style.visibility='visible';ov.style.transition='opacity .26s cubic-bezier(.4,0,.2,1)';requestAnimationFrame(()=>{ov.style.opacity='1';ov.style.pointerEvents='all';});document.body.classList.add('menu-open');}
+  function closeDrawer(){if(_animRaf)cancelAnimationFrame(_animRaf);const d=document.getElementById('drawer'),ov=document.getElementById('drawer-overlay');d.style.transition='';d.style.transform='';d.classList.remove('open');_tdrawerOpen=false;ov.style.transition='opacity .26s cubic-bezier(.4,0,.2,1)';requestAnimationFrame(()=>{ov.style.opacity='0';ov.style.pointerEvents='none';});setTimeout(()=>{if(!_tdrawerOpen){ov.style.visibility='hidden';ov.style.transition='';}},300);document.body.classList.remove('menu-open');}
+  let _animRaf=null,_tdrawerOpen=false,_tx=0,_ty=0,_tmode=null,_tmoved=false;
+  function _easeInOut(t){return t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
+  function _getDrawerRatio(){const d=document.getElementById('drawer');const tx=new DOMMatrix(getComputedStyle(d).transform).m41;const W=d.offsetWidth||300;return Math.max(0,Math.min(1,(tx+W)/W));}
+  function _animateDrawer(from,to,dur,cb){if(_animRaf)cancelAnimationFrame(_animRaf);const d=document.getElementById('drawer'),ov=document.getElementById('drawer-overlay');d.style.transition='none';ov.style.transition='none';const W=d.offsetWidth||300,start=performance.now();ov.style.visibility='visible';ov.style.pointerEvents='none';function frame(now){const t=Math.min(1,(now-start)/dur),e=_easeInOut(t),r=from+(to-from)*e;d.style.transform=`translateX(${(r-1)*W}px)`;ov.style.opacity=r*0.42;ov.style.pointerEvents=r>0.5?'all':'none';if(t<1)_animRaf=requestAnimationFrame(frame);else{_animRaf=null;if(to===0){d.style.transform='';d.classList.remove('open');ov.style.visibility='hidden';ov.style.opacity='0';ov.style.pointerEvents='none';document.body.classList.remove('menu-open');}else{d.style.transform='';d.classList.add('open');ov.style.pointerEvents='all';document.body.classList.add('menu-open');}if(cb)cb();}}_animRaf=requestAnimationFrame(frame);}
+  function _commitDrawer(open){if(_animRaf)cancelAnimationFrame(_animRaf);_tdrawerOpen=open;const from=_getDrawerRatio();if(open)_animateDrawer(from,1,280,()=>{const d=document.getElementById('drawer');d.style.transition='';d.style.transform='';d.classList.add('open');});else _animateDrawer(from,0,280,()=>{const d=document.getElementById('drawer');d.style.transition='';d.style.transform='';d.classList.remove('open');const ov=document.getElementById('drawer-overlay');ov.style.visibility='hidden';ov.style.opacity='0';ov.style.transition='';});}
+  document.addEventListener('touchstart',e=>{_tx=e.touches[0].clientX;_ty=e.touches[0].clientY;_tmoved=false;_tmode=null;const open=document.getElementById('drawer').classList.contains('open');_tdrawerOpen=open;if(open)_tmode='close';else if(_tx<60)_tmode='open';},{passive:true});
+  document.addEventListener('touchmove',e=>{if(!_tmode)return;const dx=e.touches[0].clientX-_tx,dy=Math.abs(e.touches[0].clientY-_ty);if(!_tmoved){if(dy>Math.abs(dx)&&dy>10){_tmode=null;return;}if(Math.abs(dx)<5)return;_tmoved=true;if(_animRaf)cancelAnimationFrame(_animRaf);const d=document.getElementById('drawer'),ov=document.getElementById('drawer-overlay');d.style.transition='none';ov.style.transition='none';ov.style.visibility='visible';if(_tmode==='open')d.style.transform='translateX(-100%)';}const d=document.getElementById('drawer'),ov=document.getElementById('drawer-overlay');const W=d.offsetWidth||300,base=_tdrawerOpen?1:0;let r=base+dx/W;r=Math.max(0,Math.min(1,r));d.style.transform=`translateX(${(r-1)*W}px)`;ov.style.opacity=r*0.42;ov.style.pointerEvents=r>0.5?'all':'none';if(_tmode==='open'&&dx>10)e.preventDefault();},{passive:false});
+  document.addEventListener('touchend',e=>{if(!_tmode)return;if(!_tmoved){_tmode=null;return;}const dx=e.changedTouches[0].clientX-_tx;const W=document.getElementById('drawer').offsetWidth||300,base=_tdrawerOpen?1:0,r=base+dx/W;_commitDrawer(_tmode==='open'?r>0.3:r>0.6);_tmode=null;_tmoved=false;},{passive:true});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
 
-function openDrawer(){
-  if(_animRaf)cancelAnimationFrame(_animRaf);
-  const d=document.getElementById('drawer'),ov=document.getElementById('drawer-overlay');
-  d.style.transition='';d.style.transform='';
-  d.classList.add('open'); _tdrawerOpen=true;
-  ov.style.visibility='visible';
-  ov.style.transition='opacity .26s cubic-bezier(.4,0,.2,1)';
-  requestAnimationFrame(()=>{ov.style.opacity='1';ov.style.pointerEvents='all';});
-  document.body.classList.add('menu-open');
-}
-function closeDrawer(){
-  if(_animRaf)cancelAnimationFrame(_animRaf);
-  const d=document.getElementById('drawer'),ov=document.getElementById('drawer-overlay');
-  d.style.transition='';d.style.transform='';
-  d.classList.remove('open'); _tdrawerOpen=false;
-  ov.style.transition='opacity .26s cubic-bezier(.4,0,.2,1)';
-  requestAnimationFrame(()=>{ov.style.opacity='0';ov.style.pointerEvents='none';});
-  setTimeout(()=>{if(!_tdrawerOpen){ov.style.visibility='hidden';ov.style.transition='';}},300);
-  document.body.classList.remove('menu-open');
-}
+  const vp=document.getElementById("gallery-viewport"),nav=document.getElementById("gallery-nav");let imgs=[],cur=0,autoTimer;
+  async function initGallery(){try{const res=await fetch("https://api.github.com/repos/e-xq/e-xq.github.io/contents/Screenshot");const files=await res.json();const images=files.filter(f=>/\.(png|jpg|jpeg|webp|gif)$/i.test(f.name)).sort((a,b)=>a.name.localeCompare(b.name));if(!images.length)return;images.forEach((f,i)=>{const img=document.createElement("img");img.className="gallery-img"+(i===0?" active":"");img.src="Screenshot/"+f.name;img.alt="截图 "+(i+1);img.loading=i===0?"eager":"lazy";vp.insertBefore(img,vp.querySelector(".gallery-arrows"));imgs.push(img);const d=document.createElement("button");d.className="gallery-dot"+(i===0?" active":"");d.onclick=()=>goTo(i,true);nav.appendChild(d);});startAuto();}catch(e){console.warn(e);}}
+  function goTo(n,manual=false){if(!imgs.length)return;imgs[cur].classList.remove("active");nav.children[cur].classList.remove("active");cur=(n+imgs.length)%imgs.length;imgs[cur].classList.add("active");nav.children[cur].classList.add("active");if(manual){clearInterval(autoTimer);clearTimeout(_galPauseT);_galPauseT=setTimeout(startAuto,8000);}}
+  let _galPauseT=null;function startAuto(){clearInterval(autoTimer);autoTimer=setInterval(()=>goTo(cur+1),4000);}function galleryNext(){goTo(cur+1,true);}function galleryPrev(){goTo(cur-1,true);}
+  let tx=0;vp.addEventListener("touchstart",e=>{tx=e.touches[0].clientX;},{passive:true});vp.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40){dx<0?galleryNext():galleryPrev();}},{passive:true});vp.addEventListener("wheel",e=>{e.preventDefault();e.deltaY>0?galleryNext():galleryPrev();},{passive:false});
 
-let _animRaf=null, _tdrawerOpen=false, _tx=0,_ty=0,_tmode=null,_tmoved=false;
-function _easeInOut(t){return t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
-function _getDrawerRatio(){
-  const d=document.getElementById('drawer');
-  const tx=new DOMMatrix(getComputedStyle(d).transform).m41;
-  const W=d.offsetWidth||300;
-  return Math.max(0,Math.min(1,(tx+W)/W));
-}
-function _animateDrawer(fromRatio,toRatio,duration,onDone){
-  if(_animRaf)cancelAnimationFrame(_animRaf);
-  const d=document.getElementById('drawer'),ov=document.getElementById('drawer-overlay');
-  d.style.transition='none'; ov.style.transition='none';
-  const W=d.offsetWidth||300,start=performance.now();
-  ov.style.visibility='visible'; ov.style.pointerEvents='none';
-  function frame(now){
-    const t=Math.min(1,(now-start)/duration), e=_easeInOut(t), ratio=fromRatio+(toRatio-fromRatio)*e;
-    d.style.transform='translateX('+((ratio-1)*W)+'px)';
-    ov.style.opacity=ratio*0.42; ov.style.pointerEvents=ratio>0.5?'all':'none';
-    if(t<1){_animRaf=requestAnimationFrame(frame);}
-    else{
-      _animRaf=null;
-      if(toRatio===0){
-        d.style.transform=''; d.classList.remove('open');
-        ov.style.visibility='hidden'; ov.style.opacity='0'; ov.style.pointerEvents='none';
-        document.body.classList.remove('menu-open');
-      } else {
-        d.style.transform=''; d.classList.add('open');
-        ov.style.pointerEvents='all';
-        document.body.classList.add('menu-open');
-      }
-      if(onDone)onDone();
-    }
-  }
-  _animRaf=requestAnimationFrame(frame);
-}
-function _commitDrawer(open){
-  if(_animRaf)cancelAnimationFrame(_animRaf);
-  _tdrawerOpen=open;
-  const from=_getDrawerRatio();
-  if(open){_animateDrawer(from,1,280,()=>{const d=document.getElementById('drawer'); d.style.transition=''; d.style.transform=''; d.classList.add('open');});}
-  else{_animateDrawer(from,0,280,()=>{const d=document.getElementById('drawer'); d.style.transition=''; d.style.transform=''; d.classList.remove('open'); const ov=document.getElementById('drawer-overlay'); ov.style.visibility='hidden'; ov.style.opacity='0'; ov.style.transition='';});}
-}
-document.addEventListener('touchstart',e=>{
-  _tx=e.touches[0].clientX; _ty=e.touches[0].clientY; _tmoved=false; _tmode=null;
-  const drawerOpen=document.getElementById('drawer').classList.contains('open');
-  _tdrawerOpen=drawerOpen;
-  if(drawerOpen){_tmode='close';} else if(_tx<40){_tmode='open';}
-},{passive:true});
-document.addEventListener('touchmove',e=>{
-  if(!_tmode)return;
-  const dx=e.touches[0].clientX-_tx, dy=Math.abs(e.touches[0].clientY-_ty);
-  if(!_tmoved){if(dy>Math.abs(dx)&&dy>10){_tmode=null;return;} if(Math.abs(dx)<5)return; _tmoved=true; if(_animRaf)cancelAnimationFrame(_animRaf); const d=document.getElementById('drawer'),ov=document.getElementById('drawer-overlay'); d.style.transition='none'; ov.style.transition='none'; ov.style.visibility='visible'; if(_tmode==='open')d.style.transform='translateX(-100%)';}
-  const d=document.getElementById('drawer'),ov=document.getElementById('drawer-overlay');
-  const W=d.offsetWidth||300, base=_tdrawerOpen?1:0;
-  let ratio=base+dx/W; ratio=Math.max(0,Math.min(1,ratio));
-  d.style.transform='translateX('+((ratio-1)*W)+'px)';
-  ov.style.opacity=ratio*0.42; ov.style.pointerEvents=ratio>0.5?'all':'none';
-},{passive:true});
-document.addEventListener('touchend',e=>{
-  if(!_tmode)return; if(!_tmoved){_tmode=null;return;}
-  const dx=e.changedTouches[0].clientX-_tx;
-  const W=document.getElementById('drawer').offsetWidth||300, base=_tdrawerOpen?1:0, ratio=base+dx/W;
-  _commitDrawer(_tmode==='open'?ratio>0.3:ratio>0.6);
-  _tmode=null; _tmoved=false;
-},{passive:true});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
+  const REPO="e-xq/e-xq.github.io";
+  function switchTab(scope,type){const container=document.getElementById(scope);container.querySelectorAll(".unpack-tab").forEach(t=>t.classList.remove("active"));container.querySelector("."+type+"-tab").classList.add("active");container.querySelectorAll(".unpack-panel").forEach(p=>p.classList.remove("active"));document.getElementById("panel-"+type).classList.add("active");}
+  function uEsc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function uVer(f){const m=f.match(/(\d+(?:\.\d+)+)/);return m?m[1]:"0";}
+  function uCmpVer(a,b){const pa=a.split('.').map(Number),pb=b.split('.').map(Number);for(let i=0;i<Math.max(pa.length,pb.length);i++){const d=(pa[i]||0)-(pb[i]||0);if(d!==0)return d;}return 0;}
+  async function uLoadVersions(folder,id,color,icon){const el=document.getElementById(id);try{const res=await fetch(`https://api.github.com/repos/${REPO}/contents/${folder}`);if(!res.ok)throw new Error("HTTP "+res.status);const files=await res.json();const pys=files.filter(f=>f.name.endsWith('.py')).sort((a,b)=>uCmpVer(uVer(b.name),uVer(a.name)));if(!pys.length){el.innerHTML='<div class="u-state">暂无可用版本</div>';return;}const latest=pys[0],hist=pys.slice(1);let html=`<div class="u-latest ${color}"><div class="u-latest-icon ${color}"><span class="material-icons-round">${icon}</span></div><div class="u-latest-info"><div class="u-latest-ver">v${uVer(latest.name)} <span style="font-size:11px;font-weight:700;background:var(--${color==='blue'?'primary':'secondary'});color:#fff;padding:2px 8px;border-radius:100px;margin-left:4px">最新</span></div><div class="u-latest-fname">${uEsc(latest.name)}</div></div><a class="u-btn-dl ${color}" href="${folder}/${latest.name}" download><span class="material-icons-round">download</span>下载</a></div>`;if(hist.length){const tid="ut-"+id,lid="ul-"+id;html+=`<div class="u-hist-toggle" id="${tid}" onclick="uToggleHist('${tid}','${lid}')"><span class="material-icons-round" style="font-size:18px">history</span>历史版本（${hist.length} 个）<span style="flex:1"></span><span class="material-icons-round chevron">expand_more</span></div><div class="u-hist-list" id="${lid}">`;hist.forEach(f=>{html+=`<div class="u-hist-row"><div style="width:30px;height:30px;border-radius:6px;background:var(--surface-container);display:flex;align-items:center;justify-content:center"><span class="material-icons-round" style="font-size:15px;color:var(--on-surface-variant)">${icon}</span></div><div style="flex:1"><div class="u-hist-ver">v${uVer(f.name)}</div><div class="u-hist-fname">${uEsc(f.name)}</div></div><a class="u-btn-sm ${color}" href="${folder}/${f.name}" download><span class="material-icons-round">download</span>下载</a></div>`;});html+=`</div>`;}el.innerHTML=html;}catch(e){el.innerHTML='<div class="u-state">加载失败</div>';}}
+  function uToggleHist(tid,lid){document.getElementById(tid).classList.toggle('open');document.getElementById(lid).classList.toggle('open');}
 
-const vp=document.getElementById("gallery-viewport"), nav=document.getElementById("gallery-nav");
-let imgs=[],cur=0,autoTimer;
-async function initGallery(){
-  try{
-    const res=await fetch("https://api.github.com/repos/e-xq/e-xq.github.io/contents/Screenshot");
-    const files=await res.json();
-    const images=files.filter(f=>/\.(png|jpg|jpeg|webp|gif)$/i.test(f.name)).sort((a,b)=>a.name.localeCompare(b.name));
-    if(!images.length)return;
-    images.forEach((f,i)=>{
-      const img=document.createElement("img"); img.className="gallery-img"+(i===0?" active":""); img.src="Screenshot/"+f.name; img.alt="截图 "+(i+1); img.loading=i===0?"eager":"lazy";
-      vp.insertBefore(img,vp.querySelector(".gallery-arrows")); imgs.push(img);
-      const d=document.createElement("button"); d.className="gallery-dot"+(i===0?" active":""); d.onclick=()=>goTo(i,true); nav.appendChild(d);
-    });
-    startAuto();
-  }catch(e){console.warn(e)}
-}
-function goTo(n,manual=false){
-  if(!imgs.length)return;
-  imgs[cur].classList.remove("active"); nav.children[cur].classList.remove("active");
-  cur=(n+imgs.length)%imgs.length;
-  imgs[cur].classList.add("active"); nav.children[cur].classList.add("active");
-  if(manual){clearInterval(autoTimer); clearTimeout(_galPauseT); _galPauseT=setTimeout(startAuto,8000);}
-}
-let _galPauseT=null;
-function startAuto(){clearInterval(autoTimer); autoTimer=setInterval(()=>goTo(cur+1),4000);}
-function galleryNext(){goTo(cur+1,true);}
-function galleryPrev(){goTo(cur-1,true);}
-let tx=0; vp.addEventListener("touchstart",e=>{tx=e.touches[0].clientX;},{passive:true});
-vp.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-tx; if(Math.abs(dx)>40){dx<0?galleryNext():galleryPrev();}},{passive:true});
-vp.addEventListener("wheel",e=>{e.preventDefault(); e.deltaY>0?galleryNext():galleryPrev();},{passive:false});
+  let currentMapSub='filter';
+  async function buildAutoFileList(){const el=document.getElementById('auto-filelist-dl');try{const res=await fetch(`https://api.github.com/repos/${REPO}/contents/eggitor_auto_unpack/File_List_Ver`);if(!res.ok)throw new Error("HTTP "+res.status);const files=await res.json();const pys=files.filter(f=>f.name.endsWith('.py')).sort((a,b)=>uCmpVer(uVer(b.name),uVer(a.name)));if(!pys.length){el.innerHTML='<div class="u-state">暂无版本</div>';return;}const latest=pys[0],hist=pys.slice(1);let html=`<div class="u-latest blue"><div class="u-latest-icon blue"><span class="material-icons-round">description</span></div><div class="u-latest-info"><div class="u-latest-ver">v${uVer(latest.name)} <span style="font-size:11px;background:var(--primary);color:#fff;padding:2px 8px;border-radius:100px;margin-left:4px">最新</span></div><div class="u-latest-fname">${uEsc(latest.name)}</div></div><a class="u-btn-dl blue" href="eggitor_auto_unpack/File_List_Ver/${latest.name}" download><span class="material-icons-round">download</span>下载</a></div>`;if(hist.length){html+=`<div class="u-hist-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')"><span class="material-icons-round" style="font-size:18px">history</span>历史版本（${hist.length} 个）<span style="flex:1"></span><span class="material-icons-round chevron">expand_more</span></div><div class="u-hist-list">`;hist.forEach(f=>{html+=`<div class="u-hist-row"><div style="width:30px;height:30px;border-radius:6px;background:var(--surface-container);display:flex;align-items:center;justify-content:center"><span class="material-icons-round" style="font-size:15px;color:var(--primary)">description</span></div><div style="flex:1"><div class="u-hist-ver">v${uVer(f.name)}</div><div class="u-hist-fname">${uEsc(f.name)}</div></div><a class="u-btn-sm blue" href="eggitor_auto_unpack/File_List_Ver/${f.name}" download><span class="material-icons-round" style="font-size:13px">download</span>下载</a></div>`;});html+=`</div>`;}el.innerHTML=html;}catch(e){el.innerHTML='<div class="u-state">加载失败</div>';}}
+  async function buildAutoMap(sub){const el=document.getElementById('auto-map-dl');try{const res=await fetch(`https://api.github.com/repos/${REPO}/contents/eggitor_auto_unpack/Map_Ver`);if(!res.ok)throw new Error("HTTP "+res.status);const files=await res.json();let pys=files.filter(f=>f.name.endsWith('.py')).sort((a,b)=>uCmpVer(uVer(b.name),uVer(a.name)));if(sub==='filter')pys=pys.filter(f=>f.name.includes('Filter')&&!f.name.includes('root')&&!f.name.includes('full'));else if(sub==='root')pys=pys.filter(f=>f.name.includes('root'));else if(sub==='full')pys=pys.filter(f=>f.name.includes('full')||f.name.includes('unpak_full'));if(!pys.length){el.innerHTML='<div class="u-state">暂无版本</div>';return;}const latest=pys[0],hist=pys.slice(1);let html=`<div class="u-latest pink"><div class="u-latest-icon pink"><span class="material-icons-round">description</span></div><div class="u-latest-info"><div class="u-latest-ver">v${uVer(latest.name)} <span style="font-size:11px;background:var(--secondary);color:#fff;padding:2px 8px;border-radius:100px;margin-left:4px">最新</span></div><div class="u-latest-fname">${uEsc(latest.name)}</div></div><a class="u-btn-dl pink" href="eggitor_auto_unpack/Map_Ver/${latest.name}" download><span class="material-icons-round">download</span>下载</a></div>`;if(hist.length){html+=`<div class="u-hist-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')"><span class="material-icons-round" style="font-size:18px">history</span>历史版本（${hist.length} 个）<span style="flex:1"></span><span class="material-icons-round chevron">expand_more</span></div><div class="u-hist-list">`;hist.forEach(f=>{html+=`<div class="u-hist-row"><div style="width:30px;height:30px;border-radius:6px;background:var(--surface-container);display:flex;align-items:center;justify-content:center"><span class="material-icons-round" style="font-size:15px;color:var(--secondary)">description</span></div><div style="flex:1"><div class="u-hist-ver">v${uVer(f.name)}</div><div class="u-hist-fname">${uEsc(f.name)}</div></div><a class="u-btn-sm pink" href="eggitor_auto_unpack/Map_Ver/${f.name}" download><span class="material-icons-round" style="font-size:13px">download</span>下载</a></div>`;});html+=`</div>`;}el.innerHTML=html;document.getElementById('auto-sub-label').textContent={filter:'字符串提取',root:'根目录提取',full:'全部提取'}[sub];}catch(e){el.innerHTML='<div class="u-state">加载失败</div>';}}
+  function refreshAutoMap(animate=true){buildAutoMap(currentMapSub);if(animate){const card=document.getElementById('auto-map-card');card.style.animation='none';card.offsetHeight;card.style.animation='panelFade .25s ease-out';setTimeout(()=>card.style.animation='',300);}}
+  function initAutoUnpacker(){const container=document.getElementById('auto-unpacker-section');container.querySelectorAll('.unpack-tab').forEach(t=>t.addEventListener('click',()=>{const target=t.dataset.tab;container.querySelectorAll('.unpack-tab').forEach(tb=>tb.classList.remove('active'));t.classList.add('active');container.querySelectorAll('.unpack-panel').forEach(p=>p.classList.remove('active'));document.getElementById('panel-'+target).classList.add('active');}));container.querySelectorAll('.sub-tab').forEach(t=>t.addEventListener('click',()=>{const sub=t.dataset.sub;container.querySelectorAll('.sub-tab').forEach(tb=>tb.classList.remove('active'));t.classList.add('active');currentMapSub=sub;refreshAutoMap(true);}));buildAutoFileList();buildAutoMap(currentMapSub);}
 
-const REPO="e-xq/e-xq.github.io";
-function switchTab(type){
-  document.querySelectorAll(".unpack-tab").forEach(t=>t.classList.remove("active"));
-  document.querySelector("."+type+"-tab").classList.add("active");
-  document.querySelectorAll(".unpack-panel").forEach(p=>p.classList.remove("active"));
-  document.getElementById("panel-"+type).classList.add("active");
-}
-function uEsc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
-function uVer(fname){const m=fname.match(/(\d+(?:\.\d+)+)/);return m?m[1]:"0"}
-function uCmpVer(a,b){const pa=a.split(".").map(Number),pb=b.split(".").map(Number);for(let i=0;i<Math.max(pa.length,pb.length);i++){const d=(pa[i]||0)-(pb[i]||0);if(d!==0)return d;}return 0}
-async function uLoadVersions(folder,containerId,color,icon){
-  const el=document.getElementById(containerId);
-  try{
-    const res=await fetch(`https://api.github.com/repos/${REPO}/contents/${folder}`);
-    if(!res.ok)throw new Error("HTTP "+res.status);
-    const files=await res.json();
-    const pys=files.filter(f=>f.name.endsWith(".py")).sort((a,b)=>uCmpVer(uVer(b.name),uVer(a.name)));
-    if(!pys.length){el.innerHTML='<div class="u-state">暂无可用版本</div>';return;}
-    const latest=pys[0],hist=pys.slice(1);
-    let html=`<div class="u-latest ${color}"><div class="u-latest-icon ${color}"><span class="material-icons-round">${icon}</span></div><div class="u-latest-info"><div class="u-latest-ver">v${uVer(latest.name)} <span style="font-size:11px;font-weight:700;background:var(--${color==="blue"?"primary":"secondary"});color:#fff;padding:2px 8px;border-radius:100px;vertical-align:middle;margin-left:4px">最新</span></div><div class="u-latest-fname">${uEsc(latest.name)}</div></div><a class="u-btn-dl ${color}" href="${latest.download_url}" download><span class="material-icons-round">download</span>下载</a></div>`;
-    if(hist.length){
-      const tid="ut-"+containerId,lid="ul-"+containerId;
-      html+=`<div class="u-hist-toggle" id="${tid}" onclick="uToggleHist('${tid}','${lid}')"><span class="material-icons-round" style="font-size:18px">history</span>历史版本（${hist.length} 个）<span style="flex:1"></span><span class="material-icons-round chevron">expand_more</span></div><div class="u-hist-list" id="${lid}">`;
-      hist.forEach(f=>{html+=`<div class="u-hist-row"><div style="width:30px;height:30px;border-radius:6px;background:var(--surface-container);display:flex;align-items:center;justify-content:center;flex-shrink:0"><span class="material-icons-round" style="font-size:15px;color:var(--on-surface-variant)">${icon}</span></div><div style="flex:1;min-width:0"><div class="u-hist-ver">v${uEsc(uVer(f.name))}</div><div class="u-hist-fname">${uEsc(f.name)}</div></div><a class="u-btn-sm ${color}" href="${f.download_url}" download><span class="material-icons-round">download</span>下载</a></div>`;});
-      html+=`</div>`;
-    }
-    el.innerHTML=html;
-  }catch(e){el.innerHTML=`<div class="u-state" style="color:var(--error)"><span class="material-icons-round" style="font-size:18px">error_outline</span>获取失败，请稍后重试</div>`;}
-}
-function uToggleHist(tid,lid){document.getElementById(tid).classList.toggle("open"); document.getElementById(lid).classList.toggle("open");}
+  const sections=document.querySelectorAll('.fade-section');
+  const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in-view');else e.target.classList.remove('in-view');});},{threshold:0.12});
+  sections.forEach(s=>observer.observe(s));
+  sections.forEach(s=>{s.addEventListener('click',()=>s.scrollIntoView({behavior:'smooth',block:'center'}));});
 
-let snackTimer=null, hideTimer=null;
-function showSnack(msg, theme='blue'){
-  const el=document.getElementById("snackbar");
-  const textEl=document.getElementById("snackbar-text");
-  const iconEl=document.getElementById("snackbar-icon");
-  textEl.textContent=msg;
-  iconEl.textContent="check_circle";
-  iconEl.style.color = theme==='pink' ? '#FFD8E8' : '#A8C7FA';
-  clearTimeout(snackTimer); clearTimeout(hideTimer);
-  el.classList.remove("show","hide");
-  el.style.visibility="visible";
-  el.style.animation="none";
-  void el.offsetWidth;
-  el.style.animation="";
-  el.classList.add("show");
-  snackTimer=setTimeout(()=>{
-    el.classList.remove("show");
-    el.classList.add("hide");
-    hideTimer=setTimeout(()=>{el.classList.remove("hide");el.style.visibility="hidden";},300);
-  },1500);
-}
+  let snackTimer,hideTimer;function showSnack(msg,theme='blue'){const el=document.getElementById('snackbar');document.getElementById('snackbar-text').textContent=msg;const icon=document.getElementById('snackbar-icon');icon.textContent='check_circle';icon.style.color=theme==='pink'?'#FFD8E8':'#A8C7FA';clearTimeout(snackTimer);clearTimeout(hideTimer);el.classList.remove('show','hide');el.style.visibility='visible';el.style.animation='none';void el.offsetWidth;el.style.animation='';el.classList.add('show');snackTimer=setTimeout(()=>{el.classList.remove('show');el.classList.add('hide');hideTimer=setTimeout(()=>{el.classList.remove('hide');el.style.visibility='hidden';},300);},1500);}
+  function uCopy(id,theme='blue'){const text=document.getElementById(id).textContent;if(navigator.clipboard) navigator.clipboard.writeText(text).then(()=>showSnack('已复制',theme)).catch(()=>fallbackCopy(text,theme)); else fallbackCopy(text,theme); function fallbackCopy(txt,th){const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showSnack('已复制',th);}}
 
-function uCopy(id, theme='blue'){
-  const text=document.getElementById(id).textContent;
-  if(navigator.clipboard&&window.isSecureContext){
-    navigator.clipboard.writeText(text).then(()=>showSnack("已复制到剪贴板", theme)).catch(()=>fallbackCopy(text, theme));
-  } else fallbackCopy(text, theme);
-  function fallbackCopy(txt, th){
-    const ta=document.createElement("textarea"); ta.value=txt; ta.style.cssText="position:fixed;left:-9999px;opacity:0"; document.body.appendChild(ta); ta.select();
-    try{document.execCommand("copy"); showSnack("已复制到剪贴板", th);} catch{showSnack("复制失败", th);}
-    document.body.removeChild(ta);
-  }
-}
+  uLoadVersions("NPK_Unlocker","npk-dl","blue","inventory_2");
+  uLoadVersions("PPK_Unlocker","ppk-dl","pink","folder_zip");
+  initGallery();
+  initAutoUnpacker();
 
-function initScrollEffect(){
-  const hero=document.getElementById('hero-section');
-  const unpacker=document.getElementById('unpacker-section');
-  if(!hero||!unpacker) return;
-  const observer=new IntersectionObserver((entries)=>{
-    entries.forEach(entry=>{
-      const ratio=entry.intersectionRatio;
-      if(entry.target===unpacker){
-        const progress = Math.min(1, Math.max(0, (ratio - 0.3) / 0.7));
-        unpacker.style.opacity = 0.6 + 0.4 * progress;
-        unpacker.style.transform = `translateY(${30 * (1 - progress)}px)`;
-      }
-      if(entry.target===hero){
-        const unpackerRatio = unpacker ? parseFloat(unpacker.style.opacity) || 0.6 : 0.6;
-        const heroProgress = Math.min(1, Math.max(0, (unpackerRatio - 0.6) / 0.4));
-        hero.style.opacity = 1 - 0.5 * heroProgress;
-        hero.style.transform = `translateY(${-20 * heroProgress}px) scale(${1 - 0.03 * heroProgress})`;
-      }
-    });
-  },{threshold: Array.from({length:21},(_,i)=>i/20)});
-  observer.observe(hero);
-  observer.observe(unpacker);
-  hero.style.opacity='1'; hero.style.transform='translateY(0) scale(1)';
-  unpacker.style.opacity='0.6'; unpacker.style.transform='translateY(30px)';
-}
-
-uLoadVersions("NPK_Unlocker","npk-dl","blue","inventory_2");
-uLoadVersions("PPK_Unlocker","ppk-dl","pink","folder_zip");
-initGallery();
-initScrollEffect();
+  document.querySelector('#unpacker-section').addEventListener('click', (e) => {
+    const tab = e.target.closest('.unpack-tab');
+    if (tab) switchTab('unpacker-section', tab.dataset.tab);
+  });
 </script>
 </body>
 </html>
