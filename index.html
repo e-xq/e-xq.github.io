@@ -41,9 +41,10 @@
   .drawer-item-text{flex:1}
   .drawer-item-title{font-size:14px;font-weight:500}
   .drawer-item-sub{font-size:12px;color:var(--on-surface-variant);margin-top:1px}
-  
-  .fade-section{opacity:0;transform:translateY(20px) scale(0.96);transition:opacity 0.6s cubic-bezier(0.2,0,0,1),transform 0.6s cubic-bezier(0.2,0,0,1);cursor:pointer}
-  .fade-section.in-view{opacity:1;transform:translateY(0) scale(1)}
+
+  .fade-section{opacity:0;transform:translateY(24px);transition:opacity 0.6s cubic-bezier(0.2,0,0,1),transform 0.6s cubic-bezier(0.2,0,0,1);scroll-margin-top:80px}
+  .fade-section.in-view{opacity:1;transform:translateY(0)}
+
   .hero-wrap{max-width:1400px;width:100%;margin:0 auto;padding:85px 48px 80px 32px;display:flex;gap:80px;align-items:center}
   .hero-left{flex:0 0 380px;display:flex;flex-direction:column;gap:16px;align-items:flex-start;justify-content:center}
   .hero-avatar{width:96px;height:96px;border-radius:50%;object-fit:cover;background:var(--primary-container);box-shadow:0 4px 24px rgba(0,87,217,.18)}
@@ -51,8 +52,8 @@
   .hero-welcome{font-family:'U5Font','Google Sans Display','Noto Sans SC',sans-serif;font-size:32px;font-weight:700;color:var(--primary);line-height:1.2}
   .hero-bio-label{font-size:15px;font-weight:700;color:var(--on-surface)}
   .hero-sub{font-size:14px;color:var(--on-surface-variant);line-height:1.8}
-  .hero-chips{display:flex;gap:8px;flex-wrap:wrap}
-  .hero-chip{display:flex;align-items:center;gap:5px;padding:5px 12px;background:var(--surface-container);border-radius:100px;font-size:12px;color:var(--on-surface-variant);border:1px solid var(--outline-variant)}
+  .hero-chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-start}
+  .hero-chip{display:flex;align-items:center;gap:5px;padding:5px 12px;background:var(--surface-container);border-radius:100px;font-size:12px;color:var(--on-surface-variant);border:1px solid var(--outline-variant);white-space:nowrap}
   .hero-chip .material-icons-round{font-size:14px;color:var(--primary)}
   .gallery{flex:1;min-width:0}
   .gallery-title{font-size:15px;font-weight:600;color:var(--on-surface);margin-bottom:12px;display:flex;align-items:center;gap:8px}
@@ -67,17 +68,19 @@
   .gallery-arrow{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.82);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--on-surface);pointer-events:all;transition:background .15s}
   .gallery-arrow:hover{background:#fff}
   .gallery-arrow .material-icons-round{font-size:20px}
-  footer{text-align:center;padding:24px 16px;font-size:12px;color:var(--on-surface-variant);border-top:1px solid var(--outline-variant)}
+
+  footer{text-align:center;padding:24px 16px;font-size:12px;color:var(--on-surface-variant);border-top:1px solid var(--outline-variant);position:relative;z-index:10}
+
   .section-spacer{height:80px}
   .section-wrap{max-width:1400px;width:100%;margin:0 auto;padding:0 32px 64px}
   .section-title{font-size:22px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:10px}
   .section-title .material-icons-round{font-size:24px;color:var(--primary)}
   .section-sub{font-size:14px;color:var(--on-surface-variant);margin-bottom:24px}
   .unpack-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
-  .unpack-tab{display:flex;align-items:center;gap:8px;padding:9px 20px;border-radius:100px;border:1.5px solid var(--outline-variant);background:var(--surface);cursor:pointer;font-size:14px;font-weight:500;color:var(--on-surface-variant);transition:all .15s}
+  .unpack-tab{display:flex;align-items:center;gap:8px;padding:9px 20px;border-radius:100px;border:1.5px solid var(--outline-variant);background:var(--surface);cursor:pointer;font-size:14px;font-weight:600;color:var(--on-surface-variant);transition:all .15s}
   .unpack-tab .material-icons-round{font-size:18px}
   .unpack-tab:hover{background:var(--surface-container);border-color:var(--primary);color:var(--on-surface)}
-  .unpack-tab.active{background:var(--primary-container);border-color:var(--primary);color:var(--on-primary-container);font-weight:500}
+  .unpack-tab.active{background:var(--primary-container);border-color:var(--primary);color:var(--on-primary-container);font-weight:600}
   .unpack-tab.npk-tab.active{background:var(--primary-container);border-color:var(--primary);color:var(--on-primary-container)}
   .unpack-tab.ppk-tab.active{background:var(--secondary-container);border-color:var(--secondary);color:var(--on-secondary-container)}
   .unpack-tab.filelist-tab.active{background:var(--primary-container);border-color:var(--primary);color:var(--on-primary-container)}
@@ -133,15 +136,16 @@
   .u-btn-sm{display:flex;align-items:center;gap:4px;padding:5px 12px;background:var(--surface-container);color:var(--on-surface);border:1px solid var(--outline-variant);border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;text-decoration:none;transition:background .15s}
   .u-btn-sm.blue:hover{background:var(--primary-container);color:var(--primary);border-color:var(--primary-container)}
   .u-btn-sm.pink:hover{background:var(--secondary-container);color:var(--secondary);border-color:var(--secondary-container)}
+  @media (max-width:768px){.u-btn-sm span:not(.material-icons-round){display:none}.u-btn-sm{gap:0;padding:5px 8px}}
   .u-state{padding:20px;text-align:center;color:var(--on-surface-variant);font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px}
   .u-spinner{width:16px;height:16px;border:2px solid var(--outline-variant);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0}
   .u-spinner.blue{border-top-color:var(--primary)}.u-spinner.pink{border-top-color:var(--secondary)}
   @keyframes spin{to{transform:rotate(360deg)}}
   .sub-tabs{margin:8px 0 0 0;display:flex;gap:8px;flex-wrap:wrap}
-  .sub-tab{padding:6px 16px;border-radius:100px;border:1.5px solid var(--outline-variant);background:var(--surface);cursor:pointer;font-size:13px;font-weight:500;color:var(--on-surface-variant);transition:all .12s;display:flex;align-items:center;gap:6px}
+  .sub-tab{padding:6px 16px;border-radius:100px;border:1.5px solid var(--outline-variant);background:var(--surface);cursor:pointer;font-size:13px;font-weight:600;color:var(--on-surface-variant);transition:all .12s;display:flex;align-items:center;gap:6px}
   .sub-tab .material-icons-round{font-size:16px}
   .sub-tab:hover{background:var(--surface-container);border-color:var(--secondary);color:var(--on-surface)}
-  .sub-tab.active{background:var(--secondary-container);border-color:var(--secondary);color:var(--on-secondary-container);font-weight:500}
+  .sub-tab.active{background:var(--secondary-container);border-color:var(--secondary);color:var(--on-secondary-container);font-weight:600}
   #snackbar{position:fixed;bottom:24px;left:50%;background:#1A1C27;color:#F8F9FF;padding:12px 20px;border-radius:12px;font-size:14px;z-index:500;pointer-events:none;display:flex;align-items:center;gap:8px;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.28);opacity:0;visibility:hidden;transform:translateX(-50%) translateY(80px);max-width:90vw;will-change:transform,opacity}
   #snackbar.show{visibility:visible;animation:snackIn .35s cubic-bezier(.34,1.56,.64,1) forwards}
   #snackbar.hide{visibility:visible;animation:snackOut .3s ease-in forwards}
@@ -149,8 +153,8 @@
   @keyframes snackOut{from{transform:translateX(-50%) translateY(0);opacity:1}to{transform:translateX(-50%) translateY(80px);opacity:0}}
   @media (max-width:768px){
     .hero-wrap{flex-direction:column;padding:32px 16px;gap:32px;align-items:center}
-    .hero-left{flex:none;width:100%;max-width:400px;align-items:center;text-align:center}
-    .hero-chips{justify-content:center}
+    .hero-left{flex:none;width:100%;max-width:400px;align-items:flex-start;text-align:left}
+    .hero-chips{justify-content:flex-start}
     .gallery{width:100%}
     .section-wrap{padding:0 16px 48px}
     .section-title{font-size:19px}
@@ -163,7 +167,7 @@
 </head>
 <body>
 <video class="bg-video" autoplay loop muted playsinline preload="auto">
-  <source src="https://raw.githubusercontent.com/e-xq/e-xq.github.io/main/login.mp4" type="video/mp4">
+  <source src="login.mp4" type="video/mp4">
 </video>
 <header class="top-app-bar">
   <button class="menu-btn" onclick="openDrawer()"><span class="material-icons-round">menu</span></button>
@@ -204,12 +208,12 @@
       <span class="material-icons-round" style="font-size:16px;color:#999">open_in_new</span>
     </a>
     <div class="drawer-section-label">脚本</div>
-    <a class="drawer-item" href="#unpacker-section" onclick="closeDrawer()">
+    <a class="drawer-item" href="#unpacker-section" onclick="closeDrawer();document.getElementById('unpacker-section').scrollIntoView({behavior:'smooth',block:'center'})">
       <span class="material-icons-round">folder_zip</span>
       <div class="drawer-item-text"><div class="drawer-item-title">解包脚本</div><div class="drawer-item-sub">NPK / PPK 文件解包</div></div>
       <span class="material-icons-round" style="font-size:16px;color:#999">chevron_right</span>
     </a>
-    <a class="drawer-item" href="#auto-unpacker-section" onclick="closeDrawer()">
+    <a class="drawer-item" href="#auto-unpacker-section" onclick="closeDrawer();document.getElementById('auto-unpacker-section').scrollIntoView({behavior:'smooth',block:'center'})">
       <span class="material-icons-round">description</span>
       <div class="drawer-item-text"><div class="drawer-item-title">自动解包脚本</div><div class="drawer-item-sub">编辑器自动解包</div></div>
       <span class="material-icons-round" style="font-size:16px;color:#999">chevron_right</span>
@@ -236,8 +240,8 @@
         <div class="gallery-title"><span class="material-icons-round">photo_library</span>悬铅的游戏实况截图</div>
         <div class="gallery-viewport" id="gallery-viewport">
           <div class="gallery-arrows">
-            <button class="gallery-arrow" onclick="galleryPrev()"><span class="material-icons-round">chevron_left</span></button>
-            <button class="gallery-arrow" onclick="galleryNext()"><span class="material-icons-round">chevron_right</span></button>
+            <button class="gallery-arrow" onclick="galleryPrev();event.stopPropagation()"><span class="material-icons-round">chevron_left</span></button>
+            <button class="gallery-arrow" onclick="galleryNext();event.stopPropagation()"><span class="material-icons-round">chevron_right</span></button>
           </div>
         </div>
         <div class="gallery-nav" id="gallery-nav"></div>
@@ -250,8 +254,8 @@
       <div class="section-title"><span class="material-icons-round">folder_zip</span>解包脚本</div>
       <div class="section-sub">蛋仔派对 NPK / PPK 文件解包工具，基于 Python 开发。</div>
       <div class="unpack-tabs">
-        <button class="unpack-tab npk-tab active" data-tab="npk"><span class="material-icons-round">inventory_2</span>NPK 解包</button>
-        <button class="unpack-tab ppk-tab" data-tab="ppk"><span class="material-icons-round">folder_zip</span>PPK 解包</button>
+        <button class="unpack-tab npk-tab active" data-tab="npk" onclick="event.stopPropagation();switchTab('unpacker-section','npk')"><span class="material-icons-round">inventory_2</span>NPK 解包</button>
+        <button class="unpack-tab ppk-tab" data-tab="ppk" onclick="event.stopPropagation();switchTab('unpacker-section','ppk')"><span class="material-icons-round">folder_zip</span>PPK 解包</button>
       </div>
       <div class="unpack-panel active" id="panel-npk">
         <div class="u-info-card">
@@ -263,7 +267,7 @@
           <div class="u-cmd">
             <span class="material-icons-round" style="font-size:15px;color:var(--on-surface-variant);flex-shrink:0">terminal</span>
             <span class="u-cmd-text" id="npk-cmd-text">pip install zstandard tqdm</span>
-            <button class="u-copy-btn blue" onclick="uCopy('npk-cmd-text','blue')"><span class="material-icons-round">content_copy</span></button>
+            <button class="u-copy-btn blue" onclick="uCopy('npk-cmd-text','blue');event.stopPropagation()"><span class="material-icons-round">content_copy</span></button>
           </div>
         </div>
         <div class="u-dl-card">
@@ -281,7 +285,7 @@
           <div class="u-cmd">
             <span class="material-icons-round" style="font-size:15px;color:var(--on-surface-variant);flex-shrink:0">terminal</span>
             <span class="u-cmd-text" id="ppk-cmd-text">pip install zstandard</span>
-            <button class="u-copy-btn pink" onclick="uCopy('ppk-cmd-text','pink')"><span class="material-icons-round">content_copy</span></button>
+            <button class="u-copy-btn pink" onclick="uCopy('ppk-cmd-text','pink');event.stopPropagation()"><span class="material-icons-round">content_copy</span></button>
           </div>
         </div>
         <div class="u-dl-card">
@@ -297,8 +301,8 @@
       <div class="section-title"><span class="material-icons-round">description</span>自动解包脚本</div>
       <div class="section-sub">蛋仔编辑器自动解包脚本，基于 Python 开发。</div>
       <div class="unpack-tabs">
-        <button class="unpack-tab filelist-tab active" data-tab="filelist"><span class="material-icons-round">description</span>File_List 版本</button>
-        <button class="unpack-tab map-tab" data-tab="map"><span class="material-icons-round">description</span>Map 版本</button>
+        <button class="unpack-tab filelist-tab active" data-tab="filelist" onclick="event.stopPropagation();switchAutoTab('filelist')"><span class="material-icons-round">description</span>File_List 版本</button>
+        <button class="unpack-tab map-tab" data-tab="map" onclick="event.stopPropagation();switchAutoTab('map')"><span class="material-icons-round">description</span>Map 版本</button>
       </div>
       <div class="unpack-panel active" id="panel-filelist">
         <div class="u-info-card">
@@ -316,13 +320,13 @@
           <div><div class="u-info-name">Map 提取（多版本）</div><div class="u-info-sub">基于地图资源索引解包</div><div class="u-info-desc">通过解析地图文件索引，支持多种提取模式。选择下方子版本下载。</div></div>
         </div>
         <div class="sub-tabs">
-          <button class="sub-tab active" data-sub="filter"><span class="material-icons-round">filter_alt</span>字符串提取</button>
-          <button class="sub-tab" data-sub="root"><span class="material-icons-round">folder</span>根目录提取</button>
-          <button class="sub-tab" data-sub="full"><span class="material-icons-round">all_inclusive</span>全部提取</button>
+          <button class="sub-tab active" data-sub="filter" onclick="event.stopPropagation();switchMapSub('filter')"><span class="material-icons-round">filter_alt</span>字符串提取</button>
+          <button class="sub-tab" data-sub="root" onclick="event.stopPropagation();switchMapSub('root')"><span class="material-icons-round">folder</span>根目录提取</button>
+          <button class="sub-tab" data-sub="full" onclick="event.stopPropagation();switchMapSub('full')"><span class="material-icons-round">all_inclusive</span>全部提取</button>
         </div>
         <div class="u-dl-card" id="auto-map-card">
           <div class="u-dl-hdr"><span class="material-icons-round" style="color:var(--secondary)">download</span><span style="flex:1">下载 · <span id="auto-sub-label">字符串提取</span></span><span class="u-badge pink">Python</span></div>
-          <div id="auto-map-dl"><div class="u-state"><div class="u-spinner pink"></div>加载中...</div></div>
+          <div id="auto-map-dl"></div>
         </div>
       </div>
     </div>
@@ -344,29 +348,31 @@
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
 
   const vp=document.getElementById("gallery-viewport"),nav=document.getElementById("gallery-nav");let imgs=[],cur=0,autoTimer;
-  async function initGallery(){try{const res=await fetch("https://api.github.com/repos/e-xq/e-xq.github.io/contents/Screenshot");const files=await res.json();const images=files.filter(f=>/\.(png|jpg|jpeg|webp|gif)$/i.test(f.name)).sort((a,b)=>a.name.localeCompare(b.name));if(!images.length)return;images.forEach((f,i)=>{const img=document.createElement("img");img.className="gallery-img"+(i===0?" active":"");img.src="Screenshot/"+f.name;img.alt="截图 "+(i+1);img.loading=i===0?"eager":"lazy";vp.insertBefore(img,vp.querySelector(".gallery-arrows"));imgs.push(img);const d=document.createElement("button");d.className="gallery-dot"+(i===0?" active":"");d.onclick=()=>goTo(i,true);nav.appendChild(d);});startAuto();}catch(e){console.warn(e);}}
+  async function initGallery(){try{const res=await fetch("https://api.github.com/repos/e-xq/e-xq.github.io/contents/Screenshot");const files=await res.json();const images=files.filter(f=>/\.(png|jpg|jpeg|webp|gif)$/i.test(f.name)).sort((a,b)=>a.name.localeCompare(b.name));if(!images.length)return;images.forEach((f,i)=>{const img=document.createElement("img");img.className="gallery-img"+(i===0?" active":"");img.src="Screenshot/"+f.name;img.alt="截图 "+(i+1);img.loading=i===0?"eager":"lazy";vp.insertBefore(img,vp.querySelector(".gallery-arrows"));imgs.push(img);const d=document.createElement("button");d.className="gallery-dot"+(i===0?" active":"");d.onclick=(e)=>{e.stopPropagation();goTo(i,true);};nav.appendChild(d);});startAuto();}catch(e){console.warn(e);}}
   function goTo(n,manual=false){if(!imgs.length)return;imgs[cur].classList.remove("active");nav.children[cur].classList.remove("active");cur=(n+imgs.length)%imgs.length;imgs[cur].classList.add("active");nav.children[cur].classList.add("active");if(manual){clearInterval(autoTimer);clearTimeout(_galPauseT);_galPauseT=setTimeout(startAuto,8000);}}
   let _galPauseT=null;function startAuto(){clearInterval(autoTimer);autoTimer=setInterval(()=>goTo(cur+1),4000);}function galleryNext(){goTo(cur+1,true);}function galleryPrev(){goTo(cur-1,true);}
-  let tx=0;vp.addEventListener("touchstart",e=>{tx=e.touches[0].clientX;},{passive:true});vp.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40){dx<0?galleryNext():galleryPrev();}},{passive:true});vp.addEventListener("wheel",e=>{e.preventDefault();e.deltaY>0?galleryNext():galleryPrev();},{passive:false});
+  let tx=0;vp.addEventListener("touchstart",e=>{tx=e.touches[0].clientX;},{passive:true});vp.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40){dx<0?galleryNext():galleryPrev();}},{passive:10});vp.addEventListener("wheel",e=>{e.preventDefault();e.deltaY>0?galleryNext():galleryPrev();},{passive:false});
 
   const REPO="e-xq/e-xq.github.io";
   function switchTab(scope,type){const container=document.getElementById(scope);container.querySelectorAll(".unpack-tab").forEach(t=>t.classList.remove("active"));container.querySelector("."+type+"-tab").classList.add("active");container.querySelectorAll(".unpack-panel").forEach(p=>p.classList.remove("active"));document.getElementById("panel-"+type).classList.add("active");}
   function uEsc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
   function uVer(f){const m=f.match(/(\d+(?:\.\d+)+)/);return m?m[1]:"0";}
   function uCmpVer(a,b){const pa=a.split('.').map(Number),pb=b.split('.').map(Number);for(let i=0;i<Math.max(pa.length,pb.length);i++){const d=(pa[i]||0)-(pb[i]||0);if(d!==0)return d;}return 0;}
-  async function uLoadVersions(folder,id,color,icon){const el=document.getElementById(id);try{const res=await fetch(`https://api.github.com/repos/${REPO}/contents/${folder}`);if(!res.ok)throw new Error("HTTP "+res.status);const files=await res.json();const pys=files.filter(f=>f.name.endsWith('.py')).sort((a,b)=>uCmpVer(uVer(b.name),uVer(a.name)));if(!pys.length){el.innerHTML='<div class="u-state">暂无可用版本</div>';return;}const latest=pys[0],hist=pys.slice(1);let html=`<div class="u-latest ${color}"><div class="u-latest-icon ${color}"><span class="material-icons-round">${icon}</span></div><div class="u-latest-info"><div class="u-latest-ver">v${uVer(latest.name)} <span style="font-size:11px;font-weight:700;background:var(--${color==='blue'?'primary':'secondary'});color:#fff;padding:2px 8px;border-radius:100px;margin-left:4px">最新</span></div><div class="u-latest-fname">${uEsc(latest.name)}</div></div><a class="u-btn-dl ${color}" href="${folder}/${latest.name}" download><span class="material-icons-round">download</span>下载</a></div>`;if(hist.length){const tid="ut-"+id,lid="ul-"+id;html+=`<div class="u-hist-toggle" id="${tid}" onclick="uToggleHist('${tid}','${lid}')"><span class="material-icons-round" style="font-size:18px">history</span>历史版本（${hist.length} 个）<span style="flex:1"></span><span class="material-icons-round chevron">expand_more</span></div><div class="u-hist-list" id="${lid}">`;hist.forEach(f=>{html+=`<div class="u-hist-row"><div style="width:30px;height:30px;border-radius:6px;background:var(--surface-container);display:flex;align-items:center;justify-content:center"><span class="material-icons-round" style="font-size:15px;color:var(--on-surface-variant)">${icon}</span></div><div style="flex:1"><div class="u-hist-ver">v${uVer(f.name)}</div><div class="u-hist-fname">${uEsc(f.name)}</div></div><a class="u-btn-sm ${color}" href="${folder}/${f.name}" download><span class="material-icons-round">download</span>下载</a></div>`;});html+=`</div>`;}el.innerHTML=html;}catch(e){el.innerHTML='<div class="u-state">加载失败</div>';}}
+  async function uLoadVersions(folder,id,color,icon){const el=document.getElementById(id);try{const res=await fetch(`https://api.github.com/repos/${REPO}/contents/${folder}`);if(!res.ok)throw new Error("HTTP "+res.status);const files=await res.json();const pys=files.filter(f=>f.name.endsWith('.py')).sort((a,b)=>uCmpVer(uVer(b.name),uVer(a.name)));if(!pys.length){el.innerHTML='<div class="u-state">暂无可用版本</div>';return;}const latest=pys[0],hist=pys.slice(1);let html=`<div class="u-latest ${color}"><div class="u-latest-icon ${color}"><span class="material-icons-round">${icon}</span></div><div class="u-latest-info"><div class="u-latest-ver">v${uVer(latest.name)} <span style="font-size:11px;font-weight:700;background:var(--${color==='blue'?'primary':'secondary'});color:#fff;padding:2px 8px;border-radius:100px;margin-left:4px">最新</span></div><div class="u-latest-fname">${uEsc(latest.name)}</div></div><a class="u-btn-dl ${color}" href="${folder}/${latest.name}" download><span class="material-icons-round">download</span>下载</a></div>`;if(hist.length){const tid="ut-"+id,lid="ul-"+id;html+=`<div class="u-hist-toggle" id="${tid}" onclick="uToggleHist('${tid}','${lid}')"><span class="material-icons-round" style="font-size:18px">history</span>历史版本（${hist.length} 个）<span style="flex:1"></span><span class="material-icons-round chevron">expand_more</span></div><div class="u-hist-list" id="${lid}">`;hist.forEach(f=>{html+=`<div class="u-hist-row"><div style="width:30px;height:30px;border-radius:6px;background:var(--surface-container);display:flex;align-items:center;justify-content:center"><span class="material-icons-round" style="font-size:15px;color:var(--on-surface-variant)">${icon}</span></div><div style="flex:1"><div class="u-hist-ver">v${uVer(f.name)}</div><div class="u-hist-fname">${uEsc(f.name)}</div></div><a class="u-btn-sm ${color}" href="${folder}/${f.name}" download><span class="material-icons-round">download</span><span>下载</span></a></div>`;});html+=`</div>`;}el.innerHTML=html;}catch(e){el.innerHTML='<div class="u-state">加载失败</div>';}}
   function uToggleHist(tid,lid){document.getElementById(tid).classList.toggle('open');document.getElementById(lid).classList.toggle('open');}
 
   let currentMapSub='filter';
-  async function buildAutoFileList(){const el=document.getElementById('auto-filelist-dl');try{const res=await fetch(`https://api.github.com/repos/${REPO}/contents/eggitor_auto_unpack/File_List_Ver`);if(!res.ok)throw new Error("HTTP "+res.status);const files=await res.json();const pys=files.filter(f=>f.name.endsWith('.py')).sort((a,b)=>uCmpVer(uVer(b.name),uVer(a.name)));if(!pys.length){el.innerHTML='<div class="u-state">暂无版本</div>';return;}const latest=pys[0],hist=pys.slice(1);let html=`<div class="u-latest blue"><div class="u-latest-icon blue"><span class="material-icons-round">description</span></div><div class="u-latest-info"><div class="u-latest-ver">v${uVer(latest.name)} <span style="font-size:11px;background:var(--primary);color:#fff;padding:2px 8px;border-radius:100px;margin-left:4px">最新</span></div><div class="u-latest-fname">${uEsc(latest.name)}</div></div><a class="u-btn-dl blue" href="eggitor_auto_unpack/File_List_Ver/${latest.name}" download><span class="material-icons-round">download</span>下载</a></div>`;if(hist.length){html+=`<div class="u-hist-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')"><span class="material-icons-round" style="font-size:18px">history</span>历史版本（${hist.length} 个）<span style="flex:1"></span><span class="material-icons-round chevron">expand_more</span></div><div class="u-hist-list">`;hist.forEach(f=>{html+=`<div class="u-hist-row"><div style="width:30px;height:30px;border-radius:6px;background:var(--surface-container);display:flex;align-items:center;justify-content:center"><span class="material-icons-round" style="font-size:15px;color:var(--primary)">description</span></div><div style="flex:1"><div class="u-hist-ver">v${uVer(f.name)}</div><div class="u-hist-fname">${uEsc(f.name)}</div></div><a class="u-btn-sm blue" href="eggitor_auto_unpack/File_List_Ver/${f.name}" download><span class="material-icons-round" style="font-size:13px">download</span>下载</a></div>`;});html+=`</div>`;}el.innerHTML=html;}catch(e){el.innerHTML='<div class="u-state">加载失败</div>';}}
-  async function buildAutoMap(sub){const el=document.getElementById('auto-map-dl');try{const res=await fetch(`https://api.github.com/repos/${REPO}/contents/eggitor_auto_unpack/Map_Ver`);if(!res.ok)throw new Error("HTTP "+res.status);const files=await res.json();let pys=files.filter(f=>f.name.endsWith('.py')).sort((a,b)=>uCmpVer(uVer(b.name),uVer(a.name)));if(sub==='filter')pys=pys.filter(f=>f.name.includes('Filter')&&!f.name.includes('root')&&!f.name.includes('full'));else if(sub==='root')pys=pys.filter(f=>f.name.includes('root'));else if(sub==='full')pys=pys.filter(f=>f.name.includes('full')||f.name.includes('unpak_full'));if(!pys.length){el.innerHTML='<div class="u-state">暂无版本</div>';return;}const latest=pys[0],hist=pys.slice(1);let html=`<div class="u-latest pink"><div class="u-latest-icon pink"><span class="material-icons-round">description</span></div><div class="u-latest-info"><div class="u-latest-ver">v${uVer(latest.name)} <span style="font-size:11px;background:var(--secondary);color:#fff;padding:2px 8px;border-radius:100px;margin-left:4px">最新</span></div><div class="u-latest-fname">${uEsc(latest.name)}</div></div><a class="u-btn-dl pink" href="eggitor_auto_unpack/Map_Ver/${latest.name}" download><span class="material-icons-round">download</span>下载</a></div>`;if(hist.length){html+=`<div class="u-hist-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')"><span class="material-icons-round" style="font-size:18px">history</span>历史版本（${hist.length} 个）<span style="flex:1"></span><span class="material-icons-round chevron">expand_more</span></div><div class="u-hist-list">`;hist.forEach(f=>{html+=`<div class="u-hist-row"><div style="width:30px;height:30px;border-radius:6px;background:var(--surface-container);display:flex;align-items:center;justify-content:center"><span class="material-icons-round" style="font-size:15px;color:var(--secondary)">description</span></div><div style="flex:1"><div class="u-hist-ver">v${uVer(f.name)}</div><div class="u-hist-fname">${uEsc(f.name)}</div></div><a class="u-btn-sm pink" href="eggitor_auto_unpack/Map_Ver/${f.name}" download><span class="material-icons-round" style="font-size:13px">download</span>下载</a></div>`;});html+=`</div>`;}el.innerHTML=html;document.getElementById('auto-sub-label').textContent={filter:'字符串提取',root:'根目录提取',full:'全部提取'}[sub];}catch(e){el.innerHTML='<div class="u-state">加载失败</div>';}}
+  async function buildAutoFileList(){const el=document.getElementById('auto-filelist-dl');try{const res=await fetch(`https://api.github.com/repos/${REPO}/contents/eggitor_auto_unpack/File_List_Ver`);if(!res.ok)throw new Error("HTTP "+res.status);const files=await res.json();const pys=files.filter(f=>f.name.endsWith('.py')).sort((a,b)=>uCmpVer(uVer(b.name),uVer(a.name)));if(!pys.length){el.innerHTML='<div class="u-state">暂无版本</div>';return;}const latest=pys[0],hist=pys.slice(1);let html=`<div class="u-latest blue"><div class="u-latest-icon blue"><span class="material-icons-round">description</span></div><div class="u-latest-info"><div class="u-latest-ver">v${uVer(latest.name)} <span style="font-size:11px;background:var(--primary);color:#fff;padding:2px 8px;border-radius:100px;margin-left:4px">最新</span></div><div class="u-latest-fname">${uEsc(latest.name)}</div></div><a class="u-btn-dl blue" href="eggitor_auto_unpack/File_List_Ver/${latest.name}" download><span class="material-icons-round">download</span>下载</a></div>`;if(hist.length){html+=`<div class="u-hist-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')"><span class="material-icons-round" style="font-size:18px">history</span>历史版本（${hist.length} 个）<span style="flex:1"></span><span class="material-icons-round chevron">expand_more</span></div><div class="u-hist-list">`;hist.forEach(f=>{html+=`<div class="u-hist-row"><div style="width:30px;height:30px;border-radius:6px;background:var(--surface-container);display:flex;align-items:center;justify-content:center"><span class="material-icons-round" style="font-size:15px;color:var(--primary)">description</span></div><div style="flex:1"><div class="u-hist-ver">v${uVer(f.name)}</div><div class="u-hist-fname">${uEsc(f.name)}</div></div><a class="u-btn-sm blue" href="eggitor_auto_unpack/File_List_Ver/${f.name}" download><span class="material-icons-round">download</span><span>下载</span></a></div>`;});html+=`</div>`;}el.innerHTML=html;}catch(e){el.innerHTML='<div class="u-state">加载失败</div>';}}
+  async function buildAutoMap(sub){const el=document.getElementById('auto-map-dl');try{const res=await fetch(`https://api.github.com/repos/${REPO}/contents/eggitor_auto_unpack/Map_Ver`);if(!res.ok)throw new Error("HTTP "+res.status);const files=await res.json();let pys=files.filter(f=>f.name.endsWith('.py')).sort((a,b)=>uCmpVer(uVer(b.name),uVer(a.name)));if(sub==='filter')pys=pys.filter(f=>f.name.includes('Filter')&&!f.name.includes('root')&&!f.name.includes('full'));else if(sub==='root')pys=pys.filter(f=>f.name.includes('root'));else if(sub==='full')pys=pys.filter(f=>f.name.includes('full')||f.name.includes('unpak_full'));if(!pys.length){el.innerHTML='<div class="u-state">暂无版本</div>';return;}const latest=pys[0],hist=pys.slice(1);let html=`<div class="u-latest pink"><div class="u-latest-icon pink"><span class="material-icons-round">description</span></div><div class="u-latest-info"><div class="u-latest-ver">v${uVer(latest.name)} <span style="font-size:11px;background:var(--secondary);color:#fff;padding:2px 8px;border-radius:100px;margin-left:4px">最新</span></div><div class="u-latest-fname">${uEsc(latest.name)}</div></div><a class="u-btn-dl pink" href="eggitor_auto_unpack/Map_Ver/${latest.name}" download><span class="material-icons-round">download</span>下载</a></div>`;if(hist.length){html+=`<div class="u-hist-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')"><span class="material-icons-round" style="font-size:18px">history</span>历史版本（${hist.length} 个）<span style="flex:1"></span><span class="material-icons-round chevron">expand_more</span></div><div class="u-hist-list">`;hist.forEach(f=>{html+=`<div class="u-hist-row"><div style="width:30px;height:30px;border-radius:6px;background:var(--surface-container);display:flex;align-items:center;justify-content:center"><span class="material-icons-round" style="font-size:15px;color:var(--secondary)">description</span></div><div style="flex:1"><div class="u-hist-ver">v${uVer(f.name)}</div><div class="u-hist-fname">${uEsc(f.name)}</div></div><a class="u-btn-sm pink" href="eggitor_auto_unpack/Map_Ver/${f.name}" download><span class="material-icons-round">download</span><span>下载</span></a></div>`;});html+=`</div>`;}el.innerHTML=html;document.getElementById('auto-sub-label').textContent={filter:'字符串提取',root:'根目录提取',full:'全部提取'}[sub];}catch(e){el.innerHTML='<div class="u-state">加载失败</div>';}}
   function refreshAutoMap(animate=true){buildAutoMap(currentMapSub);if(animate){const card=document.getElementById('auto-map-card');card.style.animation='none';card.offsetHeight;card.style.animation='panelFade .25s ease-out';setTimeout(()=>card.style.animation='',300);}}
-  function initAutoUnpacker(){const container=document.getElementById('auto-unpacker-section');container.querySelectorAll('.unpack-tab').forEach(t=>t.addEventListener('click',()=>{const target=t.dataset.tab;container.querySelectorAll('.unpack-tab').forEach(tb=>tb.classList.remove('active'));t.classList.add('active');container.querySelectorAll('.unpack-panel').forEach(p=>p.classList.remove('active'));document.getElementById('panel-'+target).classList.add('active');}));container.querySelectorAll('.sub-tab').forEach(t=>t.addEventListener('click',()=>{const sub=t.dataset.sub;container.querySelectorAll('.sub-tab').forEach(tb=>tb.classList.remove('active'));t.classList.add('active');currentMapSub=sub;refreshAutoMap(true);}));buildAutoFileList();buildAutoMap(currentMapSub);}
+  function switchAutoTab(type){const container=document.getElementById('auto-unpacker-section');container.querySelectorAll('.unpack-tab').forEach(t=>t.classList.remove('active'));container.querySelector('.'+type+'-tab').classList.add('active');container.querySelectorAll('.unpack-panel').forEach(p=>p.classList.remove('active'));document.getElementById('panel-'+type).classList.add('active');}
+  function switchMapSub(sub){if(currentMapSub===sub) return;currentMapSub=sub;const container=document.getElementById('auto-unpacker-section');container.querySelectorAll('.sub-tab').forEach(t=>t.classList.remove('active'));container.querySelector('.sub-tab[data-sub="'+sub+'"]').classList.add('active');refreshAutoMap(true);}
+  function initAutoUnpacker(){buildAutoFileList();buildAutoMap(currentMapSub);}
 
-  const sections=document.querySelectorAll('.fade-section');
-  const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in-view');else e.target.classList.remove('in-view');});},{threshold:0.12});
-  sections.forEach(s=>observer.observe(s));
-  sections.forEach(s=>{s.addEventListener('click',()=>s.scrollIntoView({behavior:'smooth',block:'center'}));});
+  const fadeElements=document.querySelectorAll('.fade-section');
+  const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in-view');else e.target.classList.remove('in-view');});},{threshold:0.15,rootMargin:"0px 0px -20px 0px"});
+  fadeElements.forEach(el=>observer.observe(el));
+  fadeElements.forEach(el=>{el.addEventListener('click',(e)=>{if(e.target.closest('button')||e.target.closest('a')||e.target.closest('.u-hist-toggle')) return;el.scrollIntoView({behavior:'smooth',block:'center'});});});
 
   let snackTimer,hideTimer;function showSnack(msg,theme='blue'){const el=document.getElementById('snackbar');document.getElementById('snackbar-text').textContent=msg;const icon=document.getElementById('snackbar-icon');icon.textContent='check_circle';icon.style.color=theme==='pink'?'#FFD8E8':'#A8C7FA';clearTimeout(snackTimer);clearTimeout(hideTimer);el.classList.remove('show','hide');el.style.visibility='visible';el.style.animation='none';void el.offsetWidth;el.style.animation='';el.classList.add('show');snackTimer=setTimeout(()=>{el.classList.remove('show');el.classList.add('hide');hideTimer=setTimeout(()=>{el.classList.remove('hide');el.style.visibility='hidden';},300);},1500);}
   function uCopy(id,theme='blue'){const text=document.getElementById(id).textContent;if(navigator.clipboard) navigator.clipboard.writeText(text).then(()=>showSnack('已复制',theme)).catch(()=>fallbackCopy(text,theme)); else fallbackCopy(text,theme); function fallbackCopy(txt,th){const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showSnack('已复制',th);}}
@@ -375,11 +381,6 @@
   uLoadVersions("PPK_Unlocker","ppk-dl","pink","folder_zip");
   initGallery();
   initAutoUnpacker();
-
-  document.querySelector('#unpacker-section').addEventListener('click', (e) => {
-    const tab = e.target.closest('.unpack-tab');
-    if (tab) switchTab('unpacker-section', tab.dataset.tab);
-  });
 </script>
 </body>
 </html>
