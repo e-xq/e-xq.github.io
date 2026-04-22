@@ -1,0 +1,32 @@
+{
+  "日志屏蔽": {
+    "屏蔽状态时长警告": "import logging; logging.getLogger('StateDurationMonitor').setLevel(logging.CRITICAL)"
+  },
+  
+  "帧率控制": {
+    "设置144FPS": "import game3d; game3d.set_frame_rate(144)",
+    "查看当前帧率": "import game3d; print(game3d.get_frame_rate())"
+  },
+  
+  "调试显示": {
+    "全开": "import game3d; game3d.show_cpu_mem_info(True); game3d.show_render_info(True); game3d.show_gpu_time_info(True)",
+    "全关": "import game3d; game3d.show_cpu_mem_info(False); game3d.show_render_info(False); game3d.show_gpu_time_info(False)"
+  },
+  
+  "窗口": {
+    "标题改为河狸计划": "import ctypes; hwnd=ctypes.windll.user32.FindWindowW(None,u'u5'); hwnd and ctypes.windll.user32.SetWindowTextW(hwnd,u'\\u6cb3\\u72f8\\u8ba1\\u5212')"
+  },
+  
+  "音乐控制": {
+    "初始化": "import custom.client.sound.SoundMgr as sm; s=sm.SoundMgr()",
+    "播放BGM": "s.play_bgm_sound(13103)",
+    "停止BGM": "s.stop_bgm_sound()",
+    "查看当前BGM ID": "print(s.cur_bgm_id)"
+    "随机播放主城音乐"："import data.client.sound,random; d=data.client.sound.data; bgm_ids=[k for k in d.keys() if d.get(k) and d.get(k).get('type')==2 and ('主城' in d.get(k).get('name','') or 'lobby' in d.get(k).get('name','').lower())]; id=random.choice(bgm_ids); print(id); s.play_bgm_sound(id)"
+    "随机播放主城/竞速音乐"："import data.client.sound,random; d=data.client.sound.data; bgm_ids=[k for k in d.keys() if d.get(k) and d.get(k).get('type')==2 and ('主城' in d.get(k).get('name','') or 'lobby' in d.get(k).get('name','').lower() or '竞速' in d.get(k).get('name',''))]; id=random.choice(bgm_ids); print(id); s.play_bgm_sound(id)"
+  },
+  
+  "音频查询": {
+    "查看音频信息": "import data.client.sound; print(data.client.sound.data.get(13103))",
+    "导出所有BGM到JSON": "import data.client.sound,json; d=data.client.sound.data; r={k:dict(d.get(k)) for k in d.keys() if d.get(k) and d.get(k).get('type')==2}; f=open('E:/bgm_full.json','w'); json.dump(r,f,ensure_ascii=False,indent=2); f.close(); print('Done! '+str(len(r))+' items')"
+  },
