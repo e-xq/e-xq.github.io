@@ -2,385 +2,1332 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>XuanQian 的网站</title>
 <link rel="icon" type="image/webp" href="right_icon_6f50e56a_inverted.webp">
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Display:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 <style>
-  @font-face{font-family:'U5Font';src:url('U5Font_Round_7744b500.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap}
-  :root{--primary:#0057D9;--on-primary:#fff;--primary-container:#D8E2FF;--on-primary-container:#001551;--secondary:#C0006A;--on-secondary:#fff;--secondary-container:#FFD8E8;--on-secondary-container:#3D0021;--surface:#F8F9FF;--on-surface:#1A1C27;--on-surface-variant:#44464F;--outline-variant:#C6C6D0;--surface-low:#F2F3FA;--surface-container:#EBEBF4;--r-xl:28px;--r-lg:16px;--r-md:12px;--r-sm:8px}
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{font-family:'U5Font','Google Sans','Noto Sans SC',sans-serif;background:var(--surface);color:var(--on-surface);min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;position:relative}
-  body.menu-open{overflow:hidden}
-  .bg-video{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-2;opacity:0.2;pointer-events:none}
-  @media (max-width:768px){.bg-video{display:none}}
-  .page-content{flex:1;position:relative;z-index:1}
-  .top-app-bar{position:sticky;top:0;z-index:100;background:var(--surface-low);border-bottom:1px solid var(--outline-variant);height:64px;display:flex;align-items:center;padding:0 16px;gap:12px}
-  .menu-btn{width:40px;height:40px;border:none;background:none;cursor:pointer;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--on-surface);transition:background .15s;flex-shrink:0;text-decoration:none;-webkit-tap-highlight-color:transparent}
-  .menu-btn:hover{background:var(--surface-container)}
-  .menu-btn .material-icons-round{font-size:24px}
-  .bar-title{font-family:'U5Font','Google Sans Display','Noto Sans SC',sans-serif;font-size:20px;font-weight:500;flex:1}
-  .github-btn{display:flex;align-items:center;gap:6px;padding:8px 16px;background:var(--primary-container);color:var(--on-primary-container);border:none;border-radius:100px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;text-decoration:none;transition:filter .15s;flex-shrink:0;-webkit-tap-highlight-color:transparent}
-  .github-btn:hover{filter:brightness(.95)}
-  .github-btn .material-icons-round{font-size:16px}
-  @media (max-width:768px){.github-btn span:not(.material-icons-round){display:none}.top-app-bar .github-btn{padding:8px 12px}}
-  .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:200;opacity:0;visibility:hidden;pointer-events:none}
-  .drawer{position:fixed;top:0;left:0;bottom:0;width:300px;background:var(--surface-low);z-index:201;transform:translateX(-100%);transition:transform .26s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;border-radius:0 var(--r-xl) var(--r-xl) 0;overflow:hidden;will-change:transform}
+@font-face{font-family:'U5Font';src:url('U5Font_Round_7744b500.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+:root{
+  --primary:#0074E8;--on-primary:#FFFFFF;--primary-container:#E4F0FF;--on-primary-container:#001C38;
+  --secondary:#D4457A;--on-secondary:#FFFFFF;--secondary-container:#FFD9E8;--on-secondary-container:#3D0020;
+  --tertiary:#6B5AF5;--on-tertiary:#FFFFFF;--tertiary-container:#E8E2FF;--on-tertiary-container:#22008F;
+  --surface:#FAFCFF;--on-surface:#1A1C27;--on-surface-variant:#44464F;--surface-container:#EEF1F8;
+  --surface-container-high:#E8EAF4;--surface-container-low:#F3F5FB;
+  --outline:#C6C6D0;--outline-variant:#E0E1E9;
+  --shadow-sm:0 2px 8px rgba(0,0,0,0.06);--shadow-md:0 4px 16px rgba(0,0,0,0.1);--shadow-lg:0 8px 32px rgba(0,0,0,0.14);
+  --transition-fast:0.15s cubic-bezier(0.4,0,0.2,1);--transition-normal:0.25s cubic-bezier(0.4,0,0.2,1);--transition-slow:0.35s cubic-bezier(0.4,0,0.2,1);
+  --sidebar-width:320px;--header-height:64px;
+  --r-xl:24px;--r-lg:16px;--r-md:12px;--r-sm:8px;
+  --blur-bg:rgba(250,252,255,0.88);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:'U5Font','Noto Sans SC',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--surface);
+  color:var(--on-surface);
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  text-decoration:none
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;border:none;background:none;cursor:pointer;outline:none}
+button:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+input,textarea,select{font-family:inherit;outline:none}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-thumb{background:var(--outline);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--on-surface-variant)}
+::selection{background:var(--primary-container);color:var(--on-primary-container)}
+
+.bg-video{
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  z-index:-1;
+  opacity:0.15;
+  pointer-events:none;
+}
+@media(max-width:768px){.bg-video{display:none}}
+
+.app-layout{display:flex;min-height:100vh}
+
+.drawer{
+  position:fixed;
+  top:0;left:0;bottom:0;
+  width:var(--sidebar-width);
+  background:var(--blur-bg);
+  backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);
+  border-right:1px solid var(--outline-variant);
+  z-index:1200;
+  display:flex;
+  flex-direction:column;
+  transform:translateX(0);
+  transition:transform var(--transition-normal);
+  will-change:transform;
+  overflow:hidden;
+  box-shadow:4px 0 24px rgba(0,0,0,0.08);
+}
+.drawer.hidden{transform:translateX(-100%)}
+.drawer-backdrop{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.5);
+  z-index:1199;
+  opacity:0;visibility:hidden;
+  transition:opacity var(--transition-normal),visibility var(--transition-normal);
+}
+.drawer-backdrop.visible{opacity:1;visibility:visible}
+
+.drawer-header{
+  padding:24px 20px 20px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  border-bottom:1px solid var(--outline-variant);
+  background:linear-gradient(135deg,var(--primary-container) 0%,var(--surface-container-low) 100%);
+}
+.drawer-avatar{
+  width:52px;height:52px;
+  border-radius:50%;
+  object-fit:cover;
+  background:var(--primary-container);
+  box-shadow:var(--shadow-md);
+  transition:var(--transition-fast);
+  flex-shrink:0;
+}
+.drawer-avatar:hover{transform:scale(1.05);box-shadow:var(--shadow-lg)}
+.drawer-info{flex:1;min-width:0}
+.drawer-name{font-size:17px;font-weight:700;color:var(--on-surface);line-height:1.3}
+.drawer-sub{font-size:12px;color:var(--on-surface-variant);margin-top:3px;line-height:1.4}
+
+.drawer-nav{
+  flex:1;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding:12px 0;
+  -webkit-overflow-scrolling:touch;
+}
+.drawer-section{margin-bottom:4px}
+.drawer-section-title{
+  font-size:11px;font-weight:700;
+  color:var(--on-surface-variant);
+  letter-spacing:1.2px;
+  padding:16px 20px 6px;
+  text-transform:uppercase;
+}
+.drawer-item{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:13px 20px;
+  cursor:pointer;
+  transition:var(--transition-fast);
+  color:var(--on-surface);
+  -webkit-tap-highlight-color:transparent;
+  position:relative;
+  overflow:hidden;
+}
+.drawer-item::before{
+  content:'';
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:3px;
+  background:var(--primary);
+  border-radius:0 3px 3px 0;
+  opacity:0;
+  transition:opacity var(--transition-fast);
+}
+.drawer-item:hover{
+  background:var(--surface-container);
+}
+.drawer-item:hover::before{opacity:1}
+.drawer-item:active{
+  background:var(--surface-container-high);
+  transform:scale(0.99);
+}
+.drawer-item.active{
+  background:var(--primary-container);
+  color:var(--on-primary-container);
+}
+.drawer-item.active::before{opacity:1;background:var(--primary)}
+.drawer-item .material-icons-round{
+  font-size:22px;
+  color:var(--on-surface-variant);
+  flex-shrink:0;
+  transition:color var(--transition-fast);
+}
+.drawer-item:hover .material-icons-round{color:var(--primary)}
+.drawer-item.active .material-icons-round{color:var(--primary)}
+.drawer-item-text{flex:1;min-width:0}
+.drawer-item-title{font-size:14px;font-weight:500;line-height:1.3}
+.drawer-item-sub{font-size:11px;color:var(--on-surface-variant);margin-top:2px}
+.drawer-item.active .drawer-item-sub{color:var(--on-primary-container);opacity:0.8}
+.drawer-item-icon-end{
+  font-size:16px;
+  color:var(--on-surface-variant);
+  opacity:0.6;
+}
+.drawer-divider{height:1px;background:var(--outline-variant);margin:8px 20px}
+
+.drawer-footer{
+  padding:16px 20px;
+  border-top:1px solid var(--outline-variant);
+  font-size:11px;color:var(--on-surface-variant);
+  text-align:center;
+  background:var(--surface-container-low);
+}
+
+.main-area{
+  flex:1;
+  margin-left:var(--sidebar-width);
+  transition:margin-left var(--transition-normal);
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+
+.header{
+  position:sticky;top:0;z-index:100;
+  background:var(--blur-bg);
+  backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);
+  border-bottom:1px solid var(--outline-variant);
+  height:var(--header-height);
+  display:flex;align-items:center;
+  padding:0 20px;
+  gap:8px;
+  transition:var(--transition-normal);
+}
+.header.scrolled{
+  background:rgba(250,252,255,0.95);
+  box-shadow:var(--shadow-sm);
+  border-bottom-color:transparent;
+}
+.header-menu-btn{
+  width:48px;height:48px;
+  border-radius:50%;
+  display:none;
+  align-items:center;justify-content:center;
+  color:var(--on-surface);
+  transition:var(--transition-fast);
+  flex-shrink:0;
+}
+.header-menu-btn:hover{background:var(--surface-container)}
+.header-menu-btn:active{transform:scale(0.95)}
+.header-menu-btn .material-icons-round{font-size:26px}
+.header-title{
+  font-size:20px;font-weight:600;
+  flex:1;
+  background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  letter-spacing:-0.3px;
+}
+.header-spacer{flex:1}
+
+.main-content{flex:1;padding:24px}
+
+.hero-section{
+  max-width:1200px;width:100%;
+  margin:0 auto;
+  padding:60px 40px;
+  min-height:calc(100vh - var(--header-height));
+  display:flex;gap:60px;align-items:center;
+}
+.hero-left{flex:0 0 360px;display:flex;flex-direction:column;gap:18px;align-items:flex-start}
+.hero-avatar{
+  width:88px;height:88px;
+  border-radius:50%;
+  object-fit:cover;
+  background:var(--primary-container);
+  box-shadow:0 8px 24px rgba(0,116,232,0.18);
+  transition:var(--transition-normal);cursor:pointer;
+}
+.hero-avatar:hover{transform:scale(1.06);box-shadow:0 12px 32px rgba(0,116,232,0.25)}
+.hero-name{
+  font-size:30px;font-weight:700;line-height:1.2;
+  background:linear-gradient(135deg,var(--on-surface) 0%,var(--primary) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-welcome{
+  font-size:26px;font-weight:700;color:var(--primary);line-height:1.3;
+  letter-spacing:-0.5px;
+}
+.hero-bio-label{
+  font-size:14px;font-weight:700;color:var(--on-surface);
+  display:flex;align-items:center;gap:8px;
+  margin-top:4px;
+}
+.hero-bio-label::before{
+  content:'';display:block;width:4px;height:14px;
+  background:linear-gradient(180deg,var(--primary) 0%,var(--secondary) 100%);border-radius:2px;
+}
+.hero-sub{font-size:14px;color:var(--on-surface-variant);line-height:1.9;margin-top:2px}
+.hero-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.hero-chip{
+  display:flex;align-items:center;gap:6px;
+  padding:7px 14px;
+  background:var(--surface-container);
+  border:1px solid var(--outline-variant);
+  border-radius:100px;
+  font-size:12px;color:var(--on-surface-variant);
+  white-space:nowrap;
+  transition:var(--transition-fast);cursor:default;
+}
+.hero-chip:hover{
+  background:var(--primary-container);color:var(--on-primary-container);
+  border-color:var(--primary-container);
+  transform:translateY(-2px);box-shadow:var(--shadow-sm);
+}
+.hero-chip .material-icons-round{font-size:15px;color:var(--primary)}
+
+.hero-right{flex:1;min-width:0}
+.hero-gallery-title{
+  font-size:13px;font-weight:600;color:var(--on-surface-variant);
+  margin-bottom:12px;display:flex;align-items:center;gap:8px;
+}
+.hero-gallery-title .material-icons-round{font-size:17px;color:var(--primary)}
+
+.gallery-wrapper{
+  position:relative;
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  background:#000;
+  box-shadow:var(--shadow-lg);
+  transition:var(--transition-normal);
+}
+.gallery-wrapper:hover{box-shadow:0 16px 48px rgba(0,0,0,0.18)}
+.gallery-container{
+  position:relative;
+  width:100%;
+  aspect-ratio:16/9;
+  overflow:hidden;
+}
+.gallery-img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  opacity:0;
+  transition:opacity 0.5s ease;
+}
+.gallery-img.active{opacity:1}
+.gallery-nav{
+  position:absolute;
+  bottom:14px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;align-items:center;justify-content:center;
+  gap:6px;
+  background:rgba(0,0,0,0.4);
+  backdrop-filter:blur(8px);
+  padding:8px 12px;
+  border-radius:100px;
+}
+.gallery-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(255,255,255,0.5);border:none;
+  cursor:pointer;
+  transition:var(--transition-normal);flex-shrink:0;
+}
+.gallery-dot:hover{background:rgba(255,255,255,0.8);transform:scale(1.2)}
+.gallery-dot.active{background:#fff;width:18px;border-radius:3px}
+.gallery-arrows{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 12px;
+  pointer-events:none;
+}
+.gallery-arrow{
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(255,255,255,0.9);
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:all;
+  transition:var(--transition-fast);
+  backdrop-filter:blur(8px);
+  box-shadow:var(--shadow-md);
+  opacity:0;
+  transform:scale(0.9);
+}
+.gallery-wrapper:hover .gallery-arrow{opacity:1;transform:scale(1)}
+.gallery-arrow:hover{background:#fff;transform:scale(1.08)}
+.gallery-arrow:active{transform:scale(0.95)}
+.gallery-arrow .material-icons-round{font-size:22px;color:var(--on-surface)}
+
+.section-spacer{height:60px}
+.section-wrap{max-width:1100px;width:100%;margin:0 auto;padding:0 32px 60px}
+.section-title{
+  font-size:22px;font-weight:700;margin-bottom:6px;
+  display:flex;align-items:center;gap:12px;scroll-margin-top:80px;
+}
+.section-title .material-icons-round{font-size:22px;color:var(--primary)}
+.section-sub{font-size:13px;color:var(--on-surface-variant);margin-bottom:20px;line-height:1.7}
+
+.tab-group{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.tab-btn{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 18px;
+  border-radius:100px;
+  border:1.5px solid var(--outline-variant);
+  background:var(--surface);
+  cursor:pointer;
+  font-size:13px;font-weight:500;
+  font-family:inherit;
+  color:var(--on-surface-variant);
+  transition:var(--transition-fast);
+}
+.tab-btn .material-icons-round{font-size:18px}
+.tab-btn:hover{
+  background:var(--surface-container);
+  border-color:var(--primary);
+  color:var(--on-surface);
+  transform:translateY(-1px);
+}
+.tab-btn:active{transform:scale(0.98) translateY(0)}
+.tab-btn.npk-tab.active,.tab-btn.filelist-tab.active{
+  background:var(--primary-container);
+  border-color:var(--primary);
+  color:var(--on-primary-container);
+  font-weight:600;
+  box-shadow:var(--shadow-sm);
+}
+.tab-btn.ppk-tab.active,.tab-btn.map-tab.active{
+  background:var(--secondary-container);
+  border-color:var(--secondary);
+  color:var(--on-secondary-container);
+  font-weight:600;
+  box-shadow:var(--shadow-sm);
+}
+
+.tab-panel{display:none;flex-direction:column;gap:14px}
+.tab-panel.active{display:flex;animation:panelFade 0.3s cubic-bezier(0.2,0,0,1) both}
+@keyframes panelFade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.info-card{
+  background:var(--surface-container-low);
+  border:1px solid var(--outline-variant);
+  border-radius:var(--r-lg);
+  padding:20px;
+  display:flex;align-items:flex-start;gap:16px;
+  transition:var(--transition-normal);
+}
+.info-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:var(--primary-container)}
+.info-icon{
+  width:48px;height:48px;
+  border-radius:var(--r-md);
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;flex-shrink:0;
+  transition:var(--transition-normal);
+}
+.info-icon.blue{background:var(--primary-container);color:var(--primary)}
+.info-icon.pink{background:var(--secondary-container);color:var(--secondary)}
+.info-icon:hover{transform:scale(1.08) rotate(-3deg)}
+.info-name{font-size:16px;font-weight:700}
+.info-sub{font-size:12px;color:var(--on-surface-variant);margin-top:3px}
+.info-desc{font-size:13px;color:var(--on-surface-variant);line-height:1.7;margin-top:8px}
+
+.dep-card{
+  background:var(--surface-container-low);
+  border:1px solid var(--outline-variant);
+  border-radius:var(--r-lg);
+  padding:16px 20px;
+}
+.dep-label{
+  font-size:11px;font-weight:700;color:var(--on-surface-variant);
+  letter-spacing:.8px;text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;margin-bottom:12px;
+}
+.dep-label::after{content:'';flex:1;height:1px;background:var(--outline-variant)}
+.dep-code{
+  background:var(--surface);
+  border-radius:var(--r-sm);
+  padding:12px 16px;
+  display:flex;align-items:center;gap:10px;
+  font-family:'SF Mono',Monaco,'Cascadia Code',monospace;
+  font-size:13px;
+  border:1px solid var(--outline-variant);
+  transition:var(--transition-fast);
+}
+.dep-code:hover{border-color:var(--primary);box-shadow:var(--shadow-sm)}
+.dep-code-text{flex:1;word-break:break-all;color:var(--on-surface)}
+.dep-copy{
+  background:none;border:none;cursor:pointer;
+  display:flex;align-items:center;padding:6px;
+  border-radius:var(--r-sm);
+  transition:var(--transition-fast);flex-shrink:0;
+  color:var(--on-surface-variant);
+}
+.dep-copy.blue{color:var(--primary)}.dep-copy.blue:hover{background:var(--primary-container);transform:scale(1.1)}
+.dep-copy.pink{color:var(--secondary)}.dep-copy.pink:hover{background:var(--secondary-container);transform:scale(1.1)}
+.dep-copy:active{transform:scale(0.9)}
+.dep-copy .material-icons-round{font-size:18px}
+
+.dl-card{
+  background:var(--surface-container-low);
+  border:1px solid var(--outline-variant);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  transition:var(--transition-normal);
+}
+.dl-card:hover{border-color:var(--primary-container);box-shadow:var(--shadow-sm)}
+.dl-header{
+  padding:14px 18px;
+  border-bottom:1px solid var(--outline-variant);
+  display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;
+  background:var(--surface-container);
+}
+.dl-badge{
+  font-size:10px;font-weight:700;
+  padding:3px 10px;border-radius:100px;
+}
+.dl-badge.blue{background:var(--primary-container);color:var(--primary)}
+.dl-badge.pink{background:var(--secondary-container);color:var(--secondary)}
+.dl-latest{
+  padding:16px 18px;
+  display:flex;align-items:center;gap:14px;
+  border-bottom:1px solid var(--outline-variant);
+  transition:var(--transition-fast);
+}
+.dl-latest:hover{background:var(--surface-container)}
+.dl-latest.blue{background:linear-gradient(135deg,var(--primary-container) 0%,var(--surface-container-low) 100%)}
+.dl-latest.pink{background:linear-gradient(135deg,var(--secondary-container) 0%,var(--surface-container-low) 100%)}
+.dl-icon{
+  width:42px;height:42px;
+  border-radius:var(--r-md);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  transition:var(--transition-normal);
+}
+.dl-icon.blue{background:var(--primary);color:#fff}
+.dl-icon.pink{background:var(--secondary);color:#fff}
+.dl-icon:hover{transform:scale(1.08) rotate(-3deg)}
+.dl-info{flex:1;min-width:0}
+.dl-ver{font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dl-badge-tag{font-size:9px;font-weight:700;padding:2px 8px;border-radius:100px;color:#fff}
+.dl-badge-tag.blue{background:var(--primary)}.dl-badge-tag.pink{background:var(--secondary)}
+.dl-fname{font-size:12px;color:var(--on-surface-variant);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dl-btn{
+  display:flex;align-items:center;gap:5px;
+  padding:9px 16px;
+  border:none;border-radius:100px;
+  font-size:13px;font-weight:600;
+  font-family:inherit;cursor:pointer;
+  text-decoration:none;
+  transition:var(--transition-fast);flex-shrink:0;
+  color:#fff;box-shadow:var(--shadow-sm);
+}
+.dl-btn.blue{background:linear-gradient(135deg,var(--primary),#005DB8)}
+.dl-btn.pink{background:linear-gradient(135deg,var(--secondary),#A30050)}
+.dl-btn:hover{filter:brightness(1.08);transform:translateY(-2px);box-shadow(var(--shadow-md))}
+.dl-btn:active{transform:scale(0.95) translateY(0)}
+.dl-btn .material-icons-round{font-size:16px}
+
+.dl-hist-toggle{
+  padding:12px 18px;
+  display:flex;align-items:center;gap:8px;
+  cursor:pointer;
+  font-size:13px;color:var(--on-surface-variant);
+  transition:var(--transition-fast);
+  border-bottom:1px solid var(--outline-variant);
+  user-select:none;
+  background:var(--surface-container);
+}
+.dl-hist-toggle:hover{background:var(--surface-container-high);color:var(--on-surface)}
+.dl-hist-toggle .chevron{font-size:18px;margin-left:auto;transition:transform .2s ease}
+.dl-hist-toggle.open .chevron{transform:rotate(180deg)}
+.dl-hist-list{display:none}
+.dl-hist-list.open{display:block;animation:panelFade .2s ease both}
+.dl-hist-row{
+  padding:12px 18px;
+  display:flex;align-items:center;gap:12px;
+  border-bottom:1px solid var(--outline-variant);
+  transition:var(--transition-fast);
+}
+.dl-hist-row:last-child{border-bottom:none}
+.dl-hist-row:hover{background:var(--surface-container)}
+.dl-hist-ver{font-size:13px;font-weight:500;flex:1}
+.dl-hist-fname{font-size:11px;color:var(--on-surface-variant)}
+.dl-hist-btn{
+  display:flex;align-items:center;gap:4px;
+  padding:6px 12px;
+  background:var(--surface-container);
+  color:var(--on-surface);
+  border:1px solid var(--outline-variant);
+  border-radius:100px;
+  font-size:12px;font-weight:500;
+  font-family:inherit;cursor:pointer;
+  text-decoration:none;
+  transition:var(--transition-fast);flex-shrink:0;
+}
+.dl-hist-btn:hover{transform:translateY(-1px)}
+.dl-hist-btn.blue:hover{background:var(--primary-container);color:var(--primary);border-color:var(--primary-container);box-shadow:var(--shadow-sm)}
+.dl-hist-btn.pink:hover{background:var(--secondary-container);color:var(--secondary);border-color:var(--secondary-container);box-shadow:var(--shadow-sm)}
+.dl-hist-btn:active{transform:scale(0.95)}
+.dl-hist-btn .material-icons-round{font-size:14px}
+
+.sub-tab-group{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.sub-tab{
+  padding:7px 14px;
+  border-radius:100px;
+  border:1.5px solid var(--outline-variant);
+  background:var(--surface);
+  cursor:pointer;
+  font-size:12px;font-weight:500;
+  font-family:inherit;
+  color:var(--on-surface-variant);
+  transition:var(--transition-fast);
+  display:flex;align-items:center;gap:6px;
+}
+.sub-tab .material-icons-round{font-size:15px}
+.sub-tab:hover{
+  background:var(--surface-container);
+  border-color:var(--secondary);
+  color:var(--on-surface);
+  transform:translateY(-1px);
+}
+.sub-tab.active{
+  background:var(--secondary-container);
+  border-color:var(--secondary);
+  color:var(--on-secondary-container);
+  font-weight:600;
+  box-shadow:var(--shadow-sm);
+}
+
+.cmd-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.cmd-card{
+  background:var(--surface-container-low);
+  border:1px solid var(--outline-variant);
+  border-radius:var(--r-lg);
+  padding:20px;
+  transition:var(--transition-normal);
+}
+.cmd-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:var(--primary-container)}
+.cmd-header{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:16px;padding-bottom:12px;
+  border-bottom:1px solid var(--outline-variant);
+}
+.cmd-header .material-icons-round{color:var(--primary);font-size:22px}
+.cmd-header span{font-weight:700;font-size:15px;color:var(--on-surface)}
+.cmd-item{
+  margin-bottom:10px;padding:10px;
+  background:var(--surface);
+  border-radius:var(--r-sm);
+  border:1px solid transparent;
+  transition:var(--transition-fast);
+}
+.cmd-item:last-child{margin-bottom:0}
+.cmd-item:hover{border-color:var(--primary-container);background:var(--primary-container)}
+.cmd-desc{font-size:12px;font-weight:500;margin-bottom:6px;color:var(--on-surface-variant)}
+.cmd-code{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface-container);
+  border:1px solid var(--outline-variant);
+  border-radius:var(--r-sm);
+  padding:10px 12px;
+  font-family:'SF Mono',Monaco,'Cascadia Code',monospace;
+  font-size:12px;
+  transition:var(--transition-fast);
+}
+.cmd-code:hover{border-color:var(--primary)}
+.cmd-code-text{flex:1;word-break:break-all;color:var(--on-surface)}
+.cmd-copy-btn{
+  background:none;border:none;cursor:pointer;
+  display:flex;align-items:center;padding:5px;
+  border-radius:var(--r-sm);
+  transition:var(--transition-fast);flex-shrink:0;
+  color:var(--on-surface-variant);
+}
+.cmd-copy-btn:hover{background:var(--primary-container);color:var(--primary);transform:scale(1.1)}
+.cmd-copy-btn:active{transform:scale(0.9)}
+.cmd-copy-btn .material-icons-round{font-size:18px}
+
+.loading{
+  text-align:center;padding:24px;
+  color:var(--on-surface-variant);font-size:13px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.spinner{
+  width:16px;height:16px;
+  border:2px solid var(--outline-variant);
+  border-radius:50%;
+  animation:spin .7s linear infinite;flex-shrink:0;
+}
+.spinner.blue{border-top-color:var(--primary);border-right-color:var(--primary-container)}
+.spinner.pink{border-top-color:var(--secondary);border-right-color:var(--secondary-container)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+#snackbar{
+  position:fixed;bottom:28px;left:50%;
+  background:linear-gradient(135deg,var(--on-surface),#2d3142);
+  color:#F8F9FF;
+  padding:12px 20px;border-radius:12px;
+  font-size:13px;z-index:9999;pointer-events:none;
+  display:flex;align-items:center;gap:10px;
+  white-space:nowrap;
+  box-shadow:var(--shadow-lg);
+  opacity:0;visibility:hidden;
+  transform:translateX(-50%) translateY(80px);
+  max-width:90vw;
+  will-change:transform,opacity;
+  border:1px solid rgba(255,255,255,0.1);
+}
+#snackbar.show{visibility:visible;animation:snkIn .35s cubic-bezier(0.34,1.56,.64,1) forwards}
+#snackbar.hide{visibility:visible;animation:snkOut .25s ease-in forwards}
+@keyframes snkIn{from{transform:translateX(-50%) translateY(80px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
+@keyframes snkOut{from{transform:translateX(-50%) translateY(0);opacity:1}to{transform:translateX(-50%) translateY(80px);opacity:0}}
+
+footer{
+  text-align:center;
+  padding:32px 20px;
+  font-size:12px;color:var(--on-surface-variant);
+  border-top:1px solid var(--outline-variant);
+  margin-top:32px;
+  background:var(--surface-container-low);
+}
+footer a{color:var(--primary);text-decoration:none;transition:var(--transition-fast)}
+footer a:hover{color:var(--secondary)}
+
+@media(max-width:1024px){
+  .hero-section{flex-direction:column;padding:40px 24px 60px;gap:40px;min-height:auto;align-items:flex-start}
+  .hero-left{flex:none;width:100%}
+  .hero-avatar{width:72px;height:72px}
+  .hero-name{font-size:26px}.hero-welcome{font-size:22px}
+  .hero-right{width:100%}
+  .section-wrap{padding:0 16px 48px}
+  .section-title{font-size:20px}
+  .cmd-grid{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  :root{--sidebar-width:0px}
+  .drawer{width:300px;transform:translateX(-100%);box-shadow:8px 0 32px rgba(0,0,0,0.15)}
   .drawer.open{transform:translateX(0)}
-  .drawer-header{padding:24px 20px 16px;border-bottom:1px solid var(--outline-variant);display:flex;align-items:center;gap:12px}
-  .drawer-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;background:var(--primary-container);flex-shrink:0}
-  .drawer-name{font-size:16px;font-weight:500}
-  .drawer-sub{font-size:12px;color:var(--on-surface-variant);margin-top:2px}
-  .drawer-body{flex:1;overflow-y:auto;padding:8px 0}
-  .drawer-section-label{font-size:11px;font-weight:700;color:var(--on-surface-variant);letter-spacing:.8px;padding:12px 20px 4px;text-transform:uppercase}
-  .drawer-item{display:flex;align-items:center;gap:14px;padding:12px 20px;cursor:pointer;border-radius:var(--r-md);margin:2px 8px;transition:background .12s;text-decoration:none;color:var(--on-surface);-webkit-tap-highlight-color:transparent}
-  .drawer-item:hover{background:var(--surface-container)}
-  .drawer-item .material-icons-round{font-size:20px;color:var(--on-surface-variant);flex-shrink:0}
-  .drawer-item-text{flex:1}
-  .drawer-item-title{font-size:14px;font-weight:500}
-  .drawer-item-sub{font-size:12px;color:var(--on-surface-variant);margin-top:1px}
+  .drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1199}
+  .drawer-backdrop.visible{opacity:1;visibility:visible}
+  .main-area{margin-left:0}
+  .header-menu-btn{display:flex}
+  .header{padding:0 12px}
+  .main-content{padding:16px}
+  .hero-section{padding:24px 16px 40px}
+  .hero-avatar{width:64px;height:64px}
+  .hero-name{font-size:22px}.hero-welcome{font-size:18px}
+  .hero-chips{justify-content:flex-start}
+  .dl-latest{flex-wrap:wrap}
+  .dl-btn{width:100%;justify-content:center}
+  .dl-hist-btn span:not(.material-icons-round){display:none}
+  .dl-hist-btn{padding:6px 8px}
+  #snackbar{bottom:16px;left:16px;right:16px;max-width:none;transform:translateY(60px);white-space:normal;text-align:left}
+  @keyframes snkIn{from{transform:translateY(60px);opacity:0}to{transform:translateY(0);opacity:1}}
+  @keyframes snkOut{from{transform:translateY(0);opacity:1}to{transform:translateY(60px);opacity:0}}
+  .gallery-arrow{opacity:1;transform:scale(1)}
+  .gallery-nav{bottom:10px;padding:6px 10px}
+}
 
-  .fade-section{opacity:0;transform:translateY(24px);transition:opacity 0.6s cubic-bezier(0.2,0,0,1),transform 0.6s cubic-bezier(0.2,0,0,1);scroll-margin-top:80px}
-  .fade-section.in-view{opacity:1;transform:translateY(0)}
-
-  .hero-wrap{max-width:1400px;width:100%;margin:0 auto;padding:85px 48px 80px 32px;display:flex;gap:80px;align-items:center}
-  .hero-left{flex:0 0 380px;display:flex;flex-direction:column;gap:16px;align-items:flex-start;justify-content:center}
-  .hero-avatar{width:96px;height:96px;border-radius:50%;object-fit:cover;background:var(--primary-container);box-shadow:0 4px 24px rgba(0,87,217,.18)}
-  .hero-name{font-family:'U5Font','Google Sans Display','Noto Sans SC',sans-serif;font-size:32px;font-weight:700;line-height:1.2}
-  .hero-welcome{font-family:'U5Font','Google Sans Display','Noto Sans SC',sans-serif;font-size:32px;font-weight:700;color:var(--primary);line-height:1.2}
-  .hero-bio-label{font-size:15px;font-weight:700;color:var(--on-surface)}
-  .hero-sub{font-size:14px;color:var(--on-surface-variant);line-height:1.8}
-  .hero-chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-start}
-  .hero-chip{display:flex;align-items:center;gap:5px;padding:5px 12px;background:var(--surface-container);border-radius:100px;font-size:12px;color:var(--on-surface-variant);border:1px solid var(--outline-variant);white-space:nowrap}
-  .hero-chip .material-icons-round{font-size:14px;color:var(--primary)}
-  .gallery{flex:1;min-width:0}
-  .gallery-title{font-size:15px;font-weight:600;color:var(--on-surface);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-  .gallery-title .material-icons-round{font-size:18px;color:var(--primary)}
-  .gallery-viewport{position:relative;width:100%;border-radius:var(--r-lg);overflow:hidden;background:#000;aspect-ratio:2266/1488;box-shadow:0 8px 32px rgba(0,0,0,.14)}
-  .gallery-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s ease}
-  .gallery-img.active{opacity:1}
-  .gallery-nav{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px}
-  .gallery-dot{width:8px;height:8px;border-radius:50%;background:var(--outline-variant);border:none;cursor:pointer;padding:0;transition:background .2s,transform .2s;flex-shrink:0}
-  .gallery-dot.active{background:var(--primary);transform:scale(1.3)}
-  .gallery-arrows{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 10px;pointer-events:none}
-  .gallery-arrow{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.82);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--on-surface);pointer-events:all;transition:background .15s}
-  .gallery-arrow:hover{background:#fff}
-  .gallery-arrow .material-icons-round{font-size:20px}
-
-  footer{text-align:center;padding:24px 16px;font-size:12px;color:var(--on-surface-variant);border-top:1px solid var(--outline-variant);position:relative;z-index:10}
-
-  .section-spacer{height:80px}
-  .section-wrap{max-width:1400px;width:100%;margin:0 auto;padding:0 32px 64px}
-  .section-title{font-size:22px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:10px}
-  .section-title .material-icons-round{font-size:24px;color:var(--primary)}
-  .section-sub{font-size:14px;color:var(--on-surface-variant);margin-bottom:24px}
-  .unpack-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
-  .unpack-tab{display:flex;align-items:center;gap:8px;padding:9px 20px;border-radius:100px;border:1.5px solid var(--outline-variant);background:var(--surface);cursor:pointer;font-size:14px;font-weight:600;color:var(--on-surface-variant);transition:all .15s}
-  .unpack-tab .material-icons-round{font-size:18px}
-  .unpack-tab:hover{background:var(--surface-container);border-color:var(--primary);color:var(--on-surface)}
-  .unpack-tab.active{background:var(--primary-container);border-color:var(--primary);color:var(--on-primary-container);font-weight:600}
-  .unpack-tab.npk-tab.active{background:var(--primary-container);border-color:var(--primary);color:var(--on-primary-container)}
-  .unpack-tab.ppk-tab.active{background:var(--secondary-container);border-color:var(--secondary);color:var(--on-secondary-container)}
-  .unpack-tab.filelist-tab.active{background:var(--primary-container);border-color:var(--primary);color:var(--on-primary-container)}
-  .unpack-tab.map-tab.active{background:var(--secondary-container);border-color:var(--secondary);color:var(--on-secondary-container)}
-  .unpack-panel{display:none;flex-direction:column;gap:16px;animation:panelFade 0.25s ease-out}
-  .unpack-panel.active{display:flex}
-  @keyframes panelFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-  .u-info-card{background:var(--surface-low);border:1px solid var(--outline-variant);border-radius:var(--r-lg);padding:20px;display:flex;align-items:center;gap:16px}
-  .u-icon{width:48px;height:48px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
-  .u-icon.blue{background:var(--primary-container);color:var(--primary)}
-  .u-icon.pink{background:var(--secondary-container);color:var(--secondary)}
-  .u-info-name{font-size:16px;font-weight:700}
-  .u-info-sub{font-size:12px;color:var(--on-surface-variant);margin-top:2px}
-  .u-info-desc{font-size:13px;color:var(--on-surface-variant);line-height:1.6;margin-top:6px}
-  .u-dep-card{background:var(--surface-low);border:1px solid var(--outline-variant);border-radius:var(--r-lg);padding:16px 20px;display:flex;flex-direction:column;gap:10px}
-  .u-dep-label{font-size:11px;font-weight:700;color:var(--on-surface-variant);letter-spacing:.6px;text-transform:uppercase;display:flex;align-items:center;gap:8px}
-  .u-dep-label::after{content:'';flex:1;height:1px;background:var(--outline-variant)}
-  .u-cmd{background:var(--surface-container);border-radius:var(--r-sm);padding:11px 14px;display:flex;align-items:center;gap:8px;font-family:monospace;font-size:13px}
-  .u-cmd-text{flex:1;word-break:break-all}
-  .u-copy-btn{background:none;border:none;cursor:pointer;display:flex;align-items:center;padding:4px;border-radius:var(--r-sm);transition:background .15s;flex-shrink:0}
-  .u-copy-btn.blue{color:var(--primary)}.u-copy-btn.blue:hover{background:var(--primary-container);border-radius:var(--r-sm)}
-  .u-copy-btn.pink{color:var(--secondary)}.u-copy-btn.pink:hover{background:var(--secondary-container);border-radius:var(--r-sm)}
-  .u-copy-btn .material-icons-round{font-size:18px}
-  .u-dl-card{background:var(--surface-low);border:1px solid var(--outline-variant);border-radius:var(--r-lg);overflow:hidden}
-  .u-dl-hdr{padding:13px 18px;border-bottom:1px solid var(--outline-variant);display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600}
-  .u-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px}
-  .u-badge.blue{background:var(--primary-container);color:var(--primary)}
-  .u-badge.pink{background:var(--secondary-container);color:var(--secondary)}
-  .u-latest{padding:14px 18px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--outline-variant)}
-  .u-latest.blue{background:color-mix(in srgb,var(--primary-container) 30%,var(--surface-low))}
-  .u-latest.pink{background:color-mix(in srgb,var(--secondary-container) 30%,var(--surface-low))}
-  .u-latest-icon{width:38px;height:38px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-  .u-latest-icon.blue{background:var(--primary-container);color:var(--primary)}
-  .u-latest-icon.pink{background:var(--secondary-container);color:var(--secondary)}
-  .u-latest-info{flex:1;min-width:0}
-  .u-latest-ver{font-size:14px;font-weight:600}
-  .u-latest-fname{font-size:12px;color:var(--on-surface-variant);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .u-btn-dl{display:flex;align-items:center;gap:6px;padding:8px 16px;border:none;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;text-decoration:none;transition:filter .15s;flex-shrink:0;color:#fff}
-  .u-btn-dl.blue{background:var(--primary)}.u-btn-dl.pink{background:var(--secondary)}
-  .u-btn-dl:hover{filter:brightness(1.08)}
-  .u-btn-dl .material-icons-round{font-size:15px}
-  .u-hist-toggle{padding:10px 18px;display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--on-surface-variant);transition:background .12s;border-bottom:1px solid var(--outline-variant);user-select:none}
-  .u-hist-toggle:hover{background:var(--surface-container)}
-  .u-hist-toggle .chevron{font-size:18px;transition:transform .2s}
-  .u-hist-toggle.open .chevron{transform:rotate(180deg)}
-  .u-hist-list{display:none}
-  .u-hist-list.open{display:block}
-  .u-hist-row{padding:10px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--outline-variant);transition:background .1s}
-  .u-hist-row:last-child{border-bottom:none}
-  .u-hist-row:hover{background:var(--surface-container)}
-  .u-hist-ver{font-size:13px;font-weight:500;flex:1}
-  .u-hist-fname{font-size:11px;color:var(--on-surface-variant)}
-  .u-btn-sm{display:flex;align-items:center;gap:4px;padding:5px 12px;background:var(--surface-container);color:var(--on-surface);border:1px solid var(--outline-variant);border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;text-decoration:none;transition:background .15s}
-  .u-btn-sm.blue:hover{background:var(--primary-container);color:var(--primary);border-color:var(--primary-container)}
-  .u-btn-sm.pink:hover{background:var(--secondary-container);color:var(--secondary);border-color:var(--secondary-container)}
-  @media (max-width:768px){.u-btn-sm span:not(.material-icons-round){display:none}.u-btn-sm{gap:0;padding:5px 8px}}
-  .u-state{padding:20px;text-align:center;color:var(--on-surface-variant);font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px}
-  .u-spinner{width:16px;height:16px;border:2px solid var(--outline-variant);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0}
-  .u-spinner.blue{border-top-color:var(--primary)}.u-spinner.pink{border-top-color:var(--secondary)}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  .sub-tabs{margin:8px 0 0 0;display:flex;gap:8px;flex-wrap:wrap}
-  .sub-tab{padding:6px 16px;border-radius:100px;border:1.5px solid var(--outline-variant);background:var(--surface);cursor:pointer;font-size:13px;font-weight:600;color:var(--on-surface-variant);transition:all .12s;display:flex;align-items:center;gap:6px}
-  .sub-tab .material-icons-round{font-size:16px}
-  .sub-tab:hover{background:var(--surface-container);border-color:var(--secondary);color:var(--on-surface)}
-  .sub-tab.active{background:var(--secondary-container);border-color:var(--secondary);color:var(--on-secondary-container);font-weight:600}
-  #snackbar{position:fixed;bottom:24px;left:50%;background:#1A1C27;color:#F8F9FF;padding:12px 20px;border-radius:12px;font-size:14px;z-index:500;pointer-events:none;display:flex;align-items:center;gap:8px;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.28);opacity:0;visibility:hidden;transform:translateX(-50%) translateY(80px);max-width:90vw;will-change:transform,opacity}
-  #snackbar.show{visibility:visible;animation:snackIn .35s cubic-bezier(.34,1.56,.64,1) forwards}
-  #snackbar.hide{visibility:visible;animation:snackOut .3s ease-in forwards}
-  @keyframes snackIn{from{transform:translateX(-50%) translateY(80px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
-  @keyframes snackOut{from{transform:translateX(-50%) translateY(0);opacity:1}to{transform:translateX(-50%) translateY(80px);opacity:0}}
-  @media (max-width:768px){
-    .hero-wrap{flex-direction:column;padding:32px 16px;gap:32px;align-items:center}
-    .hero-left{flex:none;width:100%;max-width:400px;align-items:flex-start;text-align:left}
-    .hero-chips{justify-content:flex-start}
-    .gallery{width:100%}
-    .section-wrap{padding:0 16px 48px}
-    .section-title{font-size:19px}
-    .u-latest{flex-wrap:wrap}
-    .u-btn-dl{width:100%;justify-content:center}
-    .bar-title{font-size:17px}
-    .hero-name,.hero-welcome{font-size:26px}
-  }
+.fade-section{opacity:0;transform:translateY(30px);transition:opacity .6s cubic-bezier(0.2,0,0,1),transform .6s cubic-bezier(0.2,0,0,1)}
+.fade-section.in-view{opacity:1;transform:translateY(0)}
 </style>
 </head>
 <body>
 <video class="bg-video" autoplay loop muted playsinline preload="auto">
   <source src="login.mp4" type="video/mp4">
 </video>
-<header class="top-app-bar">
-  <button class="menu-btn" onclick="openDrawer()"><span class="material-icons-round">menu</span></button>
-  <div class="bar-title">XuanQian 的网站</div>
-  <a class="github-btn" href="https://e-xq.github.io/th" style="margin-right:4px">
-    <span class="material-icons-round">text_fields</span><span>文字版</span>
-  </a>
-  <a class="github-btn" href="https://github.com/e-xq" target="_blank" rel="noopener">
-    <span class="material-icons-round">code</span><span>GitHub</span><span class="material-icons-round" style="font-size:14px">open_in_new</span>
-  </a>
-</header>
-<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
-<nav class="drawer" id="drawer">
-  <div class="drawer-header">
-    <img class="drawer-avatar" src="8yspqt5zfm-300x300.webp" alt="XuanQian">
-    <div><div class="drawer-name">XuanQian</div><div class="drawer-sub">蛋仔派对爱好者 / 工具开发者</div></div>
-  </div>
-  <div class="drawer-body">
-    <div class="drawer-section-label">导航</div>
-    <a class="drawer-item" href="index.html">
-      <span class="material-icons-round">home</span>
-      <div class="drawer-item-text"><div class="drawer-item-title">主页</div><div class="drawer-item-sub">返回首页</div></div>
-    </a>
-    <div class="drawer-section-label">工具</div>
-    <a class="drawer-item" href="https://e-xq.github.io/ef" target="_blank" rel="noopener">
-      <span class="material-icons-round">travel_explore</span>
-      <div class="drawer-item-text"><div class="drawer-item-title">蛋仔派对资源获取器</div><div class="drawer-item-sub">在线获取游戏资源</div></div>
-      <span class="material-icons-round" style="font-size:16px;color:#999">open_in_new</span>
-    </a>
-    <a class="drawer-item" href="https://e-xq.github.io/crv" target="_blank" rel="noopener">
-      <span class="material-icons-round">sports_esports</span>
-      <div class="drawer-item-text"><div class="drawer-item-title">超燃竞技场回放查看器</div><div class="drawer-item-sub">查看战斗回放数据</div></div>
-      <span class="material-icons-round" style="font-size:16px;color:#999">open_in_new</span>
-    </a>
-    <a class="drawer-item" href="https://e-xq.github.io/gzc" target="_blank" rel="noopener">
-      <span class="material-icons-round">toll</span>
-      <div class="drawer-item-text"><div class="drawer-item-title">纪念币库存管理</div><div class="drawer-item-sub">管理纪念币收藏数据</div></div>
-      <span class="material-icons-round" style="font-size:16px;color:#999">open_in_new</span>
-    </a>
-    <div class="drawer-section-label">脚本</div>
-    <a class="drawer-item" href="#unpacker-section" onclick="closeDrawer();document.getElementById('unpacker-section').scrollIntoView({behavior:'smooth',block:'center'})">
-      <span class="material-icons-round">folder_zip</span>
-      <div class="drawer-item-text"><div class="drawer-item-title">解包脚本</div><div class="drawer-item-sub">NPK / PPK 文件解包</div></div>
-      <span class="material-icons-round" style="font-size:16px;color:#999">chevron_right</span>
-    </a>
-    <a class="drawer-item" href="#auto-unpacker-section" onclick="closeDrawer();document.getElementById('auto-unpacker-section').scrollIntoView({behavior:'smooth',block:'center'})">
-      <span class="material-icons-round">description</span>
-      <div class="drawer-item-text"><div class="drawer-item-title">自动解包脚本</div><div class="drawer-item-sub">编辑器自动解包</div></div>
-      <span class="material-icons-round" style="font-size:16px;color:#999">chevron_right</span>
-    </a>
-  </div>
-</nav>
-<div class="page-content">
-  <div id="hero-section" class="fade-section">
-    <div class="hero-wrap">
-      <div class="hero-left">
-        <img class="hero-avatar" src="8yspqt5zfm-300x300.webp" alt="XuanQian">
-        <div class="hero-name">XuanQian</div>
-        <div class="hero-welcome">欢迎大家来到我的网站！</div>
-        <div class="hero-bio-label">悬铅个人介绍</div>
-        <div class="hero-sub">大家好我是悬铅<br>我是一个爱玩蛋仔的银<br>同时也喜欢研究/解包蛋仔<br>我也是一个电子产品爱好者</div>
-        <div class="hero-chips">
-          <div class="hero-chip"><span class="material-icons-round">sports_esports</span>蛋仔派对</div>
-          <div class="hero-chip"><span class="material-icons-round">build</span>工具开发</div>
-          <div class="hero-chip"><span class="material-icons-round">code</span>Python</div>
-          <div class="hero-chip"><span class="material-icons-round">devices</span>电子产品</div>
-        </div>
-      </div>
-      <div class="gallery">
-        <div class="gallery-title"><span class="material-icons-round">photo_library</span>悬铅的游戏实况截图</div>
-        <div class="gallery-viewport" id="gallery-viewport">
-          <div class="gallery-arrows">
-            <button class="gallery-arrow" onclick="galleryPrev();event.stopPropagation()"><span class="material-icons-round">chevron_left</span></button>
-            <button class="gallery-arrow" onclick="galleryNext();event.stopPropagation()"><span class="material-icons-round">chevron_right</span></button>
-          </div>
-        </div>
-        <div class="gallery-nav" id="gallery-nav"></div>
+
+<div class="drawer-backdrop" id="drawerBackdrop" onclick="closeDrawer()"></div>
+
+<div class="app-layout">
+  <aside class="drawer" id="drawer">
+    <div class="drawer-header">
+      <img class="drawer-avatar" src="8yspqt5zfm-300x300.webp" alt="XuanQian">
+      <div class="drawer-info">
+        <div class="drawer-name">XuanQian</div>
+        <div class="drawer-sub">蛋仔派对爱好者 / 工具开发者</div>
       </div>
     </div>
-  </div>
-  <div class="section-spacer"></div>
-  <div id="unpacker-section" class="fade-section">
-    <div class="section-wrap">
-      <div class="section-title"><span class="material-icons-round">folder_zip</span>解包脚本</div>
-      <div class="section-sub">蛋仔派对 NPK / PPK 文件解包工具，基于 Python 开发。</div>
-      <div class="unpack-tabs">
-        <button class="unpack-tab npk-tab active" data-tab="npk" onclick="event.stopPropagation();switchTab('unpacker-section','npk')"><span class="material-icons-round">inventory_2</span>NPK 解包</button>
-        <button class="unpack-tab ppk-tab" data-tab="ppk" onclick="event.stopPropagation();switchTab('unpacker-section','ppk')"><span class="material-icons-round">folder_zip</span>PPK 解包</button>
+    
+    <nav class="drawer-nav">
+      <div class="drawer-section">
+        <div class="drawer-section-title">页面导航</div>
+        <a class="drawer-item" onclick="scrollToSection('hero-section')">
+          <span class="material-icons-round">home</span>
+          <div class="drawer-item-text">
+            <div class="drawer-item-title">主页</div>
+            <div class="drawer-item-sub">个人介绍</div>
+          </div>
+        </a>
+        <a class="drawer-item" onclick="scrollToSection('unpacker-section')">
+          <span class="material-icons-round">folder_zip</span>
+          <div class="drawer-item-text">
+            <div class="drawer-item-title">解包脚本</div>
+            <div class="drawer-item-sub">NPK / PPK 解包</div>
+          </div>
+        </a>
+        <a class="drawer-item" onclick="scrollToSection('auto-unpacker-section')">
+          <span class="material-icons-round">description</span>
+          <div class="drawer-item-text">
+            <div class="drawer-item-title">自动解包</div>
+            <div class="drawer-item-sub">编辑器自动解包</div>
+          </div>
+        </a>
+        <a class="drawer-item" onclick="scrollToSection('audio-renamer-section')">
+          <span class="material-icons-round">audio_file</span>
+          <div class="drawer-item-text">
+            <div class="drawer-item-title">音频重命名</div>
+            <div class="drawer-item-sub">BNK/WEM 批量重命名</div>
+          </div>
+        </a>
+        <a class="drawer-item" onclick="scrollToSection('commands-section')">
+          <span class="material-icons-round">terminal</span>
+          <div class="drawer-item-text">
+            <div class="drawer-item-title">常用命令</div>
+            <div class="drawer-item-sub">Python 控制台命令</div>
+          </div>
+        </a>
       </div>
-      <div class="unpack-panel active" id="panel-npk">
-        <div class="u-info-card">
-          <div class="u-icon blue"><span class="material-icons-round">inventory_2</span></div>
-          <div><div class="u-info-name">NPK Unlocker</div><div class="u-info-sub">NPK 文件解包脚本 · Python</div><div class="u-info-desc">解包蛋仔派对 NPK 资源包内的文件。使用前请确保已安装所需依赖。</div></div>
-        </div>
-        <div class="u-dep-card">
-          <div class="u-dep-label">依赖安装</div>
-          <div class="u-cmd">
-            <span class="material-icons-round" style="font-size:15px;color:var(--on-surface-variant);flex-shrink:0">terminal</span>
-            <span class="u-cmd-text" id="npk-cmd-text">pip install zstandard tqdm</span>
-            <button class="u-copy-btn blue" onclick="uCopy('npk-cmd-text','blue');event.stopPropagation()"><span class="material-icons-round">content_copy</span></button>
+      
+      <div class="drawer-divider"></div>
+      
+      <div class="drawer-section">
+        <div class="drawer-section-title">工具</div>
+        <a class="drawer-item" href="https://e-xq.github.io/ef" target="_blank">
+          <span class="material-icons-round">explore</span>
+          <div class="drawer-item-text">
+            <div class="drawer-item-title">蛋仔资源获取器</div>
+            <div class="drawer-item-sub">在线获取游戏资源</div>
+          </div>
+          <span class="material-icons-round drawer-item-icon-end">open_in_new</span>
+        </a>
+        <a class="drawer-item" href="https://e-xq.github.io/crv" target="_blank">
+          <span class="material-icons-round">sports_esports</span>
+          <div class="drawer-item-text">
+            <div class="drawer-item-title">超燃回放查看器</div>
+            <div class="drawer-item-sub">查看战斗回放数据</div>
+          </div>
+          <span class="material-icons-round drawer-item-icon-end">open_in_new</span>
+        </a>
+        <a class="drawer-item" href="https://e-xq.github.io/gzc" target="_blank">
+          <span class="material-icons-round">toll</span>
+          <div class="drawer-item-text">
+            <div class="drawer-item-title">纪念币管理</div>
+            <div class="drawer-item-sub">管理纪念币收藏数据</div>
+          </div>
+          <span class="material-icons-round drawer-item-icon-end">open_in_new</span>
+        </a>
+      </div>
+      
+      <div class="drawer-divider"></div>
+      
+      <div class="drawer-section">
+        <div class="drawer-section-title">链接</div>
+        <a class="drawer-item" href="https://e-xq.github.io/th" target="_blank">
+          <span class="material-icons-round">text_fields</span>
+          <div class="drawer-item-text">
+            <div class="drawer-item-title">文字版</div>
+            <div class="drawer-item-sub">纯文字导航</div>
+          </div>
+        </a>
+        <a class="drawer-item" href="https://github.com/e-xq" target="_blank">
+          <span class="material-icons-round">code</span>
+          <div class="drawer-item-text">
+            <div class="drawer-item-title">GitHub</div>
+            <div class="drawer-item-sub">开源仓库</div>
+          </div>
+          <span class="material-icons-round drawer-item-icon-end">open_in_new</span>
+        </a>
+      </div>
+    </nav>
+    
+    <div class="drawer-footer">© 2026 XuanQian</div>
+  </aside>
+  
+  <div class="main-area">
+    <header class="header" id="header">
+      <button class="header-menu-btn" onclick="toggleDrawer()" aria-label="菜单">
+        <span class="material-icons-round">menu</span>
+      </button>
+      <div class="header-title">XuanQian 的网站</div>
+      <div class="header-spacer"></div>
+    </header>
+    
+    <main class="main-content">
+      <div id="hero-section" class="fade-section">
+        <div class="hero-section">
+          <div class="hero-left">
+            <img class="hero-avatar" src="8yspqt5zfm-300x300.webp" alt="XuanQian">
+            <div class="hero-name">XuanQian</div>
+            <div class="hero-welcome">欢迎大家来到我的网站！</div>
+            <div class="hero-bio-label">悬铅个人介绍</div>
+            <div class="hero-sub">大家好我是悬铅<br>我是一个爱玩蛋仔的银<br>同时也喜欢研究/解包蛋仔<br>我也是一个电子产品爱好者</div>
+            <div class="hero-chips">
+              <div class="hero-chip"><span class="material-icons-round">sports_esports</span>蛋仔派对</div>
+              <div class="hero-chip"><span class="material-icons-round">build</span>工具开发</div>
+              <div class="hero-chip"><span class="material-icons-round">code</span>Python</div>
+              <div class="hero-chip"><span class="material-icons-round">devices</span>电子产品</div>
+            </div>
+          </div>
+          <div class="hero-right">
+            <div class="hero-gallery-title"><span class="material-icons-round">photo_library</span>悬铅的游戏实况截图</div>
+            <div class="gallery-wrapper">
+              <div class="gallery-container" id="galleryContainer">
+                <div class="gallery-arrows">
+                  <button class="gallery-arrow" onclick="galleryPrev()"><span class="material-icons-round">chevron_left</span></button>
+                  <button class="gallery-arrow" onclick="galleryNext()"><span class="material-icons-round">chevron_right</span></button>
+                </div>
+              </div>
+              <div class="gallery-nav" id="galleryNav"></div>
+            </div>
           </div>
         </div>
-        <div class="u-dl-card">
-          <div class="u-dl-hdr"><span class="material-icons-round" style="font-size:18px;color:var(--primary)">download</span><span style="flex:1">下载</span><span class="u-badge blue">GitHub API</span></div>
-          <div id="npk-dl"><div class="u-state"><div class="u-spinner blue"></div>获取版本列表中...</div></div>
-        </div>
       </div>
-      <div class="unpack-panel" id="panel-ppk">
-        <div class="u-info-card">
-          <div class="u-icon pink"><span class="material-icons-round">folder_zip</span></div>
-          <div><div class="u-info-name">PPK Unlocker</div><div class="u-info-sub">PPK 文件解包脚本 · Python</div><div class="u-info-desc">解包蛋仔派对 PPK 资源包内的文件。使用前请确保已安装所需依赖。</div></div>
-        </div>
-        <div class="u-dep-card">
-          <div class="u-dep-label">依赖安装</div>
-          <div class="u-cmd">
-            <span class="material-icons-round" style="font-size:15px;color:var(--on-surface-variant);flex-shrink:0">terminal</span>
-            <span class="u-cmd-text" id="ppk-cmd-text">pip install zstandard</span>
-            <button class="u-copy-btn pink" onclick="uCopy('ppk-cmd-text','pink');event.stopPropagation()"><span class="material-icons-round">content_copy</span></button>
+      
+      <div class="section-spacer"></div>
+      
+      <div id="unpacker-section" class="fade-section">
+        <div class="section-wrap">
+          <div class="section-title"><span class="material-icons-round">folder_zip</span>解包脚本</div>
+          <div class="section-sub">蛋仔派对 NPK / PPK 文件解包工具，基于 Python 开发。</div>
+          
+          <div class="tab-group">
+            <button class="tab-btn npk-tab active" onclick="switchTab('unpacker','npk')">
+              <span class="material-icons-round">inventory_2</span>NPK 解包
+            </button>
+            <button class="tab-btn ppk-tab" onclick="switchTab('unpacker','ppk')">
+              <span class="material-icons-round">folder_zip</span>PPK 解包
+            </button>
+          </div>
+          
+          <div class="tab-panel active" id="panel-npk">
+            <div class="info-card">
+              <div class="info-icon blue"><span class="material-icons-round">inventory_2</span></div>
+              <div>
+                <div class="info-name">NPK Unlocker</div>
+                <div class="info-sub">NPK 文件解包脚本 · Python</div>
+                <div class="info-desc">解包蛋仔派对 NPK 资源包内的文件。使用前请确保已安装所需依赖。</div>
+              </div>
+            </div>
+            <div class="dep-card">
+              <div class="dep-label">依赖安装</div>
+              <div class="dep-code">
+                <span class="dep-code-text" id="npk-cmd">pip install zstandard tqdm</span>
+                <button class="dep-copy blue" onclick="copyText('npk-cmd')"><span class="material-icons-round">content_copy</span></button>
+              </div>
+            </div>
+            <div class="dl-card">
+              <div class="dl-header">
+                <span class="material-icons-round" style="color:var(--primary)">download</span>
+                <span style="flex:1">下载</span>
+                <span class="dl-badge blue">GitHub API</span>
+              </div>
+              <div id="npk-dl"><div class="loading"><div class="spinner blue"></div>获取版本中...</div></div>
+            </div>
+          </div>
+          
+          <div class="tab-panel" id="panel-ppk">
+            <div class="info-card">
+              <div class="info-icon pink"><span class="material-icons-round">folder_zip</span></div>
+              <div>
+                <div class="info-name">PPK Unlocker</div>
+                <div class="info-sub">PPK 文件解包脚本 · Python</div>
+                <div class="info-desc">解包蛋仔派对 PPK 资源包内的文件。使用前请确保已安装所需依赖。</div>
+              </div>
+            </div>
+            <div class="dep-card">
+              <div class="dep-label">依赖安装</div>
+              <div class="dep-code">
+                <span class="dep-code-text" id="ppk-cmd">pip install zstandard</span>
+                <button class="dep-copy pink" onclick="copyText('ppk-cmd')"><span class="material-icons-round">content_copy</span></button>
+              </div>
+            </div>
+            <div class="dl-card">
+              <div class="dl-header">
+                <span class="material-icons-round" style="color:var(--secondary)">download</span>
+                <span style="flex:1">下载</span>
+                <span class="dl-badge pink">GitHub API</span>
+              </div>
+              <div id="ppk-dl"><div class="loading"><div class="spinner pink"></div>获取版本中...</div></div>
+            </div>
           </div>
         </div>
-        <div class="u-dl-card">
-          <div class="u-dl-hdr"><span class="material-icons-round" style="font-size:18px;color:var(--secondary)">download</span><span style="flex:1">下载</span><span class="u-badge pink">GitHub API</span></div>
-          <div id="ppk-dl"><div class="u-state"><div class="u-spinner pink"></div>获取版本列表中...</div></div>
+      </div>
+      
+      <div class="section-spacer"></div>
+      
+      <div id="auto-unpacker-section" class="fade-section">
+        <div class="section-wrap">
+          <div class="section-title"><span class="material-icons-round">description</span>自动解包脚本</div>
+          <div class="section-sub">蛋仔编辑器自动解包脚本，基于 Python 开发。</div>
+          
+          <div class="tab-group">
+            <button class="tab-btn filelist-tab active" onclick="switchAutoTab('filelist')">
+              <span class="material-icons-round">list_alt</span>File_List 版本
+            </button>
+            <button class="tab-btn map-tab" onclick="switchAutoTab('map')">
+              <span class="material-icons-round">map</span>Map 版本
+            </button>
+          </div>
+          
+          <div class="tab-panel active" id="panel-filelist">
+            <div class="info-card">
+              <div class="info-icon blue"><span class="material-icons-round">list_alt</span></div>
+              <div>
+                <div class="info-name">File List 提取</div>
+                <div class="info-sub">根据文件列表批量解包</div>
+                <div class="info-desc">读取指定的文件列表，自动提取资源。适用于已知资源路径的批量处理。</div>
+              </div>
+            </div>
+            <div class="dl-card">
+              <div class="dl-header">
+                <span class="material-icons-round" style="color:var(--primary)">download</span>
+                <span style="flex:1">下载</span>
+                <span class="dl-badge blue">Python</span>
+              </div>
+              <div id="filelist-dl"><div class="loading"><div class="spinner blue"></div>加载中...</div></div>
+            </div>
+          </div>
+          
+          <div class="tab-panel" id="panel-map">
+            <div class="info-card">
+              <div class="info-icon pink"><span class="material-icons-round">map</span></div>
+              <div>
+                <div class="info-name">Map 提取（多版本）</div>
+                <div class="info-sub">基于地图资源索引解包</div>
+                <div class="info-desc">通过解析地图文件索引，支持多种提取模式。选择下方子版本下载。</div>
+              </div>
+            </div>
+            <div class="sub-tab-group">
+              <button class="sub-tab active" data-sub="filter" onclick="switchMapSub('filter')">字符串提取</button>
+              <button class="sub-tab" data-sub="root" onclick="switchMapSub('root')">根目录提取</button>
+              <button class="sub-tab" data-sub="full" onclick="switchMapSub('full')">全部提取</button>
+            </div>
+            <div class="dl-card">
+              <div class="dl-header">
+                <span class="material-icons-round" style="color:var(--secondary)">download</span>
+                <span style="flex:1">下载 · <span id="map-sub-label">字符串提取</span></span>
+                <span class="dl-badge pink">Python</span>
+              </div>
+              <div id="map-dl"><div class="loading"><div class="spinner pink"></div>加载中...</div></div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="section-spacer"></div>
-  <div id="auto-unpacker-section" class="fade-section">
-    <div class="section-wrap">
-      <div class="section-title"><span class="material-icons-round">description</span>自动解包脚本</div>
-      <div class="section-sub">蛋仔编辑器自动解包脚本，基于 Python 开发。</div>
-      <div class="unpack-tabs">
-        <button class="unpack-tab filelist-tab active" data-tab="filelist" onclick="event.stopPropagation();switchAutoTab('filelist')"><span class="material-icons-round">description</span>File_List 版本</button>
-        <button class="unpack-tab map-tab" data-tab="map" onclick="event.stopPropagation();switchAutoTab('map')"><span class="material-icons-round">description</span>Map 版本</button>
-      </div>
-      <div class="unpack-panel active" id="panel-filelist">
-        <div class="u-info-card">
-          <div class="u-icon blue"><span class="material-icons-round">description</span></div>
-          <div><div class="u-info-name">File List 提取</div><div class="u-info-sub">根据文件列表批量解包</div><div class="u-info-desc">读取指定的文件列表，自动提取资源。适用于已知资源路径的批量处理。</div></div>
-        </div>
-        <div class="u-dl-card">
-          <div class="u-dl-hdr"><span class="material-icons-round" style="color:var(--primary)">download</span><span style="flex:1">下载</span><span class="u-badge blue">Python</span></div>
-          <div id="auto-filelist-dl"><div class="u-state"><div class="u-spinner blue"></div>加载中...</div></div>
-        </div>
-      </div>
-      <div class="unpack-panel" id="panel-map">
-        <div class="u-info-card">
-          <div class="u-icon pink"><span class="material-icons-round">description</span></div>
-          <div><div class="u-info-name">Map 提取（多版本）</div><div class="u-info-sub">基于地图资源索引解包</div><div class="u-info-desc">通过解析地图文件索引，支持多种提取模式。选择下方子版本下载。</div></div>
-        </div>
-        <div class="sub-tabs">
-          <button class="sub-tab active" data-sub="filter" onclick="event.stopPropagation();switchMapSub('filter')"><span class="material-icons-round">filter_alt</span>字符串提取</button>
-          <button class="sub-tab" data-sub="root" onclick="event.stopPropagation();switchMapSub('root')"><span class="material-icons-round">folder</span>根目录提取</button>
-          <button class="sub-tab" data-sub="full" onclick="event.stopPropagation();switchMapSub('full')"><span class="material-icons-round">all_inclusive</span>全部提取</button>
-        </div>
-        <div class="u-dl-card" id="auto-map-card">
-          <div class="u-dl-hdr"><span class="material-icons-round" style="color:var(--secondary)">download</span><span style="flex:1">下载 · <span id="auto-sub-label">字符串提取</span></span><span class="u-badge pink">Python</span></div>
-          <div id="auto-map-dl"></div>
+      
+      <div class="section-spacer"></div>
+      
+      <div id="audio-renamer-section" class="fade-section">
+        <div class="section-wrap">
+          <div class="section-title"><span class="material-icons-round">audio_file</span>音频资源重命名工具</div>
+          <div class="section-sub">将《蛋仔派对》PC 客户端提取的 .bnk 和 .wem 音频文件批量重命名为中文名称。</div>
+          
+          <div class="info-card">
+            <div class="info-icon blue"><span class="material-icons-round">audio_file</span></div>
+            <div>
+              <div class="info-name">BNK & WEM 音频重命名工具</div>
+              <div class="info-sub">BNK/WEM 批量重命名脚本 · Python</div>
+              <div class="info-desc">根据游戏配置表，将提取出的音频文件批量重命名为中文名称，自动解析索引并清理冗余资源。支持增量更新。使用前请确保已安装 Python 3.x 及 wwiser.pyz。</div>
+            </div>
+          </div>
+          <div class="dl-card">
+            <div class="dl-header">
+              <span class="material-icons-round" style="color:var(--primary)">download</span>
+              <span style="flex:1">下载</span>
+              <span class="dl-badge blue">Python</span>
+            </div>
+            <div id="audio-dl"><div class="loading"><div class="spinner blue"></div>加载中...</div></div>
+          </div>
         </div>
       </div>
-    </div>
+      
+      <div class="section-spacer"></div>
+      
+      <div id="commands-section" class="fade-section">
+        <div class="section-wrap">
+          <div class="section-title"><span class="material-icons-round">terminal</span>常用命令</div>
+          <div class="section-sub">蛋仔派对 Python 控制台实用命令，点击复制即可使用。</div>
+          <div class="cmd-grid" id="commandsContainer">
+            <div class="loading"><div class="spinner blue"></div>加载命令中...</div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        © 2026 XuanQian · 基于 GitHub Pages 托管 · <a href="https://github.com/e-xq" target="_blank">访问 GitHub</a>
+      </footer>
+    </main>
   </div>
 </div>
-<footer>© 2026 XuanQian · 基于 GitHub Pages 托管</footer>
-<div id="snackbar"><span class="material-icons-round" id="snackbar-icon">check_circle</span><span id="snackbar-text"></span></div>
+
+<div id="snackbar">
+  <span class="material-icons-round" id="snackbar-icon" style="color:#A8C7FA">check_circle</span>
+  <span id="snackbar-text"></span>
+</div>
+
 <script>
-  function openDrawer(){if(_animRaf)cancelAnimationFrame(_animRaf);const d=document.getElementById('drawer'),ov=document.getElementById('drawer-overlay');d.style.transition='';d.style.transform='';d.classList.add('open');_tdrawerOpen=true;ov.style.visibility='visible';ov.style.transition='opacity .26s cubic-bezier(.4,0,.2,1)';requestAnimationFrame(()=>{ov.style.opacity='1';ov.style.pointerEvents='all';});document.body.classList.add('menu-open');}
-  function closeDrawer(){if(_animRaf)cancelAnimationFrame(_animRaf);const d=document.getElementById('drawer'),ov=document.getElementById('drawer-overlay');d.style.transition='';d.style.transform='';d.classList.remove('open');_tdrawerOpen=false;ov.style.transition='opacity .26s cubic-bezier(.4,0,.2,1)';requestAnimationFrame(()=>{ov.style.opacity='0';ov.style.pointerEvents='none';});setTimeout(()=>{if(!_tdrawerOpen){ov.style.visibility='hidden';ov.style.transition='';}},300);document.body.classList.remove('menu-open');}
-  let _animRaf=null,_tdrawerOpen=false,_tx=0,_ty=0,_tmode=null,_tmoved=false;
-  function _easeInOut(t){return t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
-  function _getDrawerRatio(){const d=document.getElementById('drawer');const tx=new DOMMatrix(getComputedStyle(d).transform).m41;const W=d.offsetWidth||300;return Math.max(0,Math.min(1,(tx+W)/W));}
-  function _animateDrawer(from,to,dur,cb){if(_animRaf)cancelAnimationFrame(_animRaf);const d=document.getElementById('drawer'),ov=document.getElementById('drawer-overlay');d.style.transition='none';ov.style.transition='none';const W=d.offsetWidth||300,start=performance.now();ov.style.visibility='visible';ov.style.pointerEvents='none';function frame(now){const t=Math.min(1,(now-start)/dur),e=_easeInOut(t),r=from+(to-from)*e;d.style.transform=`translateX(${(r-1)*W}px)`;ov.style.opacity=r*0.42;ov.style.pointerEvents=r>0.5?'all':'none';if(t<1)_animRaf=requestAnimationFrame(frame);else{_animRaf=null;if(to===0){d.style.transform='';d.classList.remove('open');ov.style.visibility='hidden';ov.style.opacity='0';ov.style.pointerEvents='none';document.body.classList.remove('menu-open');}else{d.style.transform='';d.classList.add('open');ov.style.pointerEvents='all';document.body.classList.add('menu-open');}if(cb)cb();}}_animRaf=requestAnimationFrame(frame);}
-  function _commitDrawer(open){if(_animRaf)cancelAnimationFrame(_animRaf);_tdrawerOpen=open;const from=_getDrawerRatio();if(open)_animateDrawer(from,1,280,()=>{const d=document.getElementById('drawer');d.style.transition='';d.style.transform='';d.classList.add('open');});else _animateDrawer(from,0,280,()=>{const d=document.getElementById('drawer');d.style.transition='';d.style.transform='';d.classList.remove('open');const ov=document.getElementById('drawer-overlay');ov.style.visibility='hidden';ov.style.opacity='0';ov.style.transition='';});}
-  document.addEventListener('touchstart',e=>{_tx=e.touches[0].clientX;_ty=e.touches[0].clientY;_tmoved=false;_tmode=null;const open=document.getElementById('drawer').classList.contains('open');_tdrawerOpen=open;if(open)_tmode='close';else if(_tx<60)_tmode='open';},{passive:true});
-  document.addEventListener('touchmove',e=>{if(!_tmode)return;const dx=e.touches[0].clientX-_tx,dy=Math.abs(e.touches[0].clientY-_ty);if(!_tmoved){if(dy>Math.abs(dx)&&dy>10){_tmode=null;return;}if(Math.abs(dx)<5)return;_tmoved=true;if(_animRaf)cancelAnimationFrame(_animRaf);const d=document.getElementById('drawer'),ov=document.getElementById('drawer-overlay');d.style.transition='none';ov.style.transition='none';ov.style.visibility='visible';if(_tmode==='open')d.style.transform='translateX(-100%)';}const d=document.getElementById('drawer'),ov=document.getElementById('drawer-overlay');const W=d.offsetWidth||300,base=_tdrawerOpen?1:0;let r=base+dx/W;r=Math.max(0,Math.min(1,r));d.style.transform=`translateX(${(r-1)*W}px)`;ov.style.opacity=r*0.42;ov.style.pointerEvents=r>0.5?'all':'none';if(_tmode==='open'&&dx>10)e.preventDefault();},{passive:false});
-  document.addEventListener('touchend',e=>{if(!_tmode)return;if(!_tmoved){_tmode=null;return;}const dx=e.changedTouches[0].clientX-_tx;const W=document.getElementById('drawer').offsetWidth||300,base=_tdrawerOpen?1:0,r=base+dx/W;_commitDrawer(_tmode==='open'?r>0.3:r>0.6);_tmode=null;_tmoved=false;},{passive:true});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
+const REPO='e-xq/e-xq.github.io';
 
-  const vp=document.getElementById("gallery-viewport"),nav=document.getElementById("gallery-nav");let imgs=[],cur=0,autoTimer;
-  async function initGallery(){try{const res=await fetch("https://api.github.com/repos/e-xq/e-xq.github.io/contents/Screenshot");const files=await res.json();const images=files.filter(f=>/\.(png|jpg|jpeg|webp|gif)$/i.test(f.name)).sort((a,b)=>a.name.localeCompare(b.name));if(!images.length)return;images.forEach((f,i)=>{const img=document.createElement("img");img.className="gallery-img"+(i===0?" active":"");img.src="Screenshot/"+f.name;img.alt="截图 "+(i+1);img.loading=i===0?"eager":"lazy";vp.insertBefore(img,vp.querySelector(".gallery-arrows"));imgs.push(img);const d=document.createElement("button");d.className="gallery-dot"+(i===0?" active":"");d.onclick=(e)=>{e.stopPropagation();goTo(i,true);};nav.appendChild(d);});startAuto();}catch(e){console.warn(e);}}
-  function goTo(n,manual=false){if(!imgs.length)return;imgs[cur].classList.remove("active");nav.children[cur].classList.remove("active");cur=(n+imgs.length)%imgs.length;imgs[cur].classList.add("active");nav.children[cur].classList.add("active");if(manual){clearInterval(autoTimer);clearTimeout(_galPauseT);_galPauseT=setTimeout(startAuto,8000);}}
-  let _galPauseT=null;function startAuto(){clearInterval(autoTimer);autoTimer=setInterval(()=>goTo(cur+1),4000);}function galleryNext(){goTo(cur+1,true);}function galleryPrev(){goTo(cur-1,true);}
-  let tx=0;vp.addEventListener("touchstart",e=>{tx=e.touches[0].clientX;},{passive:true});vp.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40){dx<0?galleryNext():galleryPrev();}},{passive:10});vp.addEventListener("wheel",e=>{e.preventDefault();e.deltaY>0?galleryNext():galleryPrev();},{passive:false});
+function toggleDrawer(){
+  const drawer=document.getElementById('drawer');
+  const backdrop=document.getElementById('drawerBackdrop');
+  drawer.classList.toggle('open');
+  backdrop.classList.toggle('visible');
+  document.body.style.overflow=drawer.classList.contains('open')?'hidden':'';
+}
+function closeDrawer(){
+  const drawer=document.getElementById('drawer');
+  const backdrop=document.getElementById('drawerBackdrop');
+  drawer.classList.remove('open');
+  backdrop.classList.remove('visible');
+  document.body.style.overflow='';
+}
 
-  const REPO="e-xq/e-xq.github.io";
-  function switchTab(scope,type){const container=document.getElementById(scope);container.querySelectorAll(".unpack-tab").forEach(t=>t.classList.remove("active"));container.querySelector("."+type+"-tab").classList.add("active");container.querySelectorAll(".unpack-panel").forEach(p=>p.classList.remove("active"));document.getElementById("panel-"+type).classList.add("active");}
-  function uEsc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-  function uVer(f){const m=f.match(/(\d+(?:\.\d+)+)/);return m?m[1]:"0";}
-  function uCmpVer(a,b){const pa=a.split('.').map(Number),pb=b.split('.').map(Number);for(let i=0;i<Math.max(pa.length,pb.length);i++){const d=(pa[i]||0)-(pb[i]||0);if(d!==0)return d;}return 0;}
-  async function uLoadVersions(folder,id,color,icon){const el=document.getElementById(id);try{const res=await fetch(`https://api.github.com/repos/${REPO}/contents/${folder}`);if(!res.ok)throw new Error("HTTP "+res.status);const files=await res.json();const pys=files.filter(f=>f.name.endsWith('.py')).sort((a,b)=>uCmpVer(uVer(b.name),uVer(a.name)));if(!pys.length){el.innerHTML='<div class="u-state">暂无可用版本</div>';return;}const latest=pys[0],hist=pys.slice(1);let html=`<div class="u-latest ${color}"><div class="u-latest-icon ${color}"><span class="material-icons-round">${icon}</span></div><div class="u-latest-info"><div class="u-latest-ver">v${uVer(latest.name)} <span style="font-size:11px;font-weight:700;background:var(--${color==='blue'?'primary':'secondary'});color:#fff;padding:2px 8px;border-radius:100px;margin-left:4px">最新</span></div><div class="u-latest-fname">${uEsc(latest.name)}</div></div><a class="u-btn-dl ${color}" href="${folder}/${latest.name}" download><span class="material-icons-round">download</span>下载</a></div>`;if(hist.length){const tid="ut-"+id,lid="ul-"+id;html+=`<div class="u-hist-toggle" id="${tid}" onclick="uToggleHist('${tid}','${lid}')"><span class="material-icons-round" style="font-size:18px">history</span>历史版本（${hist.length} 个）<span style="flex:1"></span><span class="material-icons-round chevron">expand_more</span></div><div class="u-hist-list" id="${lid}">`;hist.forEach(f=>{html+=`<div class="u-hist-row"><div style="width:30px;height:30px;border-radius:6px;background:var(--surface-container);display:flex;align-items:center;justify-content:center"><span class="material-icons-round" style="font-size:15px;color:var(--on-surface-variant)">${icon}</span></div><div style="flex:1"><div class="u-hist-ver">v${uVer(f.name)}</div><div class="u-hist-fname">${uEsc(f.name)}</div></div><a class="u-btn-sm ${color}" href="${folder}/${f.name}" download><span class="material-icons-round">download</span><span>下载</span></a></div>`;});html+=`</div>`;}el.innerHTML=html;}catch(e){el.innerHTML='<div class="u-state">加载失败</div>';}}
-  function uToggleHist(tid,lid){document.getElementById(tid).classList.toggle('open');document.getElementById(lid).classList.toggle('open');}
+function scrollToSection(id){
+  const el=document.getElementById(id);
+  if(el){
+    const top=el.getBoundingClientRect().top+window.pageYOffset-72;
+    window.scrollTo({top,behavior:'smooth'});
+  }
+  closeDrawer();
+}
 
-  let currentMapSub='filter';
-  async function buildAutoFileList(){const el=document.getElementById('auto-filelist-dl');try{const res=await fetch(`https://api.github.com/repos/${REPO}/contents/eggitor_auto_unpack/File_List_Ver`);if(!res.ok)throw new Error("HTTP "+res.status);const files=await res.json();const pys=files.filter(f=>f.name.endsWith('.py')).sort((a,b)=>uCmpVer(uVer(b.name),uVer(a.name)));if(!pys.length){el.innerHTML='<div class="u-state">暂无版本</div>';return;}const latest=pys[0],hist=pys.slice(1);let html=`<div class="u-latest blue"><div class="u-latest-icon blue"><span class="material-icons-round">description</span></div><div class="u-latest-info"><div class="u-latest-ver">v${uVer(latest.name)} <span style="font-size:11px;background:var(--primary);color:#fff;padding:2px 8px;border-radius:100px;margin-left:4px">最新</span></div><div class="u-latest-fname">${uEsc(latest.name)}</div></div><a class="u-btn-dl blue" href="eggitor_auto_unpack/File_List_Ver/${latest.name}" download><span class="material-icons-round">download</span>下载</a></div>`;if(hist.length){html+=`<div class="u-hist-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')"><span class="material-icons-round" style="font-size:18px">history</span>历史版本（${hist.length} 个）<span style="flex:1"></span><span class="material-icons-round chevron">expand_more</span></div><div class="u-hist-list">`;hist.forEach(f=>{html+=`<div class="u-hist-row"><div style="width:30px;height:30px;border-radius:6px;background:var(--surface-container);display:flex;align-items:center;justify-content:center"><span class="material-icons-round" style="font-size:15px;color:var(--primary)">description</span></div><div style="flex:1"><div class="u-hist-ver">v${uVer(f.name)}</div><div class="u-hist-fname">${uEsc(f.name)}</div></div><a class="u-btn-sm blue" href="eggitor_auto_unpack/File_List_Ver/${f.name}" download><span class="material-icons-round">download</span><span>下载</span></a></div>`;});html+=`</div>`;}el.innerHTML=html;}catch(e){el.innerHTML='<div class="u-state">加载失败</div>';}}
-  async function buildAutoMap(sub){const el=document.getElementById('auto-map-dl');try{const res=await fetch(`https://api.github.com/repos/${REPO}/contents/eggitor_auto_unpack/Map_Ver`);if(!res.ok)throw new Error("HTTP "+res.status);const files=await res.json();let pys=files.filter(f=>f.name.endsWith('.py')).sort((a,b)=>uCmpVer(uVer(b.name),uVer(a.name)));if(sub==='filter')pys=pys.filter(f=>f.name.includes('Filter')&&!f.name.includes('root')&&!f.name.includes('full'));else if(sub==='root')pys=pys.filter(f=>f.name.includes('root'));else if(sub==='full')pys=pys.filter(f=>f.name.includes('full')||f.name.includes('unpak_full'));if(!pys.length){el.innerHTML='<div class="u-state">暂无版本</div>';return;}const latest=pys[0],hist=pys.slice(1);let html=`<div class="u-latest pink"><div class="u-latest-icon pink"><span class="material-icons-round">description</span></div><div class="u-latest-info"><div class="u-latest-ver">v${uVer(latest.name)} <span style="font-size:11px;background:var(--secondary);color:#fff;padding:2px 8px;border-radius:100px;margin-left:4px">最新</span></div><div class="u-latest-fname">${uEsc(latest.name)}</div></div><a class="u-btn-dl pink" href="eggitor_auto_unpack/Map_Ver/${latest.name}" download><span class="material-icons-round">download</span>下载</a></div>`;if(hist.length){html+=`<div class="u-hist-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')"><span class="material-icons-round" style="font-size:18px">history</span>历史版本（${hist.length} 个）<span style="flex:1"></span><span class="material-icons-round chevron">expand_more</span></div><div class="u-hist-list">`;hist.forEach(f=>{html+=`<div class="u-hist-row"><div style="width:30px;height:30px;border-radius:6px;background:var(--surface-container);display:flex;align-items:center;justify-content:center"><span class="material-icons-round" style="font-size:15px;color:var(--secondary)">description</span></div><div style="flex:1"><div class="u-hist-ver">v${uVer(f.name)}</div><div class="u-hist-fname">${uEsc(f.name)}</div></div><a class="u-btn-sm pink" href="eggitor_auto_unpack/Map_Ver/${f.name}" download><span class="material-icons-round">download</span><span>下载</span></a></div>`;});html+=`</div>`;}el.innerHTML=html;document.getElementById('auto-sub-label').textContent={filter:'字符串提取',root:'根目录提取',full:'全部提取'}[sub];}catch(e){el.innerHTML='<div class="u-state">加载失败</div>';}}
-  function refreshAutoMap(animate=true){buildAutoMap(currentMapSub);if(animate){const card=document.getElementById('auto-map-card');card.style.animation='none';card.offsetHeight;card.style.animation='panelFade .25s ease-out';setTimeout(()=>card.style.animation='',300);}}
-  function switchAutoTab(type){const container=document.getElementById('auto-unpacker-section');container.querySelectorAll('.unpack-tab').forEach(t=>t.classList.remove('active'));container.querySelector('.'+type+'-tab').classList.add('active');container.querySelectorAll('.unpack-panel').forEach(p=>p.classList.remove('active'));document.getElementById('panel-'+type).classList.add('active');}
-  function switchMapSub(sub){if(currentMapSub===sub) return;currentMapSub=sub;const container=document.getElementById('auto-unpacker-section');container.querySelectorAll('.sub-tab').forEach(t=>t.classList.remove('active'));container.querySelector('.sub-tab[data-sub="'+sub+'"]').classList.add('active');refreshAutoMap(true);}
-  function initAutoUnpacker(){buildAutoFileList();buildAutoMap(currentMapSub);}
+let tx=0,ty=0,tmoved=false,tmode=null;
+document.addEventListener('touchstart',e=>{
+  tx=e.touches[0].clientX;ty=e.touches[0].clientY;tmoved=false;tmode=null;
+  const drawer=document.getElementById('drawer');
+  const open=drawer.classList.contains('open');
+  if(open)tmode='close';else if(tx<60)tmode='open';
+},{passive:true});
+document.addEventListener('touchmove',e=>{
+  if(!tmode)return;
+  const dx=e.touches[0].clientX-tx,dy=Math.abs(e.touches[0].clientY-ty);
+  if(!tmoved){
+    if(dy>Math.abs(dx)&&dy>12){tmode=null;return;}
+    if(Math.abs(dx)<8)return;
+    tmoved=true;
+  }
+  const drawer=document.getElementById('drawer');
+  const backdrop=document.getElementById('drawerBackdrop');
+  const W=drawer.offsetWidth||300;
+  let r=open?1+dx/W:dx/W;
+  r=Math.max(0,Math.min(1,r));
+  drawer.style.transform=`translateX(${(r-1)*W}px)`;
+  backdrop.style.opacity=r*0.5;
+  backdrop.style.pointerEvents=r>0.5?'auto':'none';
+},{passive:false});
+document.addEventListener('touchend',e=>{
+  if(!tmode||!tmoved)return;
+  const dx=e.changedTouches[0].clientX-tx;
+  const drawer=document.getElementById('drawer');
+  const backdrop=document.getElementById('drawerBackdrop');
+  const W=drawer.offsetWidth||300;
+  const r=open?1+dx/W:dx/W;
+  if(tmode==='open'){if(r>0.3)toggleDrawer();else closeDrawer();}
+  else{if(r>0.7)toggleDrawer();else closeDrawer();}
+  drawer.style.transform='';
+  backdrop.style.opacity='';
+  tmode=null;tmoved=false;
+},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
 
-  const fadeElements=document.querySelectorAll('.fade-section');
-  const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in-view');else e.target.classList.remove('in-view');});},{threshold:0.15,rootMargin:"0px 0px -20px 0px"});
-  fadeElements.forEach(el=>observer.observe(el));
-  fadeElements.forEach(el=>{el.addEventListener('click',(e)=>{if(e.target.closest('button')||e.target.closest('a')||e.target.closest('.u-hist-toggle')) return;el.scrollIntoView({behavior:'smooth',block:'center'});});});
+const header=document.getElementById('header');
+window.addEventListener('scroll',()=>{
+  header.classList.toggle('scrolled',window.scrollY>20);
+},{passive:true});
 
-  let snackTimer,hideTimer;function showSnack(msg,theme='blue'){const el=document.getElementById('snackbar');document.getElementById('snackbar-text').textContent=msg;const icon=document.getElementById('snackbar-icon');icon.textContent='check_circle';icon.style.color=theme==='pink'?'#FFD8E8':'#A8C7FA';clearTimeout(snackTimer);clearTimeout(hideTimer);el.classList.remove('show','hide');el.style.visibility='visible';el.style.animation='none';void el.offsetWidth;el.style.animation='';el.classList.add('show');snackTimer=setTimeout(()=>{el.classList.remove('show');el.classList.add('hide');hideTimer=setTimeout(()=>{el.classList.remove('hide');el.style.visibility='hidden';},300);},1500);}
-  function uCopy(id,theme='blue'){const text=document.getElementById(id).textContent;if(navigator.clipboard) navigator.clipboard.writeText(text).then(()=>showSnack('已复制',theme)).catch(()=>fallbackCopy(text,theme)); else fallbackCopy(text,theme); function fallbackCopy(txt,th){const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showSnack('已复制',th);}}
+const fadeSections=document.querySelectorAll('.fade-section');
+const fadeObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in-view');fadeObs.unobserve(e.target);}});
+},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+fadeSections.forEach(el=>fadeObs.observe(el));
 
-  uLoadVersions("NPK_Unlocker","npk-dl","blue","inventory_2");
-  uLoadVersions("PPK_Unlocker","ppk-dl","pink","folder_zip");
-  initGallery();
-  initAutoUnpacker();
+const vp=document.getElementById('galleryContainer'),gnav=document.getElementById('galleryNav');
+let imgs=[],cur=0,autoTimer;
+async function initGallery(){
+  try{
+    const res=await fetch('https://api.github.com/repos/e-xq/e-xq.github.io/contents/Screenshot');
+    const files=await res.json();
+    const images=files.filter(f=>/\.(png|jpg|jpeg|webp|gif)$/i.test(f.name)).sort((a,b)=>a.name.localeCompare(b.name));
+    if(!images.length)return;
+    images.forEach((f,i)=>{
+      const img=document.createElement('img');
+      img.className='gallery-img'+(i===0?' active':'');img.src='Screenshot/'+f.name;
+      img.alt='截图 '+(i+1);img.loading=i===0?'eager':'lazy';
+      vp.insertBefore(img,vp.querySelector('.gallery-arrows'));imgs.push(img);
+      const d=document.createElement('button');d.className='gallery-dot'+(i===0?' active':'');
+      d.onclick=e=>{e.stopPropagation();goTo(i,true);};gnav.appendChild(d);
+    });
+    startAuto();
+  }catch(e){console.warn(e);}
+}
+function goTo(n,manual=false){
+  if(!imgs.length)return;
+  imgs[cur].classList.remove('active');gnav.children[cur].classList.remove('active');
+  cur=(n+imgs.length)%imgs.length;
+  imgs[cur].classList.add('active');gnav.children[cur].classList.add('active');
+  if(manual){clearInterval(autoTimer);setTimeout(startAuto,4000);}
+}
+function startAuto(){clearInterval(autoTimer);autoTimer=setInterval(()=>goTo(cur+1),4000);}
+function galleryNext(){goTo(cur+1,true);}function galleryPrev(){goTo(cur-1,true);}
+let gtx=0;
+vp.addEventListener('touchstart',e=>{gtx=e.touches[0].clientX;},{passive:true});
+vp.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-gtx;if(Math.abs(dx)>50){dx<0?galleryNext():galleryPrev();}},{passive:true});
+vp.addEventListener('wheel',e=>{e.preventDefault();e.deltaY>0?galleryNext():galleryPrev();},{passive:false});
+
+function switchTab(scope,type){
+  const container=document.getElementById(scope==='unpacker'?'unpacker-section':'auto-unpacker-section');
+  container.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
+  if(type==='npk'||type==='ppk'){
+    container.querySelector('.'+type+'-tab').classList.add('active');
+  }
+  container.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+type).classList.add('active');
+}
+function switchAutoTab(type){
+  const container=document.getElementById('auto-unpacker-section');
+  container.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
+  container.querySelector('.'+type+'-tab').classList.add('active');
+  container.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+type).classList.add('active');
+}
+let currentMapSub='filter';
+function switchMapSub(sub){
+  if(currentMapSub===sub)return;currentMapSub=sub;
+  const container=document.getElementById('panel-map');
+  container.querySelectorAll('.sub-tab').forEach(t=>t.classList.remove('active'));
+  container.querySelector('.sub-tab[data-sub="'+sub+'"]').classList.add('active');
+  document.getElementById('map-sub-label').textContent={filter:'字符串提取',root:'根目录提取',full:'全部提取'}[sub];
+  buildAutoMap(sub);
+}
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function getVer(f){const m=f.match(/(\d+(?:\.\d+)+)/);return m?m[1]:'0';}
+function cmpVer(a,b){const pa=a.split('.').map(Number),pb=b.split('.').map(Number);for(let i=0;i<Math.max(pa.length,pb.length);i++){const d=(pa[i]||0)-(pb[i]||0);if(d)return d;}return 0;}
+function toggleHist(tid,lid){document.getElementById(tid).classList.toggle('open');document.getElementById(lid).classList.toggle('open');}
+function makeDlCard(files,color,icon,pathPrefix){
+  if(!files.length)return'<div class="loading">暂无可用版本</div>';
+  const latest=files[0],hist=files.slice(1);
+  let html=`<div class="dl-latest ${color}">
+    <div class="dl-icon ${color}"><span class="material-icons-round">${icon}</span></div>
+    <div class="dl-info">
+      <div class="dl-ver">v${getVer(latest.name)}<span class="dl-badge-tag ${color}">最新</span></div>
+      <div class="dl-fname">${esc(latest.name)}</div>
+    </div>
+    <a class="dl-btn ${color}" href="${pathPrefix?pathPrefix+'/':''}${latest.name}" download><span class="material-icons-round">download</span>下载</a>
+  </div>`;
+  if(hist.length){
+    const tid='ut-'+Math.random().toString(36).slice(2),lid='ul-'+Math.random().toString(36).slice(2);
+    html+=`<div class="dl-hist-toggle" id="${tid}" onclick="toggleHist('${tid}','${lid}')">
+      <span class="material-icons-round" style="font-size:18px">history</span>历史版本（${hist.length} 个）
+      <span class="material-icons-round chevron">expand_more</span>
+    </div><div class="dl-hist-list" id="${lid}">`;
+    hist.forEach(f=>{html+=`<div class="dl-hist-row">
+      <div style="width:34px;height:34px;border-radius:8px;background:var(--surface-container);display:flex;align-items:center;justify-content:center;flex-shrink:0"><span class="material-icons-round" style="font-size:16px;color:var(--on-surface-variant)">${icon}</span></div>
+      <div style="flex:1;min-width:0"><div class="dl-hist-ver">v${getVer(f.name)}</div><div class="dl-hist-fname">${esc(f.name)}</div></div>
+      <a class="dl-hist-btn ${color}" href="${pathPrefix?pathPrefix+'/':''}${f.name}" download><span class="material-icons-round">download</span><span>下载</span></a>
+    </div>`;});
+    html+='</div>';
+  }
+  return html;
+}
+async function loadVersions(folder,id,color,icon){
+  const el=document.getElementById(id);
+  try{
+    const res=await fetch(`https://api.github.com/repos/${REPO}/contents/${folder}`);
+    if(!res.ok)throw new Error(res.status);
+    const files=await res.json();
+    const pys=files.filter(f=>f.name.endsWith('.py')).sort((a,b)=>cmpVer(getVer(b.name),getVer(a.name)));
+    el.innerHTML=makeDlCard(pys,color,icon,folder);
+  }catch(e){el.innerHTML='<div class="loading">加载失败，请稍后重试</div>';}
+}
+async function buildAutoFileList(){
+  const el=document.getElementById('filelist-dl');
+  try{
+    const res=await fetch(`https://api.github.com/repos/${REPO}/contents/eggitor_auto_unpack/File_List_Ver`);
+    if(!res.ok)throw new Error(res.status);
+    const files=await res.json();
+    const pys=files.filter(f=>f.name.endsWith('.py')).sort((a,b)=>cmpVer(getVer(b.name),getVer(a.name)));
+    el.innerHTML=makeDlCard(pys,'blue','list_alt','eggitor_auto_unpack/File_List_Ver');
+  }catch(e){el.innerHTML='<div class="loading">加载失败</div>';}
+}
+async function buildAutoMap(sub){
+  const el=document.getElementById('map-dl');
+  el.innerHTML='<div class="loading"><div class="spinner pink"></div>加载中...</div>';
+  try{
+    const res=await fetch(`https://api.github.com/repos/${REPO}/contents/eggitor_auto_unpack/Map_Ver`);
+    if(!res.ok)throw new Error(res.status);
+    const files=await res.json();
+    let pys=files.filter(f=>f.name.endsWith('.py')).sort((a,b)=>cmpVer(getVer(b.name),getVer(a.name)));
+    if(sub==='filter')pys=pys.filter(f=>f.name.includes('Filter')&&!f.name.includes('root')&&!f.name.includes('full'));
+    else if(sub==='root')pys=pys.filter(f=>f.name.includes('root'));
+    else if(sub==='full')pys=pys.filter(f=>f.name.includes('full')||f.name.includes('unpak_full'));
+    el.innerHTML=makeDlCard(pys,'pink','map','eggitor_auto_unpack/Map_Ver');
+  }catch(e){el.innerHTML='<div class="loading">加载失败</div>';}
+}
+async function buildAudioRenamer(){
+  const el=document.getElementById('audio-dl');
+  try{
+    const res=await fetch(`https://api.github.com/repos/${REPO}/contents/BNK-WEM-Renamer`);
+    if(!res.ok)throw new Error(res.status);
+    const files=await res.json();
+    const pys=files.filter(f=>f.name.endsWith('.py')).sort((a,b)=>cmpVer(getVer(b.name),getVer(a.name)));
+    el.innerHTML=makeDlCard(pys,'blue','audio_file','BNK-WEM-Renamer');
+  }catch(e){el.innerHTML='<div class="loading">加载失败</div>';}
+}
+async function loadCommands(){
+  const c=document.getElementById('commandsContainer');
+  try{
+    const res=await fetch(`https://api.github.com/repos/${REPO}/contents/commands.json`);
+    if(!res.ok)throw new Error(res.status);
+    const file=await res.json();
+    const content=atob(file.content);
+    const data=JSON.parse(content);
+    let html='';
+    if(data.general?.length){
+      html+=`<div class="cmd-card"><div class="cmd-header"><span class="material-icons-round">star</span><span>蛋仔派对常用命令</span></div>`;
+      data.general.forEach(c=>{html+=`<div class="cmd-item"><div class="cmd-desc">${esc(c.desc)}</div><div class="cmd-code"><span class="cmd-code-text">${esc(c.cmd)}</span><button class="cmd-copy-btn" onclick="copyCmd('${esc(c.cmd.replace(/'/g,"\\'"))}')"><span class="material-icons-round">content_copy</span></button></div></div>`;});
+      html+='</div>';
+    }
+    if(data.unpack?.length){
+      html+=`<div class="cmd-card"><div class="cmd-header"><span class="material-icons-round">folder_zip</span><span>解包常用命令</span></div>`;
+      data.unpack.forEach(c=>{html+=`<div class="cmd-item"><div class="cmd-desc">${esc(c.desc)}</div><div class="cmd-code"><span class="cmd-code-text">${esc(c.cmd)}</span><button class="cmd-copy-btn" onclick="copyCmd('${esc(c.cmd.replace(/'/g,"\\'"))}')"><span class="material-icons-round">content_copy</span></button></div></div>`;});
+      html+='</div>';
+    }
+    c.innerHTML=html||'<div class="loading">暂无命令</div>';
+  }catch(e){c.innerHTML='<div class="loading">加载失败</div>';}
+}
+
+let snkT,snkH;
+function showSnack(msg,theme='blue'){
+  const el=document.getElementById('snackbar');
+  document.getElementById('snackbar-text').textContent=msg;
+  const ic=document.getElementById('snackbar-icon');
+  ic.style.color=theme==='pink'?'#FFD8E8':'#A8C7FA';
+  clearTimeout(snkT);clearTimeout(snkH);
+  el.classList.remove('show','hide');
+  el.style.visibility='visible';el.style.animation='none';
+  void el.offsetWidth;el.style.animation='';
+  el.classList.add('show');
+  snkT=setTimeout(()=>{el.classList.remove('show');el.classList.add('hide');snkH=setTimeout(()=>{el.classList.remove('hide');el.style.visibility='hidden';},250);},1800);
+}
+function copyText(id){
+  const text=document.getElementById(id).textContent;
+  if(navigator.clipboard)navigator.clipboard.writeText(text).then(()=>showSnack('已复制')).catch(()=>_fbCopy(text));
+  else _fbCopy(text);
+}
+function copyCmd(cmd){
+  if(navigator.clipboard)navigator.clipboard.writeText(cmd).then(()=>showSnack('已复制')).catch(()=>_fbCopy(cmd));
+  else _fbCopy(cmd);
+}
+function _fbCopy(txt){
+  const ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;left:-9999px;opacity:0';document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');showSnack('已复制');}catch{}
+  document.body.removeChild(ta);
+}
+
+initGallery();
+loadVersions('NPK_Unlocker','npk-dl','blue','download');
+loadVersions('PPK_Unlocker','ppk-dl','pink','folder_zip');
+buildAutoFileList();buildAutoMap('filter');
+buildAudioRenamer();loadCommands();
 </script>
 </body>
 </html>
