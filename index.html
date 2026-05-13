@@ -194,8 +194,8 @@
       border-right: 1px solid var(--md-outline-variant);
       transition: transform var(--md-motion-5) var(--md-ease-2), opacity var(--md-motion-5);
     }
-    @media (max-width: 1024px) { .navigation-rail { transform: translateX(-100%); opacity: 0; pointer-events: none; } }
-    @media (max-width: 1024px) { .main { margin-left: 0 !important; } }
+    body.is-mobile .navigation-rail { transform: translateX(-100%); opacity: 0; pointer-events: none; }
+    body.is-mobile .main { margin-left: 0 !important; }
     .nav-rail-item {
       width: 56px; height: 56px; border-radius: var(--md-sys-shape-corner-large);
       display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
@@ -210,12 +210,11 @@
     .nav-rail-item .label { font-size: 10px; font-weight: 500; color: var(--md-on-surface-variant); letter-spacing: 0.5px; }
     .nav-rail-item.active .label { color: var(--md-on-secondary-container); }
 
-    .main { margin-top: 64px; min-height: calc(100vh - 64px); transition: opacity var(--md-motion-5), margin-left var(--md-motion-5); }
-    .drawer-backdrop.visible ~ .drawer ~ .top-app-bar ~ .main { opacity: 0.6; pointer-events: none; }
-    @media (min-width: 1025px) {
-      .main { margin-left: 80px; transition: filter var(--md-motion-5), margin-left var(--md-motion-5); }
-      .drawer-backdrop.visible ~ .drawer ~ .top-app-bar ~ .main { opacity: 1; filter: blur(2px); pointer-events: none; }
-    }
+    .main { margin-top: 64px; min-height: calc(100vh - 64px); transition: opacity var(--md-motion-5), margin-left var(--md-motion-5), filter var(--md-motion-5); }
+    body.is-mobile .drawer-backdrop.visible ~ .drawer ~ .top-app-bar ~ .main { opacity: 0.4; pointer-events: none; }
+    body.is-desktop .main { margin-left: 80px; }
+    body.is-desktop .drawer-backdrop.visible ~ .drawer ~ .top-app-bar ~ .main { filter: blur(2px); pointer-events: none; }
+    body.is-desktop .main, body.is-mobile .main { transition: margin-left var(--md-motion-5), filter var(--md-motion-5), opacity var(--md-motion-5); }
 
     .section { padding: 48px 24px; max-width: 1200px; margin: 0 auto; scroll-margin-top: 80px; transition: padding 0.4s cubic-bezier(0.4, 0, 0.2, 1); will-change: padding; }
     .hero {
@@ -487,9 +486,8 @@
     @media (max-width: 768px) { .cmd-grid { grid-template-columns: 1fr; } }
     .cmd-card {
       background: var(--md-surface-container-low); border-radius: var(--md-sys-shape-corner-large);
-      padding: 24px; transition: box-shadow var(--md-motion-3);
+      padding: 24px;
     }
-    .cmd-card:hover { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); }
     .cmd-header {
       display: flex; align-items: center; gap: 12px; padding-bottom: 16px; margin-bottom: 16px;
       border-bottom: 1px solid var(--md-outline-variant);
@@ -604,23 +602,23 @@
   </div>
   <nav class="drawer-nav">
     <div class="drawer-section-title">页面导航</div>
-    <div class="drawer-item ripple-host" data-section="hero-section" onclick="scrollToSection('hero-section')">
+    <div class="drawer-item ripple-host" onclick="scrollToSection('hero-section')">
       <span class="material-icons-round icon">home</span>
       <div class="drawer-item-text"><div class="drawer-item-title">主页</div><div class="drawer-item-sub">个人介绍</div></div>
     </div>
-    <div class="drawer-item ripple-host" data-section="unpacker-section" onclick="scrollToSection('unpacker-section')">
+    <div class="drawer-item ripple-host" onclick="scrollToSection('unpacker-section')">
       <span class="material-icons-round icon">folder_zip</span>
       <div class="drawer-item-text"><div class="drawer-item-title">解包脚本</div><div class="drawer-item-sub">NPK / PPK 解包</div></div>
     </div>
-    <div class="drawer-item ripple-host" data-section="auto-unpacker-section" onclick="scrollToSection('auto-unpacker-section')">
+    <div class="drawer-item ripple-host" onclick="scrollToSection('auto-unpacker-section')">
       <span class="material-icons-round icon">description</span>
       <div class="drawer-item-text"><div class="drawer-item-title">自动解包</div><div class="drawer-item-sub">编辑器自动解包</div></div>
     </div>
-    <div class="drawer-item ripple-host" data-section="audio-renamer-section" onclick="scrollToSection('audio-renamer-section')">
+    <div class="drawer-item ripple-host" onclick="scrollToSection('audio-renamer-section')">
       <span class="material-icons-round icon">audio_file</span>
       <div class="drawer-item-text"><div class="drawer-item-title">音频重命名</div><div class="drawer-item-sub">BNK/WEM 批量重命名</div></div>
     </div>
-    <div class="drawer-item ripple-host" data-section="commands-section" onclick="scrollToSection('commands-section')">
+    <div class="drawer-item ripple-host" onclick="scrollToSection('commands-section')">
       <span class="material-icons-round icon">terminal</span>
       <div class="drawer-item-text"><div class="drawer-item-title">常用命令</div><div class="drawer-item-sub">Python 控制台命令</div></div>
     </div>
@@ -1000,9 +998,6 @@
     if (el) {
       isNavScrolling = true;
       updateNavRail(id);
-      document.querySelectorAll('.drawer-item[data-section]').forEach(item => {
-        item.classList.toggle('active', item.dataset.section === id);
-      });
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       clearTimeout(navTimer);
       navTimer = setTimeout(() => { isNavScrolling = false; }, 800);
@@ -1286,6 +1281,18 @@ buildAutoFileList();
 buildAutoMap('filter');
 buildAudioRenamer();
 loadCommands();
+
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+function updateBodyClass() {
+  const nowMobile = window.innerWidth <= 1024;
+  document.body.classList.toggle('is-mobile', nowMobile);
+  document.body.classList.toggle('is-desktop', !nowMobile);
+}
+
+if (isMobile) document.body.classList.add('is-mobile'); else document.body.classList.add('is-desktop');
+window.addEventListener('resize', updateBodyClass);
+updateBodyClass();
 </script>
 </body>
 </html>
