@@ -3,9 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com; img-src 'self' data: https:; media-src 'self'; connect-src 'self' https://api.github.com https://e-xq.github.io; base-uri 'self'; form-action 'self';">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
   <meta name="description" content="XuanQian的个人网站 - 蛋仔派对解包工具、自动化脚本及实用资源下载">
   <meta name="theme-color" content="#669df6">
   <title>XuanQian 的网站</title>
+  <script>history.scrollRestoration = 'manual';</script>
   <link rel="icon" type="image/webp" href="right_icon_6f50e56a_inverted.webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,6 +46,14 @@
       --md-surface-container-low: #f8fafd;
       --md-surface-container: #eef2f7;
       --md-surface-container-high: #e8ecf2;
+      --md-error: #b3261e;
+      --md-on-error: #ffffff;
+      --md-error-container: #ffcdd2;
+      --md-on-error-container: #b71c1c;
+      --md-tertiary: #7d5260;
+      --md-on-tertiary: #ffffff;
+      --md-tertiary-container: #fff9c4;
+      --md-on-tertiary-container: #f57f17;
       --md-ease-1: cubic-bezier(0.2, 0, 0, 1);
       --md-ease-2: cubic-bezier(0.2, 0, 0.2, 1);
       --md-motion-3: 150ms;
@@ -75,6 +87,102 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    .announcement-bar {
+      position: relative;
+      background: #d6e3ff;
+      color: #001d35;
+      overflow: hidden;
+      max-height: 0; opacity: 0;
+      transition: max-height 200ms ease, opacity 150ms ease;
+    }
+    .announcement-bar.visible {
+      max-height: 60px; opacity: 1;
+    }
+    .announcement-bar-inner {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 24px;
+      cursor: pointer;
+    }
+    .announcement-bar.level-important { background: var(--md-error-container); color: var(--md-on-error-container); }
+    .announcement-bar.level-warning { background: var(--md-tertiary-container); color: var(--md-on-tertiary-container); }
+    .announcement-bar .material-icons-round { font-size: 20px; }
+    .announcement-bar-title { flex: 1; font-weight: 500; }
+    .announcement-bar .material-icons-round:last-child { font-size: 18px; opacity: 0.7; }
+
+    .announcement-overlay {
+      position: fixed; inset: 0; z-index: 8000;
+      background: rgba(0, 0, 0, 0.4);
+      opacity: 0; pointer-events: none;
+      transition: opacity var(--md-motion-3);
+    }
+    .announcement-overlay.visible { opacity: 1; pointer-events: auto; }
+
+    .cookies-overlay {
+      position: fixed; inset: 0; z-index: 8000;
+      background: rgba(0, 0, 0, 0.4);
+      opacity: 0; pointer-events: none;
+      transition: opacity var(--md-motion-3);
+    }
+    .cookies-overlay.visible { opacity: 1; pointer-events: auto; }
+    .cookies-dialog {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);
+      z-index: 8001;
+      background: var(--md-surface-container-high);
+      color: var(--md-on-surface);
+      border-radius: var(--md-sys-shape-corner-extra-large);
+      padding: 24px; width: 90vw; max-width: 400px;
+      display: flex; flex-direction: column; gap: 16px;
+      opacity: 0; pointer-events: none;
+      transition: transform var(--md-motion-3) var(--md-ease-2), opacity var(--md-motion-3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    .cookies-dialog.visible { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
+    .cookies-icon { text-align: center; font-size: 48px; }
+    .cookies-icon .material-icons-round { font-size: 48px; color: var(--md-primary); }
+    .cookies-title { font-size: 20px; font-weight: 600; text-align: center; }
+    .cookies-content { font-size: 14px; color: var(--md-on-surface-variant); line-height: 1.6; text-align: center; }
+    .cookies-buttons { display: flex; gap: 12px; justify-content: center; }
+    .cookies-btn {
+      padding: 12px 32px; border-radius: var(--md-sys-shape-corner-full);
+      font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--md-outline-variant);
+      transition: all var(--md-motion-3); min-width: 100px;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .cookies-btn.decline { background: var(--md-surface-container-lowest); color: var(--md-on-surface-variant); }
+    .cookies-btn.decline:hover { background: var(--md-secondary-container); color: var(--md-on-secondary-container); border-color: var(--md-secondary); }
+    .cookies-btn.accept { background: var(--md-surface-container-lowest); color: var(--md-primary); }
+    .cookies-btn.accept:hover { background: var(--md-primary-container); color: var(--md-on-primary-container); border-color: var(--md-primary); }
+
+    .announcement-dialog {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);
+      z-index: 8001;
+      background: var(--md-surface-container-high);
+      color: var(--md-on-surface);
+      border-radius: var(--md-sys-shape-corner-extra-large);
+      padding: 24px; width: 90vw; max-width: 480px;
+      height: auto; max-height: 80vh;
+      display: flex; flex-direction: column;
+      opacity: 0; pointer-events: none;
+      transition: transform var(--md-motion-3) var(--md-ease-2), opacity var(--md-motion-3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    @media (min-width: 768px) {
+      .announcement-dialog { width: 480px; max-height: 70vh; }
+    }
+    .announcement-dialog.visible { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
+    .announcement-dialog-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-shrink: 0; }
+    .announcement-dialog-title { font-size: 20px; font-weight: 600; }
+    .announcement-dialog-close {
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--md-on-surface-variant); transition: background var(--md-motion-3), color var(--md-motion-3);
+    }
+    .announcement-dialog-close:hover { background: var(--md-surface-variant); }
+    .announcement-dialog-content {
+      flex: 1; overflow-y: auto; line-height: 1.6;
+      white-space: pre-wrap; word-break: break-word;
+    }
+
     a { color: inherit; text-decoration: none; }
     button { font-family: inherit; border: none; background: none; cursor: pointer; outline: none; position: relative; isolation: isolate; }
     button:focus-visible { outline: 2px solid var(--md-primary); outline-offset: 2px; }
@@ -92,6 +200,7 @@
       z-index: -1;
       opacity: 0.08;
       pointer-events: none;
+      transition: filter var(--md-motion-5);
     }
     @media (max-width: 768px) { .bg-video { display: none; } }
 
@@ -177,7 +286,23 @@
       display: flex; align-items: center; padding: 0 16px; gap: 12px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
-    .top-app-bar-title { font-size: 22px; font-weight: 400; color: var(--md-on-surface); flex: 1; }
+    .top-app-bar-title { font-size: 22px; font-weight: 400; color: var(--md-on-surface); }
+    .toolbar-links { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+    .toolbar-btn {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 8px 16px; border-radius: var(--md-sys-shape-corner-full);
+      font-size: 13px; color: var(--md-on-surface-variant); text-decoration: none;
+      background: var(--md-surface-container-lowest); border: 1px solid var(--md-outline-variant);
+      transition: background var(--md-motion-3), color var(--md-motion-3);
+      white-space: nowrap; min-width: 100px;
+    }
+    .toolbar-btn:hover { background: var(--md-primary-container); color: var(--md-on-primary-container); }
+    .toolbar-btn:hover .material-icons-round { color: var(--md-on-primary-container); }
+    .toolbar-btn .material-icons-round { font-size: 18px; color: var(--md-primary); transition: color var(--md-motion-3); }
+    @media (max-width: 1024px) {
+      .toolbar-btn { min-width: auto; padding: 10px; border-radius: 50%; }
+      .toolbar-btn .toolbar-btn-text { display: none; }
+    }
     .icon-btn {
       width: 48px; height: 48px; border-radius: var(--md-sys-shape-corner-full);
       display: flex; align-items: center; justify-content: center;
@@ -211,15 +336,16 @@
     .nav-rail-item.active .label { color: var(--md-on-secondary-container); }
 
     .main { margin-top: 64px; min-height: calc(100vh - 64px); transition: opacity var(--md-motion-5), margin-left var(--md-motion-5), filter var(--md-motion-5); }
-    body.is-mobile .drawer-backdrop.visible ~ .drawer ~ .top-app-bar ~ .main { opacity: 0.4; pointer-events: none; }
+    body.is-mobile .drawer-backdrop.visible ~ .drawer ~ .top-app-bar ~ .main { filter: blur(2px); pointer-events: none; }
     body.is-desktop .main { margin-left: 80px; }
     body.is-desktop .drawer-backdrop.visible ~ .drawer ~ .top-app-bar ~ .main { filter: blur(2px); pointer-events: none; }
+    body.is-desktop .drawer-backdrop.visible ~ .bg-video { filter: blur(2px); transition: filter var(--md-motion-5); }
     body.is-desktop .main, body.is-mobile .main { transition: margin-left var(--md-motion-5), filter var(--md-motion-5), opacity var(--md-motion-5); }
 
-    .section { padding: 48px 24px; max-width: 1200px; margin: 0 auto; scroll-margin-top: 80px; transition: padding 0.4s cubic-bezier(0.4, 0, 0.2, 1); will-change: padding; }
+    .section { padding: 48px 24px; max-width: 1200px; margin: 0 auto; scroll-margin-top: var(--scroll-offset, 80px); transition: padding 0.4s cubic-bezier(0.4, 0, 0.2, 1); will-change: padding; }
     .hero {
       padding: 80px 48px; display: flex; gap: 64px; align-items: center; justify-content: center;
-      min-height: calc(100vh - 64px); max-width: 1400px; margin: 0 auto; scroll-margin-top: 64px;
+      min-height: calc(100vh - 64px); max-width: 1400px; margin: 0 auto; scroll-margin-top: var(--scroll-offset, 64px);
       transition: padding 0.4s cubic-bezier(0.4, 0, 0.2, 1), gap 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       will-change: padding, gap;
     }
@@ -243,7 +369,7 @@
     .hero-chips { display: flex; flex-wrap: wrap; gap: 12px; }
     .chip {
       display: flex; align-items: center; gap: 8px;
-      padding: 12px 20px; background: var(--md-surface-container-high);
+      padding: 12px 20px; background: var(--md-surface-container-lowest); border: 1px solid var(--md-outline-variant);
       border-radius: var(--md-sys-shape-corner-full);
       font-size: 14px; color: var(--md-on-surface-variant);
       cursor: default; user-select: none;
@@ -485,7 +611,7 @@
     .cmd-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 24px; }
     @media (max-width: 768px) { .cmd-grid { grid-template-columns: 1fr; } }
     .cmd-card {
-      background: var(--md-surface-container-low); border-radius: var(--md-sys-shape-corner-large);
+      background: var(--md-surface-container-lowest); border-radius: var(--md-sys-shape-corner-large);
       padding: 24px;
     }
     .cmd-header {
@@ -588,7 +714,7 @@
 <video class="bg-video" autoplay loop muted playsinline preload="auto" aria-hidden="true">
   <source src="login.mp4" type="video/mp4">
 </video>
-<script>document.querySelector('.bg-video').addEventListener('timeupdate',function(){if(this.duration-this.currentTime<.08)this.currentTime=0;});</script>
+<script>(function() { var v=document.querySelector('.bg-video'); if(v) v.addEventListener('timeupdate',function(){if(this.duration-this.currentTime<.08)this.currentTime=0;}); })();</script>
 
 <div class="drawer-backdrop" id="drawerBackdrop" onclick="closeDrawer()"></div>
 
@@ -639,17 +765,6 @@
       <div class="drawer-item-text"><div class="drawer-item-title">纪念币管理</div><div class="drawer-item-sub">管理纪念币收藏数据</div></div>
       <span class="material-icons-round drawer-item-icon-end">open_in_new</span>
     </a>
-    <div class="drawer-divider"></div>
-    <div class="drawer-section-title">链接</div>
-    <a class="drawer-item ripple-host" href="https://e-xq.github.io/th" target="_blank">
-      <span class="material-icons-round icon">text_fields</span>
-      <div class="drawer-item-text"><div class="drawer-item-title">文字版</div><div class="drawer-item-sub">纯文字导航</div></div>
-    </a>
-    <a class="drawer-item ripple-host" href="https://github.com/e-xq" target="_blank">
-      <span class="material-icons-round icon">code</span>
-      <div class="drawer-item-text"><div class="drawer-item-title">GitHub</div><div class="drawer-item-sub">开源仓库</div></div>
-      <span class="material-icons-round drawer-item-icon-end">open_in_new</span>
-    </a>
   </nav>
   <div class="drawer-footer">© 2026 XuanQian</div>
 </div>
@@ -659,7 +774,39 @@
     <span class="material-icons-round">menu</span>
   </button>
   <div class="top-app-bar-title">XuanQian 的网站</div>
+  <div class="toolbar-links">
+    <a class="toolbar-btn ripple-host" href="https://e-xq.github.io/th" target="_blank" aria-label="文字版">
+      <span class="material-icons-round">text_fields</span>
+      <span class="toolbar-btn-text">文字版</span>
+    </a>
+    <a class="toolbar-btn ripple-host" href="https://github.com/e-xq" target="_blank" aria-label="GitHub">
+      <span class="material-icons-round">code</span>
+      <span class="toolbar-btn-text">GitHub</span>
+    </a>
+  </div>
 </header>
+
+<div class="cookies-overlay" id="cookiesOverlay"></div>
+<div class="cookies-dialog" id="cookiesDialog">
+  <div class="cookies-icon"><span class="material-icons-round">cookie</span></div>
+  <div class="cookies-title">使用 Cookies</div>
+  <div class="cookies-content">为了提升您的浏览体验，本网站使用 cookies 来缓存 GitHub API 数据，减少请求次数。</div>
+  <div class="cookies-buttons">
+    <button class="cookies-btn decline ripple-host" onclick="handleCookies(false)"><span class="material-icons-round" style="font-size:18px">close</span>拒绝</button>
+    <button class="cookies-btn accept ripple-host" onclick="handleCookies(true)">同意<span class="material-icons-round" style="font-size:18px">check</span></button>
+  </div>
+</div>
+
+<div class="announcement-overlay" id="announcementOverlay" onclick="closeAnnouncement()"></div>
+<div class="announcement-dialog" id="announcementDialog">
+  <div class="announcement-dialog-header">
+    <div class="announcement-dialog-title" id="announcementDialogTitle"></div>
+    <button class="announcement-dialog-close ripple-host" onclick="closeAnnouncement()" aria-label="关闭">
+      <span class="material-icons-round">close</span>
+    </button>
+  </div>
+  <div class="announcement-dialog-content" id="announcementDialogContent"></div>
+</div>
 
 <nav class="navigation-rail" id="navRail">
   <div class="nav-rail-item active ripple-host" data-section="hero-section">
@@ -685,6 +832,13 @@
 </nav>
 
 <main class="main">
+  <div class="announcement-bar" id="announcementBar" onclick="openAnnouncement()">
+    <div class="announcement-bar-inner">
+      <span class="material-icons-round">campaign</span>
+      <span class="announcement-bar-title" id="announcementTitle"></span>
+      <span class="material-icons-round">expand_more</span>
+    </div>
+  </div>
   <section class="hero fade-in" id="hero-section">
     <div class="hero-content">
       <img class="hero-avatar" src="8yspqt5zfm-300x300.webp" alt="XuanQian">
@@ -915,12 +1069,16 @@
     document.getElementById('drawer').classList.add('open');
     document.getElementById('drawerBackdrop').classList.add('visible');
     document.body.style.overflow = 'hidden';
+    const bgVideo = document.querySelector('.bg-video');
+    if (bgVideo) bgVideo.style.filter = 'blur(2px)';
     dOpen = true;
   }
   function closeDrawer() {
     document.getElementById('drawer').classList.remove('open');
     document.getElementById('drawerBackdrop').classList.remove('visible');
     document.body.style.overflow = '';
+    const bgVideo = document.querySelector('.bg-video');
+    if (bgVideo) bgVideo.style.filter = '';
     dOpen = false;
   }
   function toggleDrawer() { dOpen ? closeDrawer() : openDrawer(); }
@@ -1010,7 +1168,7 @@
   let imgs = [], cur = 0, autoTimer;
   async function initGallery() {
     try {
-      const res = await fetch('Screenshot/manifest.json');
+      const res = await fetch('Screenshot/manifest.json?t=' + Date.now());
       const data = await res.json();
       const images = data.screenshots || [];
       if (!images.length) return;
@@ -1037,7 +1195,7 @@
         d.onclick = e => { e.stopPropagation(); goTo(i, true); };
         gnav.appendChild(d);
       });
-    } catch (e) { console.warn(e); }
+    } catch (e) { console.warn('Gallery load failed:', e); }
   }
   function goTo(n, manual = false) {
     if (!imgs.length) return;
@@ -1106,8 +1264,105 @@
     card.classList.add('fade-in');
   }
 
+  /* ===== 安全加固 ===== */
+  if (window.opener && window !== window.top) {
+    try { window.opener.location.origin === location.origin && (window.opener.location.href = '#'); } catch(e) {}
+  }
+  document.addEventListener('contextmenu', e => {
+    const allowed = ['INPUT', 'TEXTAREA'].includes(e.target.tagName);
+    if (!allowed) e.preventDefault();
+  }, { passive: false });
+  const originalFetch = window.fetch;
+  window.fetch = function(...args) {
+    const url = typeof args[0] === 'string' ? args[0] : args[0].url;
+    if (url && url.startsWith('http') && !url.startsWith(location.origin) && !url.startsWith('https://api.github.com/')) {
+      const allowedDomains = ['e-xq.github.io', 'fonts.googleapis.com', 'fonts.gstatic.com', 'cdnjs.cloudflare.com'];
+      const isAllowed = allowedDomains.some(d => url.includes(d));
+      if (!isAllowed) {
+        console.warn('Blocked invalid fetch:', url);
+        return Promise.reject(new Error('Invalid URL'));
+      }
+    }
+    return originalFetch.apply(this, args);
+  };
+
   /* ===== GitHub API ===== */
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function stripComments(json) {
+    return json.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+  }
+  const apiCache = new Map();
+  const CACHE_KEY = 'gh_api_cache';
+  function getCache(url) {
+    try {
+      const stored = localStorage.getItem(CACHE_KEY);
+      const cache = stored ? JSON.parse(stored) : {};
+      const entry = cache[url];
+      if (entry && Date.now() - entry.ts < 3600000) return entry.data;
+    } catch {}
+    return null;
+  }
+  function setCache(url, data) {
+    try {
+      const stored = localStorage.getItem(CACHE_KEY);
+      const cache = stored ? JSON.parse(stored) : {};
+      cache[url] = { data, ts: Date.now() };
+      localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+    } catch {}
+  }
+  async function fetchWithCache(url, useCache = true) {
+    if (useCache) {
+      const cached = getCache(url);
+      if (cached) {
+        try {
+          const res = await fetch(url, { headers: { 'If-None-Match': '' } });
+          if (res.status === 304) return cached;
+        } catch {}
+        return cached;
+      }
+    }
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    setCache(url, data);
+    return data;
+  }
+  async function fetchJSON(url) {
+    const res = await fetch(url + (url.includes('?') ? '&' : '?') + 't=' + Date.now());
+    const text = await res.text();
+    return JSON.parse(stripComments(text));
+  }
+  const COLOR_MAP = {
+    'P': '#f06292', 'Pink': '#f06292',
+    'R': '#ef5350', 'Red': '#ef5350',
+    'O': '#ff9800', 'Orange': '#ff9800',
+    'Y': '#f9a825', 'Yellow': '#f9a825',
+    'G': '#66bb6a', 'Green': '#66bb6a',
+    'B': '#42a5f5', 'Blue': '#42a5f5',
+    'I': '#26c6da', 'Indigo': '#26c6da',
+    'Pur': '#ab47bc', 'Purple': '#ab47bc',
+    'W': '#ffffff', 'White': '#ffffff',
+    'Bk': '#212121', 'Black': '#212121'
+  };
+  function parseColorText(text) {
+    const parts = text.split(/(#\w+)/g);
+    let result = '', inColor = false;
+    for (const part of parts) {
+      const match = part.match(/^#(\w+)$/);
+      if (match && COLOR_MAP[match[1]]) {
+        if (inColor) result += '</span>';
+        result += `<span style="color:${COLOR_MAP[match[1]]}">`;
+        inColor = true;
+      } else if (match && !COLOR_MAP[match[1]]) {
+        if (inColor) { result += '</span>'; inColor = false; }
+        result += part;
+      } else {
+        result += esc(part);
+      }
+    }
+    if (inColor) result += '</span>';
+    return result;
+  }
   function getVer(f) { const m = f.match(/(\d+(?:\.\d+)+)/); return m ? m[1] : '0'; }
   function cmpVer(a, b) { const pa = a.split('.').map(Number), pb = b.split('.').map(Number); for (let i = 0; i < Math.max(pa.length, pb.length); i++) { const d = (pa[i] || 0) - (pb[i] || 0); if (d) return d; } return 0; }
   let histToggling = false;
@@ -1149,79 +1404,114 @@
     return html;
   }
 
+  async function loadAllVersions() {
+    const repos = ['NPK_Unlocker', 'PPK_Unlocker', 'eggitor_auto_unpack/File_List_Ver', 'eggitor_auto_unpack/Map_Ver', 'BNK-WEM-Renamer'];
+    const baseUrl = `https://api.github.com/repos/${REPO}/contents/`;
+    const py = f => f.name.endsWith('.py');
+    const sortPy = arr => arr.filter(py).sort((a, b) => cmpVer(getVer(b.name), getVer(a.name)));
+
+    async function fetchWithCache(url) {
+      if (useCache) {
+        const cached = localStorage.getItem('api_cache_' + url);
+        if (cached) {
+          const { data, timestamp } = JSON.parse(cached);
+          if (Date.now() - timestamp < 3600000) return data;
+        }
+      }
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(res.status);
+        const data = await res.json();
+        if (useCache) {
+          localStorage.setItem('api_cache_' + url, JSON.stringify({ data, timestamp: Date.now() }));
+        }
+        return data;
+      } catch (e) {
+        if (useCache) {
+          const cached = localStorage.getItem('api_cache_' + url);
+          if (cached) return JSON.parse(cached).data;
+        }
+        return [];
+      }
+    }
+
+    try {
+      const results = await Promise.all(repos.map(async r => ({ repo: r, files: await fetchWithCache(baseUrl + r) })));
+      const data = {};
+      results.forEach(({ repo, files }) => { data[repo] = files; });
+      document.getElementById('npk-dl').innerHTML = makeDlCard(sortPy(data['NPK_Unlocker'] || []), 'primary', 'download', 'NPK_Unlocker');
+      document.getElementById('ppk-dl').innerHTML = makeDlCard(sortPy(data['PPK_Unlocker'] || []), 'secondary', 'folder_zip', 'PPK_Unlocker');
+      document.getElementById('filelist-dl').innerHTML = makeDlCard(sortPy(data['eggitor_auto_unpack/File_List_Ver'] || []), 'secondary', 'list_alt', 'eggitor_auto_unpack/File_List_Ver');
+      document.getElementById('map-dl').innerHTML = makeDlCard(sortPy(data['eggitor_auto_unpack/Map_Ver'] || []).filter(f => f.name.includes('Filter') && !f.name.includes('root') && !f.name.includes('full')), 'secondary', 'map', 'eggitor_auto_unpack/Map_Ver');
+      document.getElementById('audio-dl').innerHTML = makeDlCard(sortPy(data['BNK-WEM-Renamer'] || []), 'primary', 'audio_file', 'BNK-WEM-Renamer');
+    } catch (e) {
+      ['npk-dl', 'ppk-dl', 'filelist-dl', 'map-dl', 'audio-dl'].forEach(id => {
+        document.getElementById(id).innerHTML = `<div class="loading">加载失败: ${esc(e.message || e)}</div>`;
+      });
+    }
+  }
+
   async function loadVersions(folder, id, color, icon) {
     const el = document.getElementById(id);
     try {
-      const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${folder}`);
-      if (!res.ok) throw new Error(res.status);
-      const files = await res.json();
+      const files = await fetchWithCache(`https://api.github.com/repos/${REPO}/contents/${folder}`);
       const pys = files.filter(f => f.name.endsWith('.py')).sort((a, b) => cmpVer(getVer(b.name), getVer(a.name)));
       el.innerHTML = makeDlCard(pys, color, icon, folder);
-    } catch (e) { el.innerHTML = '<div class="loading">加载失败，请稍后重试</div>'; }
+    } catch (e) { el.innerHTML = `<div class="loading">加载失败: ${esc(e.message || e)}</div>`; }
   }
 
 async function buildAutoFileList() {
   const el = document.getElementById('filelist-dl');
   try {
-    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/eggitor_auto_unpack/File_List_Ver`);
-    if (!res.ok) throw new Error(res.status);
-    const files = await res.json();
+    const files = await fetchWithCache(`https://api.github.com/repos/${REPO}/contents/eggitor_auto_unpack/File_List_Ver`);
     const pys = files.filter(f => f.name.endsWith('.py')).sort((a, b) => cmpVer(getVer(b.name), getVer(a.name)));
     el.innerHTML = makeDlCard(pys, 'secondary', 'list_alt', 'eggitor_auto_unpack/File_List_Ver');
-  } catch (e) { el.innerHTML = '<div class="loading">加载失败</div>'; }
+  } catch (e) { el.innerHTML = `<div class="loading">加载失败: ${esc(e.message || e)}</div>`; }
 }
 
 async function buildAutoMap(sub) {
   const el = document.getElementById('map-dl');
   el.innerHTML = '<div class="loading"><div class="spinner secondary"></div>加载中...</div>';
   try {
-    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/eggitor_auto_unpack/Map_Ver`);
-    if (!res.ok) throw new Error(res.status);
-    const files = await res.json();
+    const files = await fetchWithCache(`https://api.github.com/repos/${REPO}/contents/eggitor_auto_unpack/Map_Ver`);
     let pys = files.filter(f => f.name.endsWith('.py')).sort((a, b) => cmpVer(getVer(b.name), getVer(a.name)));
     if (sub === 'filter') pys = pys.filter(f => f.name.includes('Filter') && !f.name.includes('root') && !f.name.includes('full'));
     else if (sub === 'root') pys = pys.filter(f => f.name.includes('root'));
     else if (sub === 'full') pys = pys.filter(f => f.name.includes('full') || f.name.includes('unpak_full'));
     el.innerHTML = makeDlCard(pys, 'secondary', 'map', 'eggitor_auto_unpack/Map_Ver');
-  } catch (e) { el.innerHTML = '<div class="loading">加载失败</div>'; }
+  } catch (e) { el.innerHTML = `<div class="loading">加载失败: ${esc(e.message || e)}</div>`; }
 }
 
 async function buildAudioRenamer() {
   const el = document.getElementById('audio-dl');
   try {
-    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/BNK-WEM-Renamer`);
-    if (!res.ok) throw new Error(res.status);
-    const files = await res.json();
+    const files = await fetchWithCache(`https://api.github.com/repos/${REPO}/contents/BNK-WEM-Renamer`);
     const pys = files.filter(f => f.name.endsWith('.py')).sort((a, b) => cmpVer(getVer(b.name), getVer(a.name)));
     el.innerHTML = makeDlCard(pys, 'primary', 'audio_file', 'BNK-WEM-Renamer');
-  } catch (e) { el.innerHTML = '<div class="loading">加载失败</div>'; }
+  } catch (e) { el.innerHTML = `<div class="loading">加载失败: ${esc(e.message || e)}</div>`; }
 }
 
 async function loadCommands() {
   const c = document.getElementById('commandsContainer');
   try {
-    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/commands.json`);
-    if (!res.ok) throw new Error(res.status);
-    const file = await res.json();
-    const content = decodeURIComponent(escape(atob(file.content)));
-    const data = JSON.parse(content);
+    const data = await fetchJSON('commands.json');
     let html = '';
     if (data.general?.length) {
       html += `<div class="cmd-card"><div class="cmd-header"><span class="material-icons-round">star</span><span class="cmd-header-text">蛋仔派对常用命令</span></div>`;
-      data.general.forEach(c => {
-        html += `<div class="cmd-item"><div class="cmd-desc">${esc(c.desc)}</div><div class="cmd-code"><span class="cmd-code-text">${esc(c.cmd)}</span><button class="cmd-copy" onclick="copyCmd('${esc(c.cmd.replace(/'/g, "\\'"))}')"><span class="material-icons-round">content_copy</span></button></div></div>`;
+      data.general.forEach(item => {
+        html += `<div class="cmd-item"><div class="cmd-desc">${parseColorText(item.desc)}</div><div class="cmd-code"><span class="cmd-code-text">${esc(item.cmd)}</span><button class="cmd-copy" onclick="copyCmd('${esc(item.cmd.replace(/'/g, "\\'"))}')"><span class="material-icons-round">content_copy</span></button></div></div>`;
       });
       html += '</div>';
     }
     if (data.unpack?.length) {
       html += `<div class="cmd-card"><div class="cmd-header"><span class="material-icons-round">folder_zip</span><span class="cmd-header-text">解包常用命令</span></div>`;
-      data.unpack.forEach(c => {
-        html += `<div class="cmd-item"><div class="cmd-desc">${esc(c.desc)}</div><div class="cmd-code"><span class="cmd-code-text">${esc(c.cmd)}</span><button class="cmd-copy" onclick="copyCmd('${esc(c.cmd.replace(/'/g, "\\'"))}')"><span class="material-icons-round">content_copy</span></button></div></div>`;
+      data.unpack.forEach(item => {
+        html += `<div class="cmd-item"><div class="cmd-desc">${parseColorText(item.desc)}</div><div class="cmd-code"><span class="cmd-code-text">${esc(item.cmd)}</span><button class="cmd-copy" onclick="copyCmd('${esc(item.cmd.replace(/'/g, "\\'"))}')"><span class="material-icons-round">content_copy</span></button></div></div>`;
       });
       html += '</div>';
     }
-    c.innerHTML = html || '<div class="loading">暂无命令</div>';
-  } catch (e) { c.innerHTML = '<div class="loading">加载失败</div>'; }
+    c.innerHTML = html || '<div class="cmd-grid"><div class="cmd-card"><div class="loading">暂无命令</div></div></div>';
+  } catch (e) { c.innerHTML = `<div class="cmd-grid"><div class="cmd-card"><div class="loading">加载失败: ${esc(e.message || e)}</div></div></div>`; }
 }
 
 let snkT, snkH, _snkDone = true;
@@ -1251,6 +1541,67 @@ function showSnack(msg) {
   }, 4000);
 }
 
+function checkCookiesConsent() {
+  const consent = localStorage.getItem('cookiesConsent');
+  if (!consent) {
+    setTimeout(() => {
+      document.getElementById('cookiesOverlay').classList.add('visible');
+      document.getElementById('cookiesDialog').classList.add('visible');
+    }, 500);
+    return false;
+  }
+  return consent === 'accepted';
+}
+
+function handleCookies(accepted) {
+  localStorage.setItem('cookiesConsent', accepted ? 'accepted' : 'rejected');
+  document.getElementById('cookiesOverlay').classList.remove('visible');
+  document.getElementById('cookiesDialog').classList.remove('visible');
+  if (accepted) {
+    showSnack('已启用缓存，刷新后生效');
+  }
+}
+
+async function loadAnnouncement() {
+  try {
+    const data = await fetchJSON('announcement.json?t=' + Date.now());
+    const title = data.title?.trim() || '';
+    const content = data.content?.trim() || '';
+    if (!title && !content) {
+      document.documentElement.style.setProperty('--scroll-offset', '80px');
+      return;
+    }
+    const bar = document.getElementById('announcementBar');
+    const level = data.level || 'normal';
+    bar.classList.remove('level-important', 'level-warning');
+    if (level === 'important') bar.classList.add('level-important');
+    else if (level === 'warning') bar.classList.add('level-warning');
+    document.getElementById('announcementTitle').innerHTML = parseColorText(title);
+    document.getElementById('announcementDialogTitle').innerHTML = parseColorText(title);
+    document.getElementById('announcementDialogContent').innerHTML = parseColorText(content);
+    bar.classList.add('visible');
+    document.documentElement.style.setProperty('--scroll-offset', '120px');
+  } catch (e) { console.warn('Failed to load announcement:', e); }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  requestAnimationFrame(() => {
+    window.scrollTo(0, 0);
+  });
+});
+
+function openAnnouncement() {
+  document.body.style.overflow = 'hidden';
+  document.getElementById('announcementOverlay').classList.add('visible');
+  document.getElementById('announcementDialog').classList.add('visible');
+}
+
+function closeAnnouncement() {
+  document.body.style.overflow = '';
+  document.getElementById('announcementOverlay').classList.remove('visible');
+  document.getElementById('announcementDialog').classList.remove('visible');
+}
+
 function copyText(id) {
   const text = document.getElementById(id).textContent;
   if (navigator.clipboard) navigator.clipboard.writeText(text).then(() => showSnack('已复制')).catch(() => _fbCopy(text));
@@ -1274,12 +1625,11 @@ function _fbCopy(txt) {
 
 document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
 
+const useCache = checkCookiesConsent();
+
+loadAnnouncement();
 initGallery();
-loadVersions('NPK_Unlocker', 'npk-dl', 'primary', 'download');
-loadVersions('PPK_Unlocker', 'ppk-dl', 'secondary', 'folder_zip');
-buildAutoFileList();
-buildAutoMap('filter');
-buildAudioRenamer();
+loadAllVersions();
 loadCommands();
 
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
