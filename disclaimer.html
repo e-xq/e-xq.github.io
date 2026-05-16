@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>免责声明</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <style>
+    :root {
+      --md-primary: #669df6;
+      --md-on-primary: #ffffff;
+      --md-primary-container: #d6e3ff;
+      --md-on-primary-container: #001a40;
+      --md-secondary: #625b71;
+      --md-on-secondary: #ffffff;
+      --md-secondary-container: #e8def8;
+      --md-on-secondary-container: #1d192b;
+      --md-tertiary: #7d5260;
+      --md-on-tertiary: #ffffff;
+      --md-tertiary-container: #ffd8e4;
+      --md-on-tertiary-container: #31111d;
+      --md-error: #b3261e;
+      --md-on-error: #ffffff;
+      --md-error-container: #f9dede;
+      --md-on-error-container: #410e0b;
+      --md-background: #ffFBFE;
+      --md-on-background: #1c1b1f;
+      --md-surface: #ffFBFE;
+      --md-on-surface: #1c1b1f;
+      --md-surface-variant: #e7e0ec;
+      --md-on-surface-variant: #49454f;
+      --md-outline: #79747e;
+      --md-outline-variant: #cac4d0;
+      --md-shadow: #000000;
+      --md-surface-container-lowest: #ffffff;
+      --md-surface-container-low: #f7f2fa;
+      --md-surface-container: #f3edf7;
+      --md-surface-container-high: #ece6f0;
+      --md-surface-container-highest: #e6e0e9;
+      --md-sys-shape-corner-small: 8px;
+      --md-sys-shape-corner-medium: 12px;
+      --md-sys-shape-corner-large: 16px;
+      --md-sys-shape-corner-extra-large: 28px;
+      --md-motion-3: 400ms;
+      --md-ease-2: cubic-bezier(0.2, 0, 0, 1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--md-background); color: var(--md-on-background); padding: 24px; line-height: 1.6; }
+    .section { max-width: 800px; margin: 0 auto; padding: 24px 16px; }
+    .section-header { margin-bottom: 24px; }
+    .section-title { font-size: 32px; font-weight: 600; display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .section-title .material-icons-round { font-size: 40px; color: var(--md-primary); }
+    .section-subtitle { font-size: 16px; color: var(--md-on-surface-variant); }
+    .info-card {
+      display: flex; gap: 24px; padding: 28px;
+      background: var(--md-surface-container-lowest); border-radius: var(--md-sys-shape-corner-large);
+      margin-bottom: 16px; border: 1px solid var(--md-outline-variant);
+    }
+    .info-icon {
+      width: 72px; height: 72px; border-radius: var(--md-sys-shape-corner-medium);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .info-icon.primary { background: var(--md-error-container); color: var(--md-error); }
+    .info-icon .material-icons-round { font-size: 40px; }
+    .info-content { flex: 1; }
+    .info-title { font-size: 24px; font-weight: 500; color: var(--md-on-surface); margin-bottom: 8px; }
+    .info-subtitle { font-size: 16px; color: var(--md-on-surface-variant); margin-bottom: 16px; }
+    .info-desc { font-size: 16px; color: var(--md-on-surface-variant); line-height: 1.8; }
+    .info-desc strong { color: var(--md-error); }
+    .email { color: var(--md-primary); font-weight: 500; }
+    .footer { text-align: center; font-size: 14px; color: var(--md-on-surface-variant); margin-top: 32px; }
+    @media (max-width: 600px) {
+      body { padding: 16px; }
+      .section { padding: 16px 0; }
+      .section-title { font-size: 24px; }
+      .section-title .material-icons-round { font-size: 32px; }
+      .info-card { flex-direction: column; gap: 16px; padding: 20px; }
+      .info-icon { width: 56px; height: 56px; }
+      .info-icon .material-icons-round { font-size: 32px; }
+      .info-desc { font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <section class="section">
+    <div class="section-header">
+      <h1 class="section-title">
+        <span class="material-icons-round">info</span>
+        免责声明
+      </h1>
+      <p class="section-subtitle">请在使用本站资源前仔细阅读以下声明</p>
+    </div>
+
+    <div class="info-card">
+      <div class="info-icon primary">
+        <span class="material-icons-round">warning</span>
+      </div>
+      <div class="info-content">
+        <p class="info-desc" style="margin-bottom: 16px;">
+          <strong>重要声明：</strong>
+          本网站是一个<strong>个人技术学习与交流</strong>站点。网站上的代码片段与调试命令，是作者在进行<strong>通用游戏引擎技术分析、音频格式研究、自动化脚本学习</strong>过程中的实践成果。
+        </p>
+
+        <p class="info-desc" style="margin-bottom: 16px;">
+          这些内容的核心目的在于分享<strong>技术原理与编程思路</strong>，属于计算机软件领域的<strong>学术研究与知识探讨</strong>范畴。本站所有资料均不被鼓励、也不应被用于任何违反软件用户协议的行为。如因使用者不当利用而产生任何法律风险，<strong>责任由使用者自行承担</strong>。
+        </p>
+
+        <p class="info-desc" style="margin-bottom: 16px;">
+          <strong>法律依据：</strong>
+          根据《计算机软件保护条例》第十七条，为了学习和研究软件内含的<strong>设计思想和原理</strong>，通过安装、显示、传输或者存储软件等方式使用软件的，可以不经软件著作权人许可，不向其支付报酬。本站内容严格遵守此条款，所有讨论均围绕技术原理展开，不涉及任何侵权用途。
+        </p>
+
+        <p class="info-desc" style="margin-bottom: 16px;">
+          作者并非网易员工，也未曾参与《蛋仔派对》或相关游戏的开发。本站提及的游戏名称、角色，音乐、资源等均为<strong>网易公司（NetEase, Inc.）</strong>的资产。作者尊重网易的知识产权本站所有内容仅代表个人技术观点。
+        </p>
+
+        <p class="info-desc" style="margin-bottom: 16px;">
+          <strong>侵权处理：</strong>
+          如果您认为本站内容侵犯了您的合法权益，请通过以下方式联系：
+        </p>
+        <p class="info-desc" style="text-align: center; font-size: 18px; margin-bottom: 8px;">
+          <strong>Email: <span class="email">LFK909688@163.com</span></strong>
+        </p>
+
+        <p class="footer">最后更新：2026年5月16日</p>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
