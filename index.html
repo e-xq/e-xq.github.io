@@ -208,6 +208,7 @@
       opacity: 0; pointer-events: none;
       visibility: hidden;
       transition: transform var(--md-motion-3) var(--md-ease-2), opacity var(--md-motion-3), visibility 0s var(--md-motion-3);
+      will-change: transform, opacity, visibility;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
     .game-notice-dialog.visible { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; visibility: visible; transition-delay: 0s; }
@@ -222,7 +223,7 @@
       color: var(--md-on-surface);
       font-size: 13px;
       cursor: pointer;
-      max-width: 150px;
+      max-width: 220px;
       transition: border-color var(--md-motion-3), box-shadow var(--md-motion-3);
       appearance: none;
       -webkit-appearance: none;
@@ -1853,6 +1854,7 @@ async function openAnnouncementDialog() {
     if (!text.trim()) throw new Error('暂无蛋仔公告');
     const data = JSON.parse(text);
     const nav = document.getElementById('gameNoticeNav');
+    nav.innerHTML = '';
     let html = '';
     data.forEach((item, index) => {
       const cleanTitle = item.title.replace(/#image#.+$/gm, '');
