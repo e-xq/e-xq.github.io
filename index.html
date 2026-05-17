@@ -1230,6 +1230,19 @@
 
 <script>
   const REPO = 'e-xq/e-xq.github.io';
+  const COLOR_MAP = {
+    'P': '#f06292', 'Pink': '#f06292',
+    'R': '#ef5350', 'Red': '#ef5350',
+    'O': '#ff9800', 'Orange': '#ff9800',
+    'Y': '#f9a825', 'Yellow': '#f9a825',
+    'G': '#66bb6a', 'Green': '#66bb6a',
+    'B': '#42a5f5', 'Blue': '#42a5f5',
+    'I': '#26c6da', 'Indigo': '#26c6da',
+    'Pur': '#ab47bc', 'Purple': '#ab47bc',
+    'W': '#ffffff', 'White': '#ffffff',
+    'Bk': '#212121', 'Black': '#212121',
+    'U': 'auto'
+  };
 
   /* ===== 涟漪动效 ===== */
   document.addEventListener('click', function(e) {
@@ -1532,21 +1545,8 @@
     const text = await res.text();
     return JSON.parse(stripComments(text));
   }
-  const COLOR_MAP = {
-    'P': '#f06292', 'Pink': '#f06292',
-    'R': '#ef5350', 'Red': '#ef5350',
-    'O': '#ff9800', 'Orange': '#ff9800',
-    'Y': '#f9a825', 'Yellow': '#f9a825',
-    'G': '#66bb6a', 'Green': '#66bb6a',
-    'B': '#42a5f5', 'Blue': '#42a5f5',
-    'I': '#26c6da', 'Indigo': '#26c6da',
-    'Pur': '#ab47bc', 'Purple': '#ab47bc',
-    'W': '#ffffff', 'White': '#ffffff',
-    'Bk': '#212121', 'Black': '#212121',
-    'U': 'auto'
-  };
   function parseColorText(text) {
-    const parts = text.split(/(#\w+)/g);
+    const parts = text.split(/(#[A-Za-z]+)/g).filter(p => p !== '');
     let result = '', inColor = false;
     for (const part of parts) {
       const match = part.match(/^#(\w+)$/);
