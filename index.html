@@ -53,7 +53,6 @@
       --md-on-tertiary: #ffffff;
       --md-tertiary-container: #fff9c4;
       --md-on-tertiary-container: #f57f17;
-      --md-ease-1: cubic-bezier(0.2, 0, 0, 1);
       --md-ease-2: cubic-bezier(0.2, 0, 0.2, 1);
       --md-motion-3: 150ms;
       --md-motion-4: 200ms;
@@ -64,7 +63,43 @@
       --md-sys-shape-corner-large: 16px;
       --md-sys-shape-corner-extra-large: 28px;
       --md-sys-shape-corner-full: 50px;
+      --md-scrim: rgba(0, 0, 0, 0.32);
+      --auto-color: #1c1b1f;
       font-family: 'U5Font', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      transition: background-color var(--md-motion-5), color var(--md-motion-5);
+    }
+
+    [data-theme="dark"] {
+      --md-primary: #8ab4f8;
+      --md-on-primary: #003a70;
+      --md-primary-container: #004881;
+      --md-on-primary-container: #d6e3ff;
+      --md-secondary: #f7a8c1;
+      --md-on-secondary: #5c1135;
+      --md-secondary-container: #7b2950;
+      --md-on-secondary-container: #fad8fd;
+      --md-background: #242428;
+      --md-on-background: #e6e1e5;
+      --md-surface: #242428;
+      --md-on-surface: #e6e1e5;
+      --md-surface-variant: #3d3d44;
+      --md-on-surface-variant: #c4c6cf;
+      --md-outline: #8e9196;
+      --md-outline-variant: #3d3d44;
+      --md-surface-container-lowest: #2b2b2f;
+      --md-surface-container-low: #32323a;
+      --md-surface-container: #3a3a42;
+      --md-surface-container-high: #42424a;
+      --md-error: #f2b8b5;
+      --md-on-error: #601410;
+      --md-error-container: #8c1d18;
+      --md-on-error-container: #f9dedc;
+      --md-tertiary: #efb8c8;
+      --md-on-tertiary: #492532;
+      --md-tertiary-container: #4a3f00;
+      --md-on-tertiary-container: #ffe082;
+      --md-scrim: rgba(0, 0, 0, 0.5);
+      --auto-color: #e6e1e5;
     }
 
     *, *::before, *::after {
@@ -88,8 +123,8 @@
 
     .announcement-bar {
       position: relative;
-      background: #d6e3ff;
-      color: #001d35;
+      background: var(--md-primary-container);
+      color: var(--md-on-primary-container);
       overflow: hidden;
       max-height: 0; opacity: 0;
       transition: max-height 200ms ease, opacity 150ms ease;
@@ -232,6 +267,7 @@
       background-position: right 8px center;
       padding-right: 32px;
     }
+    [data-theme="dark"] .game-notice-nav { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%23c4c6cf'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); }
     .game-notice-nav:hover { border-color: var(--md-primary); }
     .game-notice-nav:focus { outline: none; border-color: var(--md-primary); box-shadow: 0 0 0 2px var(--md-primary-container); }
     .game-notice-close {
@@ -289,8 +325,10 @@
       animation: ripple-effect 0.6s linear;
       pointer-events: none;
       z-index: 0;
-      background: rgba(0, 0, 0, 0.12);
+      background: var(--md-on-surface);
+      opacity: 0.12;
     }
+    [data-theme="dark"] .ripple-span { opacity: 0.25; }
     @keyframes ripple-effect {
       to { transform: scale(4); opacity: 0; }
     }
@@ -469,7 +507,7 @@
     .gallery-title .material-icons-round { font-size: 20px; color: var(--md-primary); }
     .gallery-card {
       border-radius: var(--md-sys-shape-corner-extra-large);
-      overflow: hidden; background: #000;
+      overflow: hidden; background: var(--md-surface-container-lowest);
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14);
       position: relative;
     }
@@ -518,13 +556,18 @@
     }
     .gallery-arrow {
       width: 36px; height: 36px; border-radius: 50%;
-      background: rgba(255, 255, 255, 0.82); border: none; cursor: pointer;
+      background: #fff; border: none; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       opacity: 0; transform: scale(0.8);
       transition: opacity var(--md-motion-3), transform var(--md-motion-3), background 0.15s;
     }
     .gallery-container:hover .gallery-arrow { opacity: 1; transform: scale(1); }
     .gallery-arrow:hover { background: #fff; }
+    .gallery-arrow .ripple-span { background: #000; }
+    [data-theme="dark"] .gallery-arrow .ripple-span { background: #000; }
+    [data-theme="dark"] .gallery-nav { background: rgba(0,0,0,0.4); }
+    [data-theme="dark"] .gallery-dot { background: var(--md-on-surface-variant); }
+    [data-theme="dark"] .gallery-dot.active { background: var(--md-primary); }
 
     .section-header { margin-bottom: 32px; }
     .section-title {
@@ -630,7 +673,7 @@
     .download-info { flex: 1; min-width: 0; }
     .download-version { font-size: 16px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
     .download-tag {
-      font-size: 10px; font-weight: 500; padding: 4px 8px; border-radius: var(--md-sys-shape-corner-full); color: #fff;
+      font-size: 10px; font-weight: 500; padding: 4px 8px; border-radius: var(--md-sys-shape-corner-full); color: var(--md-on-primary);
     }
     .download-tag.primary { background: var(--md-primary); }
     .download-tag.secondary { background: var(--md-secondary); }
@@ -736,8 +779,8 @@
 
     #snackbar {
       position: fixed; bottom: 28px; left: 50%;
-      background: linear-gradient(135deg, var(--md-on-surface), #2d3142);
-      color: #F8F9FF; padding: 12px 20px; border-radius: 12px; font-size: 13px;
+      background: var(--md-surface-container-high);
+      color: var(--md-on-surface); padding: 12px 20px; border-radius: 12px; font-size: 13px;
       z-index: 9999; pointer-events: none; display: flex; align-items: center; gap: 10px;
       white-space: nowrap; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
       opacity: 0; visibility: hidden;
@@ -755,7 +798,7 @@
       from { transform: translateX(-50%) translateY(0); opacity: 1; }
       to { transform: translateX(-50%) translateY(100%); opacity: 0; }
     }
-    #snackbar .material-icons-round { font-size: 20px; color: #A8C7FA; }
+    #snackbar .material-icons-round { font-size: 20px; color: var(--md-primary); }
 
     footer {
       text-align: center; padding: 48px 24px; font-size: 14px; color: var(--md-on-surface-variant);
@@ -807,7 +850,7 @@
   </div>
   <nav class="drawer-nav">
     <div class="drawer-section-title">页面导航</div>
-    <div class="drawer-item ripple-host" onclick="scrollToSection('hero-section')">
+    <div class="drawer-item ripple-host" onclick="window.scrollTo({top:0,behavior:'smooth'}); closeDrawer();">
       <span class="material-icons-round icon">home</span>
       <div class="drawer-item-text"><div class="drawer-item-title">主页</div><div class="drawer-item-sub">个人介绍</div></div>
     </div>
@@ -858,6 +901,9 @@
   </button>
   <div class="top-app-bar-title">XuanQian 的网站</div>
   <div class="toolbar-links">
+    <button class="icon-btn ripple-host" id="themeToggle" onclick="toggleTheme()" aria-label="切换主题">
+      <span class="material-icons-round">dark_mode</span>
+    </button>
     <a class="toolbar-btn ripple-host" href="https://e-xq.github.io/th" target="_blank" aria-label="文字版">
       <span class="material-icons-round">text_fields</span>
       <span class="toolbar-btn-text">文字版</span>
@@ -1165,7 +1211,6 @@
             <li>所有技术讨论基于<strong>已公开的学术研究范畴</strong>（逆向工程、跨平台兼容性分析）</li>
             <li>本站内容<strong>不鼓励</strong>任何违反软件用户协议的行为</li>
           </ul><br>
-          <strong>本站与网易公司无任何关联。</strong> 蛋仔派对、NeoX引擎及相关商标均为网易公司所有。<br><br>
           如果您认为本站内容侵犯了您的权益，请联系 <a href="mailto:LFK909688@163.com" style="color:var(--md-primary);">LFK909688@163.com</a> 进行沟通。
         </div>
       </div>
@@ -1276,7 +1321,11 @@
   navItems.forEach(item => {
     item.addEventListener('click', function() {
       if (this.classList.contains('active')) return;
-      scrollToSection(this.dataset.section);
+      if (this.dataset.section === 'hero-section') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        scrollToSection(this.dataset.section);
+      }
     });
   });
 
@@ -1435,12 +1484,16 @@
     return json.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
   }
   const CACHE_KEY = 'gh_api_cache';
+  const CACHE_MAX_AGE = 86400000;
 
   function getCache(url) {
     try {
       const stored = localStorage.getItem(CACHE_KEY);
-      const cache = stored ? JSON.parse(stored) : {};
-      return cache[url] || null;
+      if (!stored) return null;
+      const cache = JSON.parse(stored);
+      if (!cache[url]) return null;
+      const age = Date.now() - cache[url].ts;
+      return { data: cache[url].data, age, expired: age > CACHE_MAX_AGE };
     } catch {}
     return null;
   }
@@ -1452,39 +1505,27 @@
       localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
     } catch {}
   }
-  async function fetchWithCache(url) {
-    const cached = getCache(url);
-    if (cached) {
-      const age = Date.now() - cached.ts;
-      if (age < 300000) {
-        return { data: cached.data, usedCache: true, error: null };
+  function fetchWithCache(url, forceRefresh = false) {
+    return new Promise(async (resolve) => {
+      const cached = getCache(url);
+      if (cached && !forceRefresh && !cached.expired) {
+        resolve({ data: cached.data, usedCache: true, error: null });
+        return;
       }
       try {
         const res = await fetch(url);
-        if (res.status === 304) {
-          cached.ts = Date.now();
-          setCache(url, cached.data);
-          return { data: cached.data, usedCache: true, error: null };
-        }
-        if (res.ok) {
-          const newData = await res.json();
-          setCache(url, newData);
-          return { data: newData, usedCache: false, error: null };
-        }
-        throw new Error(res.status);
+        if (!res.ok) throw new Error(res.status);
+        const data = await res.json();
+        setCache(url, data);
+        resolve({ data, usedCache: false, error: null });
       } catch (e) {
-        return { data: cached.data, usedCache: true, error: null };
+        if (cached) {
+          resolve({ data: cached.data, usedCache: true, error: null });
+        } else {
+          resolve({ data: [], usedCache: false, error: e.message });
+        }
       }
-    }
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(res.status);
-      const data = await res.json();
-      setCache(url, data);
-      return { data, usedCache: false, error: null };
-    } catch (e) {
-      return { data: [], usedCache: false, error: e.message };
-    }
+    });
   }
   async function fetchJSON(url) {
     const res = await fetch(url + (url.includes('?') ? '&' : '?') + 't=' + Date.now());
@@ -1501,7 +1542,8 @@
     'I': '#26c6da', 'Indigo': '#26c6da',
     'Pur': '#ab47bc', 'Purple': '#ab47bc',
     'W': '#ffffff', 'White': '#ffffff',
-    'Bk': '#212121', 'Black': '#212121'
+    'Bk': '#212121', 'Black': '#212121',
+    'U': 'auto'
   };
   function parseColorText(text) {
     const parts = text.split(/(#\w+)/g);
@@ -1510,12 +1552,18 @@
       const match = part.match(/^#(\w+)$/);
       if (match && COLOR_MAP[match[1]]) {
         if (inColor) result += '</span>';
-        result += `<span style="color:${COLOR_MAP[match[1]]}">`;
+        const color = COLOR_MAP[match[1]] === 'auto' ? 'var(--auto-color)' : COLOR_MAP[match[1]];
+        result += `<span style="color:${color}">`;
         inColor = true;
       } else if (match && !COLOR_MAP[match[1]]) {
         if (inColor) { result += '</span>'; inColor = false; }
-        result += part;
+        result += `<span style="color:var(--auto-color)">${part}`;
+        inColor = true;
       } else {
+        if (!inColor) {
+          result += `<span style="color:var(--auto-color)">`;
+          inColor = true;
+        }
         result += esc(part);
       }
     }
@@ -1599,23 +1647,24 @@
       setBadge(mapCard, cacheStatus['eggitor_auto_unpack/Map_Ver']);
       setBadge(audioCard, cacheStatus['BNK-WEM-Renamer']);
 
-      npkCard.classList.remove('fade-in');
-      document.getElementById('npk-dl').innerHTML = makeDlCard(sortPy(data['NPK_Unlocker'] || []), 'primary', 'download', 'NPK_Unlocker');
-      void npkCard.offsetWidth;
-      npkCard.classList.add('fade-in');
+      const npkFirst = !npkCard.classList.contains('fade-in');
+      const ppkFirst = !ppkCard.classList.contains('fade-in');
+      const audioFirst = !audioCard.classList.contains('fade-in');
 
-      ppkCard.classList.remove('fade-in');
+      if (npkFirst) { npkCard.classList.remove('fade-in'); }
+      document.getElementById('npk-dl').innerHTML = makeDlCard(sortPy(data['NPK_Unlocker'] || []), 'primary', 'download', 'NPK_Unlocker');
+      if (npkFirst) { void npkCard.offsetWidth; npkCard.classList.add('fade-in'); }
+
+      if (ppkFirst) { ppkCard.classList.remove('fade-in'); }
       document.getElementById('ppk-dl').innerHTML = makeDlCard(sortPy(data['PPK_Unlocker'] || []), 'secondary', 'folder_zip', 'PPK_Unlocker');
-      void ppkCard.offsetWidth;
-      ppkCard.classList.add('fade-in');
+      if (ppkFirst) { void ppkCard.offsetWidth; ppkCard.classList.add('fade-in'); }
 
       document.getElementById('filelist-dl').innerHTML = makeDlCard(sortPy(data['eggitor_auto_unpack/File_List_Ver'] || []), 'secondary', 'list_alt', 'eggitor_auto_unpack/File_List_Ver');
       document.getElementById('map-dl').innerHTML = makeDlCard(sortPy(data['eggitor_auto_unpack/Map_Ver'] || []).filter(f => f.name.includes('Filter') && !f.name.includes('root') && !f.name.includes('full')), 'secondary', 'map', 'eggitor_auto_unpack/Map_Ver');
 
-      audioCard.classList.remove('fade-in');
+      if (audioFirst) { audioCard.classList.remove('fade-in'); }
       document.getElementById('audio-dl').innerHTML = makeDlCard(sortPy(data['BNK-WEM-Renamer'] || []), 'primary', 'audio_file', 'BNK-WEM-Renamer');
-      void audioCard.offsetWidth;
-      audioCard.classList.add('fade-in');
+      if (audioFirst) { void audioCard.offsetWidth; audioCard.classList.add('fade-in'); }
     } catch (e) {
       ['npk-dl', 'ppk-dl', 'filelist-dl', 'map-dl', 'audio-dl'].forEach(id => {
         document.getElementById(id).innerHTML = `<div class="loading" style="color:var(--md-error);display:flex;align-items:center;gap:8px;"><span class="material-icons-round" style="color:var(--md-error);font-size:20px;">error</span>加载失败: ${esc(e.message || e)}</div>`;
@@ -1627,22 +1676,23 @@ async function buildAutoFileList() {
   const el = document.getElementById('filelist-dl');
   const card = document.getElementById('filelist-card');
   const headerBadge = card.querySelector('.badge');
-  el.innerHTML = '<div class="loading"><div class="spinner secondary"></div>加载中...</div>';
+  card.classList.remove('fade-in');
   try {
     const { data: files, usedCache, error } = await fetchWithCache(`https://api.github.com/repos/${REPO}/contents/eggitor_auto_unpack/File_List_Ver`);
     if (usedCache && !error) {
       if (headerBadge) headerBadge.textContent = '缓存';
     } else if (error) {
       el.innerHTML = `<div class="loading" style="color:var(--md-error);display:flex;align-items:center;gap:8px;"><span class="material-icons-round" style="color:var(--md-error);font-size:20px;">error</span>加载失败: ${esc(error)}</div>`;
+      card.classList.add('fade-in');
       return;
+    } else {
+      el.innerHTML = '<div class="loading"><div class="spinner secondary"></div>加载中...</div>';
     }
-    await new Promise(r => setTimeout(r, usedCache ? 0 : 300));
     const pys = files.filter(f => f.name.endsWith('.py')).sort((a, b) => cmpVer(getVer(b.name), getVer(a.name)));
-    card.classList.remove('fade-in');
     el.innerHTML = makeDlCard(pys, 'secondary', 'list_alt', 'eggitor_auto_unpack/File_List_Ver');
     void card.offsetWidth;
     card.classList.add('fade-in');
-  } catch (e) { el.innerHTML = `<div class="loading" style="color:var(--md-error);display:flex;align-items:center;gap:8px;"><span class="material-icons-round" style="color:var(--md-error);font-size:20px;">error</span>加载失败: ${esc(e.message || e)}</div>`; }
+  } catch (e) { el.innerHTML = `<div class="loading" style="color:var(--md-error);display:flex;align-items:center;gap:8px;"><span class="material-icons-round" style="color:var(--md-error);font-size:20px;">error</span>加载失败: ${esc(e.message || e)}</div>`; card.classList.add('fade-in'); }
 }
 
 async function buildAutoMap(sub) {
@@ -1650,24 +1700,24 @@ async function buildAutoMap(sub) {
   const card = document.getElementById('map-card');
   const headerBadge = card.querySelector('.badge');
   el.innerHTML = '<div class="loading"><div class="spinner secondary"></div>加载中...</div>';
+  card.classList.remove('fade-in');
   try {
     const { data: files, usedCache, error } = await fetchWithCache(`https://api.github.com/repos/${REPO}/contents/eggitor_auto_unpack/Map_Ver`);
     if (usedCache && !error) {
       if (headerBadge) headerBadge.textContent = '缓存';
     } else if (error) {
       el.innerHTML = `<div class="loading" style="color:var(--md-error);display:flex;align-items:center;gap:8px;"><span class="material-icons-round" style="color:var(--md-error);font-size:20px;">error</span>加载失败: ${esc(error)}</div>`;
+      card.classList.add('fade-in');
       return;
     }
-    await new Promise(r => setTimeout(r, usedCache ? 0 : 300));
     let pys = files.filter(f => f.name.endsWith('.py')).sort((a, b) => cmpVer(getVer(b.name), getVer(a.name)));
     if (sub === 'filter') pys = pys.filter(f => f.name.includes('Filter') && !f.name.includes('root') && !f.name.includes('full'));
     else if (sub === 'root') pys = pys.filter(f => f.name.includes('root'));
     else if (sub === 'full') pys = pys.filter(f => f.name.includes('full') || f.name.includes('unpak_full'));
-    card.classList.remove('fade-in');
     el.innerHTML = makeDlCard(pys, 'secondary', 'map', 'eggitor_auto_unpack/Map_Ver');
     void card.offsetWidth;
     card.classList.add('fade-in');
-  } catch (e) { el.innerHTML = `<div class="loading" style="color:var(--md-error);display:flex;align-items:center;gap:8px;"><span class="material-icons-round" style="color:var(--md-error);font-size:20px;">error</span>加载失败: ${esc(e.message || e)}</div>`; }
+  } catch (e) { el.innerHTML = `<div class="loading" style="color:var(--md-error);display:flex;align-items:center;gap:8px;"><span class="material-icons-round" style="color:var(--md-error);font-size:20px;">error</span>加载失败: ${esc(e.message || e)}</div>`; card.classList.add('fade-in'); }
 }
 
 async function buildAudioRenamer() {
@@ -1675,21 +1725,21 @@ async function buildAudioRenamer() {
   const card = document.getElementById('audio-card');
   const headerBadge = card.querySelector('.badge');
   el.innerHTML = '<div class="loading"><div class="spinner"></div>加载中...</div>';
+  card.classList.remove('fade-in');
   try {
     const { data: files, usedCache, error } = await fetchWithCache(`https://api.github.com/repos/${REPO}/contents/BNK-WEM-Renamer`);
     if (usedCache && !error) {
       if (headerBadge) headerBadge.textContent = '缓存';
     } else if (error) {
       el.innerHTML = `<div class="loading" style="color:var(--md-error);display:flex;align-items:center;gap:8px;"><span class="material-icons-round" style="color:var(--md-error);font-size:20px;">error</span>加载失败: ${esc(error)}</div>`;
+      card.classList.add('fade-in');
       return;
     }
-    await new Promise(r => setTimeout(r, usedCache ? 0 : 300));
     const pys = files.filter(f => f.name.endsWith('.py')).sort((a, b) => cmpVer(getVer(b.name), getVer(a.name)));
-    card.classList.remove('fade-in');
     el.innerHTML = makeDlCard(pys, 'primary', 'audio_file', 'BNK-WEM-Renamer');
     void card.offsetWidth;
     card.classList.add('fade-in');
-  } catch (e) { el.innerHTML = `<div class="loading" style="color:var(--md-error);display:flex;align-items:center;gap:8px;"><span class="material-icons-round" style="color:var(--md-error);font-size:20px;">error</span>加载失败: ${esc(e.message || e)}</div>`; }
+  } catch (e) { el.innerHTML = `<div class="loading" style="color:var(--md-error);display:flex;align-items:center;gap:8px;"><span class="material-icons-round" style="color:var(--md-error);font-size:20px;">error</span>加载失败: ${esc(e.message || e)}</div>`; card.classList.add('fade-in'); }
 }
 
 async function loadCommands() {
@@ -1699,19 +1749,20 @@ async function loadCommands() {
     let html = '';
     if (data.general?.length) {
       html += `<div class="cmd-card"><div class="cmd-header"><span class="material-icons-round">star</span><span class="cmd-header-text">蛋仔派对常用命令</span></div>`;
-      data.general.forEach(item => {
-        html += `<div class="cmd-item"><div class="cmd-desc">${parseColorText(item.desc)}</div><div class="cmd-code"><span class="cmd-code-text">${esc(item.cmd)}</span><button class="cmd-copy" onclick="copyCmd('${esc(item.cmd.replace(/'/g, "\\'"))}')"><span class="material-icons-round">content_copy</span></button></div></div>`;
+      data.general.forEach((item, i) => {
+        html += `<div class="cmd-item"><div class="cmd-desc">${parseColorText(item.desc)}</div><div class="cmd-code"><span class="cmd-code-text">${esc(item.cmd)}</span><button class="cmd-copy" data-cmd="${esc(item.cmd)}"><span class="material-icons-round">content_copy</span></button></div></div>`;
       });
       html += '</div>';
     }
     if (data.unpack?.length) {
       html += `<div class="cmd-card"><div class="cmd-header"><span class="material-icons-round">folder_zip</span><span class="cmd-header-text">解包常用命令</span></div>`;
-      data.unpack.forEach(item => {
-        html += `<div class="cmd-item"><div class="cmd-desc">${parseColorText(item.desc)}</div><div class="cmd-code"><span class="cmd-code-text">${esc(item.cmd)}</span><button class="cmd-copy" onclick="copyCmd('${esc(item.cmd.replace(/'/g, "\\'"))}')"><span class="material-icons-round">content_copy</span></button></div></div>`;
+      data.unpack.forEach((item, i) => {
+        html += `<div class="cmd-item"><div class="cmd-desc">${parseColorText(item.desc)}</div><div class="cmd-code"><span class="cmd-code-text">${esc(item.cmd)}</span><button class="cmd-copy" data-cmd="${esc(item.cmd)}"><span class="material-icons-round">content_copy</span></button></div></div>`;
       });
       html += '</div>';
     }
     c.innerHTML = html || '<div class="cmd-grid"><div class="cmd-card"><div class="loading">暂无命令</div></div></div>';
+    c.querySelectorAll('.cmd-copy').forEach(btn => btn.addEventListener('click', () => copyCmd(btn.dataset.cmd)));
   } catch (e) { c.innerHTML = `<div class="cmd-grid"><div class="cmd-card"><div class="loading">加载失败: ${esc(e.message || e)}</div></div></div>`; }
 }
 
@@ -1720,7 +1771,7 @@ function showSnack(msg) {
   const el = document.getElementById('snackbar');
   const ic = document.getElementById('snackbar-icon');
   document.getElementById('snackbar-text').textContent = msg;
-  ic.style.color = '#A8C7FA';
+  ic.style.color = '';
   clearTimeout(snkT);
   clearTimeout(snkH);
   el.classList.remove('show', 'hide');
@@ -1776,6 +1827,7 @@ function handleDisclaimer(accepted) {
     document.getElementById('disclaimerOverlay').classList.remove('visible');
     document.getElementById('disclaimerDialog').classList.remove('visible');
     document.body.style.overflow = '';
+    document.documentElement.style.setProperty('--scroll-offset', '80px');
   } else {
     document.body.style.overflow = '';
     document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;gap:16px;font-family:inherit;text-align:center;padding:20px;"><span class="material-icons-round" style="font-size:48px;color:var(--md-error);">block</span><p style="font-size:18px;color:var(--md-on-surface);">您需要同意免责声明才能使用本站</p><p style="font-size:14px;color:var(--md-on-surface-variant);">请刷新页面后同意免责申明</p></div>';
@@ -1800,7 +1852,7 @@ async function loadAnnouncement() {
     const contentHtml = title ? '<div class="announcement-content-title">' + parseColorText(title) + '</div>' + parseColorText(content) : parseColorText(content);
     document.getElementById('announcementDialogContent').innerHTML = contentHtml;
     bar.classList.add('visible');
-    document.documentElement.style.setProperty('--scroll-offset', '120px');
+    document.documentElement.style.setProperty('--scroll-offset', '80px');
   } catch (e) { console.warn('Failed to load announcement:', e); }
 }
 
@@ -1934,6 +1986,32 @@ loadAnnouncement();
 initGallery();
 loadAllVersions();
 loadCommands();
+
+function toggleTheme() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  if (isDark) {
+    document.documentElement.removeAttribute('data-theme');
+    localStorage.setItem('theme', 'light');
+  } else {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    localStorage.setItem('theme', 'dark');
+  }
+  updateThemeIcon();
+}
+
+function updateThemeIcon() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const icon = document.querySelector('#themeToggle .material-icons-round');
+  if (icon) icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+}
+
+(function() {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+  updateThemeIcon();
+})();
 
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
