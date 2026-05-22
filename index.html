@@ -1336,6 +1336,7 @@
       if (this.classList.contains('active')) return;
       if (this.dataset.section === 'hero-section') {
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        updateNavRail('hero-section');
       } else {
         scrollToSection(this.dataset.section);
       }
