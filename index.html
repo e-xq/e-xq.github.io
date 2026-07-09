@@ -23,6 +23,8 @@
       font-style: normal;
       font-display: swap;
     }
+    @font-face { font-family: 'huawenyuanti-bold-2'; src: url('notice_panel_res/gui2/font/huawenyuanti-bold-2.ttf') format('truetype'); font-display: block; }
+    @font-face { font-family: 'hkxzyt_w9_gb'; src: url('notice_panel_res/gui2/font/hkxzyt_w9_gb.ttf') format('truetype'); font-display: block; }
 
     :root {
       --md-primary: #669df6;
@@ -224,79 +226,270 @@
     }
     .announcement-content-title { margin-bottom: 16px; font-weight: 500; }
 
-    .game-notice-overlay {
+    #GameNoticeOverlay {
       position: fixed; inset: 0; z-index: 9000;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0,0,0,0.5);
       opacity: 0; pointer-events: none;
-      transition: opacity var(--md-motion-3);
+      transition: opacity 0.3s;
     }
-    .game-notice-overlay.visible { opacity: 1; pointer-events: auto; }
-    .game-notice-dialog {
-      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);
-      z-index: 9001;
-      background: var(--md-surface-container-high);
-      color: var(--md-on-surface);
-      border-radius: var(--md-sys-shape-corner-extra-large);
-      padding: 24px; width: 95vw; max-width: 700px;
-      height: auto; max-height: 85vh;
-      display: flex; flex-direction: column;
-      opacity: 0; pointer-events: none;
-      visibility: hidden;
-      transition: transform var(--md-motion-3) var(--md-ease-2), opacity var(--md-motion-3), visibility 0s var(--md-motion-3);
-      will-change: transform, opacity, visibility;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    #GameNoticeOverlay.visible { opacity: 1; pointer-events: auto; }
+
+    #NoticeSceneWrapper {
+      position: fixed; inset: 0; z-index: 9001;
+      display: none;
     }
-    .game-notice-dialog.visible { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; visibility: visible; transition-delay: 0s; }
-    .game-notice-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-shrink: 0; }
-    .game-notice-title { font-size: 20px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-    .game-notice-title .material-icons-round { font-size: 24px; color: var(--md-primary); }
-    .game-notice-nav {
-      padding: 6px 12px;
-      border-radius: var(--md-sys-shape-corner-medium);
-      border: 1px solid var(--md-outline);
-      background: var(--md-surface-container-highest);
-      color: var(--md-on-surface);
-      font-size: 13px;
-      cursor: pointer;
-      max-width: 220px;
-      transition: border-color var(--md-motion-3), box-shadow var(--md-motion-3);
-      appearance: none;
-      -webkit-appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%2349454f'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 8px center;
-      padding-right: 32px;
+    #NoticeSceneWrapper.visible { display: block; }
+    #NoticeSceneWrapper .SceneScale {
+      position: absolute; left: 0; top: 0;
+      width: 1920px; height: 1080px;
+      transform-origin: 0 0;
     }
-    [data-theme="dark"] .game-notice-nav { 
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%23c4c6cf'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-      background-color: var(--md-surface-container-high);
-      color: var(--md-on-surface);
+    #NoticeSceneWrapper .SceneInner {
+      position: relative; width: 1920px; height: 1080px;
+      opacity: 0;
     }
-    .game-notice-nav:hover { border-color: var(--md-primary); }
-    .game-notice-nav:focus { outline: none; border-color: var(--md-primary); box-shadow: 0 0 0 2px var(--md-primary-container); }
-    .game-notice-close {
-      width: 40px; height: 40px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--md-on-surface-variant); transition: background var(--md-motion-3), color var(--md-motion-3);
+    #NoticeSceneWrapper .SceneInner.visible {
+      animation: np-appear 0.4s ease-out forwards;
     }
-    .game-notice-close:hover { background: var(--md-surface-variant); }
-    .game-notice-content {
-      flex: 1; overflow-y: auto;
-      white-space: pre-wrap; word-break: break-word;
+    @keyframes np-appear {
+      0% { transform: scale(0.0); opacity: 0; }
+      40% { transform: scale(1.06); opacity: 1; }
+      60% { transform: scale(0.96); }
+      80% { transform: scale(1.01); }
+      100% { transform: scale(1); opacity: 1; }
     }
-    .game-notice-item { margin-bottom: 24px; }
-    .game-notice-item:last-child { margin-bottom: 0; }
-    .game-notice-item-title {
-      font-size: 18px; font-weight: 600; color: var(--md-primary);
-      margin-bottom: 12px; padding-bottom: 8px;
-      border-bottom: 1px solid var(--md-outline-variant);
+    #NoticeSceneWrapper .SceneInner.closing {
+      animation: np-disappear 0.2s ease-in forwards;
     }
-    .game-notice-item-content { line-height: 1.6; }
-    .game-notice-item-content p { margin-bottom: 8px; }
-    .game-notice-item-content p:last-child { margin-bottom: 0; }
-    @media (max-width: 600px) {
-      .game-notice-dialog { max-height: 70vh; }
-      .game-notice-item-title { font-size: 16px; }
+    @keyframes np-disappear {
+      0% { transform: scale(1); opacity: 1; }
+      25% { transform: scale(1.04); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0; }
+    }
+    #NoticeSceneWrapper .ListView_announcement {
+      opacity: 0; transform: scale(0.3);
+    }
+    #NoticeSceneWrapper .SceneInner.visible .ListView_announcement {
+      animation: np-list-bounce 0.45s 0.08s ease-out forwards;
+    }
+    #NoticeSceneWrapper .SceneInner.closing .ListView_announcement {
+      opacity: 1; transform: scale(1); animation: none;
+    }
+    @keyframes np-list-bounce {
+      0% { transform: scale(0.3); opacity: 0; }
+      45% { transform: scale(1.08); opacity: 1; }
+      65% { transform: scale(0.95); }
+      80% { transform: scale(1.02); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    #NoticeSceneWrapper .Panel_all {
+      position: absolute; left: 0px; top: 0px;
+      width: 1920px; height: 1080px;
+    }
+    #NoticeSceneWrapper .Panel_bg {
+      position: absolute; left: 23.424px; top: -25.812px;
+      width: 1920px; height: 1080px;
+    }
+    #NoticeSceneWrapper .Image_bg {
+      position: absolute; left: 103px; top: 72px;
+      width: 1644px; height: 1010px;
+      background: url('notice_panel_res/gui2/background/notice/img_bg.png') no-repeat center / 100% 100%;
+    }
+    #NoticeSceneWrapper .Image_bg_mask {
+      position: absolute; left: 123px; top: 72px;
+      width: 1624px; height: 1010px;
+      background: url('notice_panel_res/gui2/background/notice/img_bg_mask.png') no-repeat center / 100% 100%;
+    }
+    #NoticeSceneWrapper .btn_back {
+      position: absolute; left: 1680px; top: 94px;
+      width: 120px; height: 120px;
+      background: url('notice_panel_res/gui2/common/btn_close_1.png') no-repeat center / 100% 100%;
+      cursor: pointer; z-index: 10;
+    }
+    #NoticeSceneWrapper .Panel_title {
+      position: absolute; left: 582.4313px; top: 133.2233px;
+      width: 854.9968px; height: 80px; z-index: 5;
+    }
+    #NoticeSceneWrapper .RText_title {
+      position: absolute; left: -5.5px; top: 0px;
+      width: 872px; height: 84px;
+      font-family: "hkxzyt_w9_gb";
+      font-size: 60px; color: #FFFFFF;
+      white-space: nowrap; text-align: center; line-height: 84px;
+      -webkit-text-stroke: 15px #FF9014;
+      text-stroke: 4px #FF9014;
+      paint-order: stroke fill;
+    }
+    #NoticeSceneWrapper .ListView_announcement {
+      position: absolute; left: 32px; top: 313.2214px;
+      width: 362px; height: 580px;
+      overflow-y: auto; overflow-x: hidden; z-index: 5;
+    }
+    #NoticeSceneWrapper .ListView_announcement::-webkit-scrollbar { display: none; }
+    #NoticeSceneWrapper .tab-cell {
+      position: relative; left: 0px; top: 0px;
+      width: 362px; height: 110px;
+      cursor: pointer; overflow: visible;
+    }
+    #NoticeSceneWrapper .tab-nml {
+      position: absolute; left: 0px; top: -8px;
+      width: 362px; height: 120px;
+    }
+    #NoticeSceneWrapper .tab-nml .tab-text {
+      position: absolute; right: 47px; top: 39px;
+      height: 34px;
+      font-family: "hkxzyt_w9_gb";
+      font-size: 31px; color: #302E1D;
+      white-space: nowrap; text-align: right; line-height: 34px;
+      z-index: 999;
+    }
+    #NoticeSceneWrapper .tab-cell.tab-special .tab-nml .tab-text { right: 3px; z-index: 99999; }
+    #NoticeSceneWrapper .tab-cell.tab-special .tab-sel .tab-text { left: 108px; z-index: 99999; }
+    #NoticeSceneWrapper .tab-sel {
+      position: absolute; left: 0px; top: -12.9628px;
+      width: 362px; height: 120px;
+      display: none;
+    }
+    #NoticeSceneWrapper .tab-sel.active { display: block; }
+    #NoticeSceneWrapper .tab-nml.hidden { display: none; }
+    #NoticeSceneWrapper .tab-sel .img-btn {
+      position: absolute; left: 38px; top: 12px;
+      width: 324px; height: 106px;
+      background: url('notice_panel_res/gui2/background/notice/btn_tab_2.png') no-repeat center / 100% 100%;
+    }
+    #NoticeSceneWrapper .tab-sel .tab-text {
+      position: absolute; left: 154px; top: 34.5px;
+      height: 47px;
+      font-family: "hkxzyt_w9_gb";
+      font-size: 40px; color: #302E1D;
+      white-space: nowrap; text-align: left; line-height: 47px;
+      z-index: 999;
+    }
+    #NoticeSceneWrapper .tab-line {
+      position: absolute; left: 147.8421px; top: 101px;
+      width: 176px; height: 6px;
+      background: url('notice_panel_res/gui2/background/notice/img_notice_line.png') no-repeat center / 100% 100%;
+    }
+    #NoticeSceneWrapper .Panel_details {
+      position: absolute; left: 374px; top: 230.2214px;
+      width: 1355px; height: 706px; z-index: 5;
+    }
+    #NoticeSceneWrapper .ListView_content {
+      position: absolute; left: 43px; top: 38px;
+      width: 1266px; height: 647px;
+      overflow-y: auto; overflow-x: hidden;
+    }
+    #NoticeSceneWrapper .ListView_content::-webkit-scrollbar { width: 0; }
+    #NoticeSceneWrapper .content-cell {
+      position: relative; left: 0px; top: 0px;
+      width: 1205px; height: 700px; overflow: hidden;
+    }
+    #NoticeSceneWrapper .content-cell .Image_banner_bg {
+      position: absolute; left: 18.5px; top: 12px;
+      width: 1189px; height: 292px;
+      background: url('notice_panel_res/gui2/background/notice/img_banner_bg.png') no-repeat center / 100% 100%;
+      display: none;
+    }
+    #NoticeSceneWrapper .content-cell .RText_info {
+      position: absolute; left: 25px; top: 0px;
+      width: 1162px;
+      font-family: "huawenyuanti-bold-2";
+      font-size: 34px; color: #34343F;
+      line-height: 1.5; word-wrap: break-word;
+      display: none;
+    }
+    #NoticeSceneWrapper .content-cell .RText_info a {
+      color: #5D8BEF; text-decoration: underline; cursor: pointer;
+    }
+    #NoticeSceneWrapper .content-cell .Panel_big_pic {
+      position: absolute; left: 7px; top: 0px;
+      width: 1226px; height: 540px; overflow: hidden;
+      display: none;
+    }
+    #NoticeSceneWrapper .content-cell .Panel_big_pic .Image_big_pic {
+      position: absolute; left: 0px; top: 0px;
+      width: 100%; height: 100%;
+      background-size: 100% 100%; background-repeat: no-repeat; background-position: center;
+    }
+    #NoticeSceneWrapper .content-cell .Panel_banner_pic {
+      position: absolute; left: 1.5px; top: 60px;
+      width: 1237px; height: 152px; display: none;
+    }
+    #NoticeSceneWrapper .content-cell .Panel_banner_pic .Image_banner_pic {
+      position: absolute; left: 4px; top: 5px;
+      width: 1226px; height: 142px;
+      background-size: 100% 100%; background-repeat: no-repeat; background-position: center;
+    }
+    #NoticeSceneWrapper .content-cell .Panel_banner_pic .RText_banner_text {
+      position: absolute; left: 476.5px; top: 37px;
+      width: 291px; height: 94px;
+      font-family: "hkxzyt_w9_gb";
+      font-size: 70px; color: #EF5A09;
+      white-space: nowrap; text-align: center; line-height: 94px;
+      -webkit-text-stroke: 10px #FFFFFF;
+      text-stroke: 3px #FFFFFF;
+      paint-order: stroke fill;
+    }
+    #NoticeSceneWrapper .content-cell .Panel_content_title {
+      position: absolute; left: 4px; top: 0px;
+      width: 1232px; height: 94px; display: none;
+    }
+    #NoticeSceneWrapper .content-cell .Panel_content_title .Image_title_bg {
+      position: absolute; left: 3px; top: 6px;
+      width: 1012px; height: 76px;
+      background-size: 100% 100%; background-repeat: no-repeat; background-position: center;
+    }
+    #NoticeSceneWrapper .content-cell .Panel_content_title .RText_title_text {
+      position: absolute; left: 35px; top: 24.5px;
+      width: 401px; height: 45px;
+      font-family: "huawenyuanti-bold-2";
+      font-size: 35px; color: #FFFFFF;
+      white-space: nowrap; line-height: 45px;
+      -webkit-text-stroke: 10px #FF6825;
+      text-stroke: 4px #FF6825;
+      paint-order: stroke fill; z-index: 2;
+    }
+    #NoticeSceneWrapper .Panel_arrow {
+      position: absolute; left: 545.1472px; top: 719.086px;
+      width: 305px; height: 55.914px; z-index: 8;
+    }
+    #NoticeSceneWrapper .Panel_arrow .Image_arrow {
+      position: absolute; left: 121.5px; top: 13.414px;
+      width: 40.3px; height: 37.7px;
+      background: url('notice_panel_res/gui2/common/arrow/img_arrow6.png') no-repeat center / 100% 100%;
+      animation: np-arrow-bounce 1.6s ease-in-out infinite;
+    }
+    @keyframes np-arrow-bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    #NoticeSceneWrapper .Panel_slider {
+      position: absolute; left: 1271.499px; top: 36.5138px;
+      width: 56px; height: 545.3696px;
+      z-index: 9; display: none;
+    }
+    #NoticeSceneWrapper .Panel_slider .slider-bg {
+      position: absolute; left: 24px; top: 50.3696px;
+      width: 8px; height: 481px;
+      background: url('notice_panel_res/gui2/background/notice/img_notice_bg_bar.png') no-repeat center / 100% 100%;
+    }
+    #NoticeSceneWrapper .Panel_slider .slider-bar {
+      position: absolute; left: 21px; top: 50.3696px;
+      width: 14px; height: 76px; cursor: pointer;
+    }
+    #NoticeSceneWrapper .Panel_slider .slider-bar::before {
+      content: '';
+      position: absolute;
+      width: 76px; height: 14px;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%) rotate(90deg);
+      background: url('notice_panel_res/gui2/background/notice/img_notice_bg_bar_btn.png') no-repeat center / 100% 100%;
+    }
+    #NoticeSceneWrapper .Image_cartoon {
+      position: absolute; left: 1224px; top: 517px;
+      width: 272px; height: 294px;
+      background: url('notice_panel_res/gui2/background/notice/img_egg.png') no-repeat center / 100% 100%;
+      z-index: 7; pointer-events: none;
     }
 
     a { color: inherit; text-decoration: none; }
@@ -455,6 +648,7 @@
 
     .main { margin-top: 64px; min-height: calc(100vh - 64px); transition: opacity var(--md-motion-5), margin-left var(--md-motion-5), filter var(--md-motion-5); }
     body.is-mobile .drawer-backdrop.visible ~ .drawer ~ .top-app-bar ~ .main { filter: blur(2px); pointer-events: none; }
+    .drawer-backdrop.visible ~ .top-app-bar { filter: blur(2px); transition: filter var(--md-motion-5); }
     body.is-desktop .main { margin-left: 80px; }
     body.is-desktop .drawer-backdrop.visible ~ .drawer ~ .top-app-bar ~ .main { filter: blur(2px); pointer-events: none; }
     body.is-desktop .drawer-backdrop.visible ~ .bg-video { filter: blur(2px); transition: filter var(--md-motion-5); }
@@ -896,7 +1090,7 @@
       <div class="drawer-item-text"><div class="drawer-item-title">XQ Music</div><div class="drawer-item-sub">悬铅的在线蛋仔音乐播放器</div></div>
       <span class="material-icons-round drawer-item-icon-end">open_in_new</span>
     </a>
-    <div class="drawer-item ripple-host" onclick="openAnnouncementDialog()">
+    <div class="drawer-item ripple-host" onclick="openGameNotice()">
       <span class="material-icons-round icon">campaign</span>
       <div class="drawer-item-text"><div class="drawer-item-title">查看蛋仔公告</div><div class="drawer-item-sub">官方公告信息</div></div>
     </div>
@@ -947,19 +1141,29 @@
   <div class="announcement-dialog-content" id="announcementDialogContent"></div>
 </div>
 
-<div class="game-notice-overlay" id="gameNoticeOverlay" onclick="closeGameNotice()"></div>
-<div class="game-notice-dialog" id="gameNoticeDialog">
-  <div class="game-notice-header">
-    <div class="game-notice-title"><span class="material-icons-round">campaign</span>蛋仔公告</div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <select class="game-notice-nav" id="gameNoticeNav" onchange="jumpToNotice(this.value)"></select>
-      <button class="game-notice-close ripple-host" onclick="closeGameNotice()" aria-label="关闭">
-        <span class="material-icons-round">close</span>
-      </button>
+<div id="GameNoticeOverlay" onclick="closeGameNotice()"></div>
+<div id="NoticeSceneWrapper">
+  <div class="SceneScale" id="NoticeSceneScale">
+    <div class="SceneInner" id="NoticeSceneInner">
+      <div class="Panel_all">
+        <div class="Panel_bg" onclick="closeGameNotice()">
+          <div class="Image_bg"></div>
+          <div class="Image_bg_mask"></div>
+        </div>
+        <div class="btn_back" onclick="closeGameNotice()"></div>
+        <div class="Panel_title"><div class="RText_title"></div></div>
+        <div class="ListView_announcement" id="NPListViewAnnouncement"></div>
+        <div class="Panel_details">
+          <div class="ListView_content" id="NPListViewContent"></div>
+          <div class="Panel_arrow"><div class="Image_arrow"></div></div>
+          <div class="Panel_slider" id="NPPanelSlider">
+            <div class="slider-bg"></div>
+            <div class="slider-bar"></div>
+          </div>
+          <div class="Image_cartoon"></div>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="game-notice-content" id="gameNoticeContent">
-    <div class="loading"><div class="spinner"></div>加载中...</div>
   </div>
 </div>
 
@@ -1885,88 +2089,412 @@ function closeAnnouncement() {
   document.getElementById('announcementDialog').classList.remove('visible');
 }
 
-function jumpToNotice(id) {
-  if (!id) return;
-  const el = document.getElementById(id);
-  if (el) {
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+var NP_NOTICE_URL = 'https://u5.update.netease.com/game_notice/other_channel.txt';
+var NP_AUTO_SWITCH_TAB_DIS = 150;
+var NP_SUB_HEIGHT_IMAGE_HEIGHT = 94;
+var NP_SUB_TITLE_DELTA_HEIGHT = 40;
+var NP_SUB_TITLE_2_DELTA_HEIGHT = 34;
+var npCurSelectTabIndex = -1;
+var npNoticeList = [];
+var npMainTitleData = {};
+var npEventName2Url = {};
+var npListTotalHeight = 0;
+var npTab2Height = {};
+var npHeightList = [];
+var npIsDraggingSlider = false;
+var npIsClosing = false;
+var npLastTabRefreshTime = 0;
+var NP_TAB_REFRESH_THROTTLE = 120;
+var npSuppressTabRefresh = false;
+var NP_BANNER_PIC_MIDDLE_OFFSET = 136;
+
+function openGameNotice() {
+  closeDrawer();
+  var ov = document.getElementById('GameNoticeOverlay');
+  var sw = document.getElementById('NoticeSceneWrapper');
+  if (!ov || !sw) return;
+  ov.classList.add('visible');
+  sw.classList.add('visible');
+  document.body.style.overflow = 'hidden';
+  npResizeScene();
+  setTimeout(function() {
+    var si = document.getElementById('NoticeSceneInner');
+    if (si) si.classList.add('visible');
+    try { npFetchNoticeData(); } catch(e) { console.error(e); }
+  }, 50);
+  window.addEventListener('resize', npResizeScene);
 }
 
 function closeGameNotice() {
-  document.body.style.overflow = '';
-  document.getElementById('gameNoticeOverlay').classList.remove('visible');
-  document.getElementById('gameNoticeDialog').classList.remove('visible');
+  if (npIsClosing) return;
+  npIsClosing = true;
+  var scene = document.getElementById('NoticeSceneInner');
+  scene.classList.remove('visible');
+  void scene.offsetWidth;
+  scene.classList.add('closing');
+  setTimeout(function() {
+    scene.classList.remove('closing');
+    scene.style.opacity = '0';
+    document.getElementById('GameNoticeOverlay').classList.remove('visible');
+    document.getElementById('NoticeSceneWrapper').classList.remove('visible');
+    document.body.style.overflow = '';
+    npIsClosing = false;
+    window.removeEventListener('resize', npResizeScene);
+  }, 210);
 }
 
-async function openAnnouncementDialog() {
-  closeDrawer();
-  const overlay = document.getElementById('gameNoticeOverlay');
-  const dialog = document.getElementById('gameNoticeDialog');
-  const content = document.getElementById('gameNoticeContent');
-  content.innerHTML = '<div class="loading"><div class="spinner"></div>加载中...</div>';
-  overlay.classList.add('visible');
-  dialog.classList.add('visible');
-  document.body.style.overflow = 'hidden';
-  dialog.querySelector('.game-notice-close').focus();
-  try {
-    const response = await fetchWithTimeout('https://u5.update.netease.com/game_notice/other_channel.txt', 10000);
-    if (!response.ok) throw new Error('HTTP错误: ' + response.status);
-    const text = await response.text();
-    if (!text.trim()) throw new Error('暂无蛋仔公告');
-    const data = JSON.parse(text);
-    const nav = document.getElementById('gameNoticeNav');
-    nav.innerHTML = '';
-    let html = '';
-    data.forEach((item, index) => {
-      const cleanTitle = item.title.replace(/#image#.+$/gm, '');
-      nav.innerHTML += '<option value="notice-' + index + '">' + esc(cleanTitle) + '</option>';
-      html += '<div class="game-notice-item" id="notice-' + index + '">';
-      html += '<div class="game-notice-item-title">' + esc(cleanTitle) + '</div>';
-      html += '<div class="game-notice-item-content">';
-      if (item.content && Array.isArray(item.content)) {
-        item.content.forEach(block => {
-          let text = block;
-          text = text.replace(/#image#\S+/g, '');
-          text = text.replace(/#f\(c:[0-9a-fA-F]{6}\)/g, '');
-          text = text.replace(/#l/g, '');
-          let result = '';
-          let lastIndex = 0;
-          const colorRegex = /#c([0-9a-fA-F]{6})/g;
-          let match;
-          while ((match = colorRegex.exec(text)) !== null) {
-            result += esc(text.slice(lastIndex, match.index));
-            result += '<span style="color:#' + match[1] + '">';
-            lastIndex = match.index + match[0].length;
-          }
-          result += esc(text.slice(lastIndex));
-          result += '</span>';
-          html += '<p>' + result.split('\n').join('<br>') + '</p>';
-        });
-      }
-      html += '</div></div>';
+function npResizeScene() {
+  var scaleX = window.innerWidth / 1920;
+  var scaleY = window.innerHeight / 1080;
+  var scale = Math.min(scaleX, scaleY);
+  var el = document.getElementById('NoticeSceneScale');
+  el.style.transform = 'scale(' + scale + ')';
+  el.style.left = Math.max(0, (window.innerWidth - 1920 * scale) / 2) + 'px';
+  el.style.top = Math.max(0, (window.innerHeight - 1080 * scale) / 2) + 'px';
+}
+
+function npFetchNoticeData() {
+  document.getElementById('NoticeSceneWrapper').querySelector('.RText_title').textContent = '加载中...';
+  fetch(NP_NOTICE_URL + '?_t=' + Date.now(), { cache: 'no-store' })
+    .then(function(r) { return r.text(); })
+    .then(function(t) {
+      var data;
+      try { data = JSON.parse(t); } catch(e) { data = npParseOldFormat(t); }
+      if (data && data.length > 0) npShowNoticeList(data);
+      else document.getElementById('NoticeSceneWrapper').querySelector('.RText_title').textContent = '暂无公告';
+    })
+    .catch(function(err) {
+      console.error('[公告] 获取失败:', err);
+      document.getElementById('NoticeSceneWrapper').querySelector('.RText_title').textContent = '获取公告失败';
     });
-    content.innerHTML = html || '<div class="loading">暂无公告</div>';
-  } catch (e) {
-    content.innerHTML = '<div class="loading" style="color:var(--md-error);">加载失败: ' + esc(e.message) + '</div>';
+}
+
+function npParseOldFormat(text) {
+  var result = [];
+  var items = text.split('#*#*#*');
+  for (var i = 0; i < items.length; i++) {
+    var item = items[i].trim();
+    if (!item) continue;
+    var parts = item.split('#=#=#');
+    result.push({ title: parts[0] || '', content: [parts[1] || ''] });
+  }
+  return result;
+}
+
+function npShowNoticeList(data) {
+  if (!data || data.length === 0) { closeGameNotice(); return; }
+  npMainTitleData = data[0];
+  npNoticeList = data.slice(1);
+  document.getElementById('NoticeSceneWrapper').querySelector('.RText_title').textContent = npMainTitleData.title || '';
+  npRenderTabs();
+  npSetContentUI();
+  npCurSelectTabIndex = -1;
+  requestAnimationFrame(function() { npSetTab(0); });
+}
+
+function npRenderTabs() {
+  var container = document.getElementById('NPListViewAnnouncement');
+  container.innerHTML = '';
+  npNoticeList.forEach(function(tabData, index) {
+    var cell = document.createElement('div');
+    cell.className = 'tab-cell';
+    if ((tabData.title || '').indexOf('乐园') !== -1 && (tabData.title || '').indexOf('工坊') !== -1) {
+      cell.classList.add('tab-special');
+    }
+    cell.onclick = function() { npOnClickTab(index); };
+    var nml = document.createElement('div');
+    nml.className = 'tab-nml';
+    nml.id = 'np_tab_nml_' + index;
+    var nmlText = document.createElement('div');
+    nmlText.className = 'tab-text';
+    nmlText.textContent = tabData.title || '';
+    nml.appendChild(nmlText);
+    cell.appendChild(nml);
+    var sel = document.createElement('div');
+    sel.className = 'tab-sel';
+    sel.id = 'np_tab_sel_' + index;
+    var btnBg = document.createElement('div');
+    btnBg.className = 'img-btn';
+    sel.appendChild(btnBg);
+    var selText = document.createElement('div');
+    selText.className = 'tab-text';
+    selText.textContent = tabData.title || '';
+    sel.appendChild(selText);
+    cell.appendChild(sel);
+    var line = document.createElement('div');
+    line.className = 'tab-line';
+    cell.appendChild(line);
+    container.appendChild(cell);
+  });
+}
+
+function npParseRichText(text) {
+  var html = '';
+  var i = 0;
+  var currentColor = null;
+  while (i < text.length) {
+    if (text[i] === '#' && i + 7 < text.length && text[i+1] === 'c') {
+      var hex = text.substring(i+2, i+8);
+      if (/^[0-9a-fA-F]{6}$/.test(hex)) {
+        if (currentColor) html += '</span>';
+        currentColor = hex;
+        html += '<span style="color:#' + hex + '">';
+        i += 8;
+        continue;
+      }
+    }
+    if (text[i] === '#' && i + 1 < text.length && text[i+1] === 'n') {
+      if (currentColor) { html += '</span>'; currentColor = null; }
+      i += 2;
+      continue;
+    }
+    if (text[i] === '#' && i + 1 < text.length && text[i+1] === 'f' && i + 2 < text.length && text[i+2] === '(') {
+      var closeParen = text.indexOf(')', i + 3);
+      if (closeParen !== -1) {
+        var params = text.substring(i + 3, closeParen);
+        var linkEnd = text.indexOf('#l', closeParen + 1);
+        if (linkEnd !== -1) {
+          var linkText = text.substring(closeParen + 1, linkEnd);
+          var linkColor = '5D8BEF';
+          var evtName = '';
+          var segType = 'link_inner';
+          var paramsArr = params.split('|');
+          paramsArr.forEach(function(p) {
+            if (p.indexOf('c:') === 0) linkColor = p.substring(2);
+            else if (p.indexOf('e:') === 0) evtName = p.substring(2);
+            else if (p.indexOf('i:') === 0) segType = p.substring(2);
+          });
+          var url = npEventName2Url[evtName] || '#';
+          html += '<a href="javascript:void(0)" style="color:#' + linkColor + '" onclick="npOnClickLink(\'' + evtName + '\',\'' + segType + '\')">' + linkText + '</a>';
+          i = linkEnd + 2;
+          continue;
+        }
+      }
+    }
+    if (text[i] === '<') html += '&lt;';
+    else if (text[i] === '>') html += '&gt;';
+    else if (text[i] === '&') html += '&amp;';
+    else if (text[i] === '\n') html += '<br>';
+    else html += text[i];
+    i++;
+  }
+  if (currentColor) html += '</span>';
+  return html;
+}
+
+function npOnClickLink(evtName, segType) {
+  var url = npEventName2Url[evtName];
+  if (url) window.open(url, '_blank');
+}
+
+function npSetContentUI() {
+  var container = document.getElementById('NPListViewContent');
+  container.innerHTML = '';
+  npListTotalHeight = 0;
+  npTab2Height = {};
+  npHeightList = [];
+  if (npMainTitleData.content && npMainTitleData.content.length > 0) {
+    var mainContent = npMainTitleData.content[0];
+    var cell0 = npCreateContentCell();
+    container.appendChild(cell0);
+    npSetContent(-1, cell0, mainContent);
+  }
+  npNoticeList.forEach(function(tabData, tabIndex) {
+    var contentList = tabData.content || [];
+    var extraInfo = tabData.extra_info || {};
+    for (var key in extraInfo) npEventName2Url[key] = extraInfo[key];
+    var titleCell = npCreateContentCell();
+    container.appendChild(titleCell);
+    npTab2Height[tabIndex] = npListTotalHeight;
+    npHeightList.push(npListTotalHeight);
+    npSetSubTitle(titleCell, tabData.title || '', tabData.title_bg_path || '');
+    contentList.forEach(function(noticeContent, idx) {
+      var contentCell = npCreateContentCell();
+      container.appendChild(contentCell);
+      npSetContent(idx + 1, contentCell, noticeContent);
+    });
+  });
+  npTab2Height[0] = 0;
+  if (npHeightList.length > 0) npHeightList[0] = 0;
+  else npHeightList = [0];
+}
+
+function npCreateContentCell() {
+  var cell = document.createElement('div');
+  cell.className = 'content-cell';
+  cell.innerHTML =
+    '<div class="Image_banner_bg"></div>' +
+    '<div class="RText_info"></div>' +
+    '<div class="Panel_big_pic"><div class="Image_big_pic"></div></div>' +
+    '<div class="Panel_banner_pic"><div class="Image_banner_pic"></div><div class="RText_banner_text"></div></div>' +
+    '<div class="Panel_content_title"><div class="Image_title_bg"></div><div class="RText_title_text"></div></div>';
+  return cell;
+}
+
+function npSetSubTitle(cell, title, titleBgPath) {
+  var deltaHeight = 60;
+  var height = 152;
+  var bannerPic = cell.querySelector('.Panel_banner_pic');
+  bannerPic.style.display = 'block';
+  cell.querySelector('.Image_banner_pic').style.backgroundImage = 'url(\'' + npFixResPath(titleBgPath) + '\')';
+  cell.querySelector('.RText_banner_text').textContent = title;
+  cell.style.height = (height + deltaHeight) + 'px';
+  npListTotalHeight += height + deltaHeight;
+}
+
+function npSetContent(index, cell, noticeContent) {
+  var height = 0;
+  if (noticeContent.indexOf('#image#') !== -1) {
+    if (noticeContent.indexOf('#image#') === 0) {
+      var imageStr = noticeContent.replace('#image#', '');
+      var parts = imageStr.split('#height#');
+      var imagePath = parts[0];
+      var imageHeight = parseInt(parts[1]);
+      var deltaHeight = NP_SUB_TITLE_DELTA_HEIGHT;
+      cell.querySelector('.Panel_big_pic').style.display = 'block';
+      cell.querySelector('.Panel_big_pic').style.height = (imageHeight + deltaHeight) + 'px';
+      cell.querySelector('.Image_big_pic').style.backgroundImage = 'url(\'' + npFixResPath(imagePath) + '\')';
+      cell.querySelector('.Image_big_pic').style.height = imageHeight + 'px';
+      height = imageHeight + deltaHeight;
+    } else {
+      var splitParts = noticeContent.split('#image#');
+      var content = splitParts[0];
+      var imagePath = splitParts[1];
+      cell.querySelector('.Panel_content_title').style.display = 'block';
+      cell.querySelector('.Image_title_bg').style.backgroundImage = 'url(\'' + npFixResPath(imagePath) + '\')';
+      cell.querySelector('.RText_title_text').textContent = content;
+      height = NP_SUB_HEIGHT_IMAGE_HEIGHT;
+      var deltaHeight2 = (index > 1) ? NP_SUB_TITLE_2_DELTA_HEIGHT : 0;
+      height += deltaHeight2;
+      cell.querySelector('.Panel_content_title').style.top = (index > 1 ? 34 : 0) + 'px';
+    }
+  } else {
+    var rTextInfo = cell.querySelector('.RText_info');
+    rTextInfo.style.display = 'block';
+    rTextInfo.innerHTML = npParseRichText(noticeContent);
+    rTextInfo.style.height = 'auto';
+    height = rTextInfo.offsetHeight;
+  }
+  cell.style.height = height + 'px';
+  npListTotalHeight += height;
+}
+
+function npFixResPath(path) {
+  if (!path) return path;
+  path = path.trim();
+  if (path.startsWith('notice_panel_res/')) return path;
+  if (path.startsWith('Res/')) return 'notice_panel_res/' + path.substring(4);
+  if (path.startsWith('gui2/')) return 'notice_panel_res/' + path;
+  if (path.startsWith('background/')) return 'notice_panel_res/gui2/' + path;
+  if (path.startsWith('common/')) return 'notice_panel_res/gui2/' + path;
+  return path;
+}
+
+function npOnClickTab(dataIndex) {
+  npSetTab(dataIndex);
+}
+
+function npSetTab(dataIndex) {
+  if (npCurSelectTabIndex === dataIndex) return;
+  npSuppressTabRefresh = true;
+  npCurSelectTabIndex = dataIndex;
+  var container = document.getElementById('NPListViewContent');
+  var bannerMiddle = (npHeightList[dataIndex] || 0) + NP_BANNER_PIC_MIDDLE_OFFSET;
+  var targetScrollTop = bannerMiddle - container.clientHeight / 2;
+  if (targetScrollTop < 0) targetScrollTop = 0;
+  var maxScroll = container.scrollHeight - container.clientHeight;
+  if (targetScrollTop > maxScroll) targetScrollTop = maxScroll;
+  container.scrollTop = targetScrollTop;
+  npSetContentSlider();
+  npRefreshTabs();
+  setTimeout(function() { npSuppressTabRefresh = false; }, 300);
+}
+
+function npRefreshTabs() {
+  npNoticeList.forEach(function(_, index) {
+    var nml = document.getElementById('np_tab_nml_' + index);
+    var sel = document.getElementById('np_tab_sel_' + index);
+    if (!nml || !sel) return;
+    if (index === npCurSelectTabIndex) {
+      nml.classList.add('hidden');
+      sel.classList.add('active');
+    } else {
+      nml.classList.remove('hidden');
+      sel.classList.remove('active');
+    }
+  });
+}
+
+function npSetContentSlider() {
+  var container = document.getElementById('NPListViewContent');
+  var panelArrow = document.getElementById('NoticeSceneWrapper').querySelector('.Panel_arrow');
+  var panelSlider = document.getElementById('NPPanelSlider');
+  var sliderBar = panelSlider.querySelector('.slider-bar');
+  var scrollTop = container.scrollTop;
+  var scrollHeight = container.scrollHeight;
+  var clientHeight = container.clientHeight;
+  panelArrow.style.display = 'block';
+  if (scrollHeight - clientHeight < 1) {
+    panelSlider.style.display = 'none';
+    return;
+  }
+  panelSlider.style.display = 'block';
+  var percent = scrollTop / (scrollHeight - clientHeight);
+  if (percent > 1) percent = 1;
+  if (percent < 0) percent = 0;
+  sliderBar.style.top = (50.3696 + percent * 412) + 'px';
+}
+
+function npRefreshTabIndex() {
+  if (npSuppressTabRefresh) return;
+  var now = Date.now();
+  if (now - npLastTabRefreshTime < NP_TAB_REFRESH_THROTTLE) return;
+  npLastTabRefreshTime = now;
+  var container = document.getElementById('NPListViewContent');
+  var scrollTop = container.scrollTop;
+  var viewMiddle = scrollTop + container.clientHeight / 2;
+  var targetTabIndex = 0;
+  for (var i = 0; i < npHeightList.length; i++) {
+    if ((npHeightList[i] + NP_BANNER_PIC_MIDDLE_OFFSET) <= viewMiddle) {
+      targetTabIndex = i;
+    }
+  }
+  if (targetTabIndex !== npCurSelectTabIndex) {
+    npCurSelectTabIndex = targetTabIndex;
+    npRefreshTabs();
   }
 }
 
-function fetchWithTimeout(url, timeout = 10000) {
-  return new Promise((resolve, reject) => {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), timeout);
-    fetch(url, { signal: controller.signal })
-      .then(response => {
-        clearTimeout(timer);
-        resolve(response);
-      })
-      .catch(err => {
-        clearTimeout(timer);
-        reject(err);
-      });
+document.addEventListener('DOMContentLoaded', function() {
+  var container = document.getElementById('NPListViewContent');
+  container.addEventListener('scroll', function() {
+    npSetContentSlider();
+    npRefreshTabIndex();
   });
-}
+  var sliderBar = document.getElementById('NPPanelSlider').querySelector('.slider-bar');
+  var sliderBg = document.getElementById('NPPanelSlider').querySelector('.slider-bg');
+  var dragging = false;
+  var dragStartY = 0;
+  var dragStartScrollTop = 0;
+  sliderBar.addEventListener('mousedown', function(e) {
+    dragging = true;
+    dragStartY = e.clientY;
+    dragStartScrollTop = document.getElementById('NPListViewContent').scrollTop;
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', function(e) {
+    if (!dragging) return;
+    var c = document.getElementById('NPListViewContent');
+    var rect = sliderBg.getBoundingClientRect();
+    var trackHeight = rect.height;
+    var scrollRange = c.scrollHeight - c.clientHeight;
+    if (scrollRange <= 0) return;
+    var deltaY = e.clientY - dragStartY;
+    var ratio = trackHeight / scrollRange;
+    c.scrollTop = dragStartScrollTop + deltaY / ratio;
+  });
+  document.addEventListener('mouseup', function() { dragging = false; });
+});
 
 function copyText(id) {
   const text = document.getElementById(id).textContent;
