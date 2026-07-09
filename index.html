@@ -657,7 +657,7 @@
     .drawer-backdrop.visible ~ .top-app-bar { filter: blur(2px); transition: filter var(--md-motion-5); }
     body.is-desktop .main { margin-left: 80px; }
     body.is-desktop .drawer-backdrop.visible ~ .drawer ~ .top-app-bar ~ .main { filter: blur(2px); pointer-events: none; }
-    body.is-desktop .drawer-backdrop.visible ~ .bg-video { filter: blur(2px); transition: filter var(--md-motion-5); }
+    body.is-desktop .drawer-backdrop.visible ~ .bg-video { filter: blur(1.5px); transition: filter var(--md-motion-5); }
     body.is-desktop .main, body.is-mobile .main { transition: margin-left var(--md-motion-5), filter var(--md-motion-5), opacity var(--md-motion-5); }
 
     .section { padding: 48px 24px; max-width: 1200px; margin: 0 auto; scroll-margin-top: var(--scroll-offset, 80px); transition: padding 0.4s cubic-bezier(0.4, 0, 0.2, 1); will-change: padding; }
@@ -1498,7 +1498,7 @@
     document.getElementById('drawerBackdrop').classList.add('visible');
     document.body.style.overflow = 'hidden';
     const bgVideo = document.querySelector('.bg-video');
-    if (bgVideo) bgVideo.style.filter = 'blur(2px)';
+    if (bgVideo) bgVideo.style.filter = 'blur(1.5px)';
     dOpen = true;
   }
   function closeDrawer() {
