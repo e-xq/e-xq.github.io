@@ -38,6 +38,14 @@
       --md-on-secondary: #ffffff;
       --md-secondary-container: #fad8fd;
       --md-on-secondary-container: #3e0020;
+      --md-tertiary: #7d5260;
+      --md-on-tertiary: #ffffff;
+      --md-tertiary-container: #fff9c4;
+      --md-on-tertiary-container: #f57f17;
+      --md-error: #b3261e;
+      --md-on-error: #ffffff;
+      --md-error-container: #ffcdd2;
+      --md-on-error-container: #b71c1c;
       --md-background: #fffbfe;
       --md-on-background: #1b1b1f;
       --md-surface: #fffbfe;
@@ -50,14 +58,8 @@
       --md-surface-container-low: #f8fafd;
       --md-surface-container: #eef2f7;
       --md-surface-container-high: #e8ecf2;
-      --md-error: #b3261e;
-      --md-on-error: #ffffff;
-      --md-error-container: #ffcdd2;
-      --md-on-error-container: #b71c1c;
-      --md-tertiary: #7d5260;
-      --md-on-tertiary: #ffffff;
-      --md-tertiary-container: #fff9c4;
-      --md-on-tertiary-container: #f57f17;
+      --md-scrim: rgba(0, 0, 0, 0.32);
+      --auto-color: #1c1b1f;
       --md-ease-2: cubic-bezier(0.2, 0, 0.2, 1);
       --md-motion-3: 150ms;
       --md-motion-4: 200ms;
@@ -68,8 +70,6 @@
       --md-sys-shape-corner-large: 16px;
       --md-sys-shape-corner-extra-large: 28px;
       --md-sys-shape-corner-full: 50px;
-      --md-scrim: rgba(0, 0, 0, 0.32);
-      --auto-color: #1c1b1f;
       font-family: 'U5Font', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       transition: background-color var(--md-motion-5), color var(--md-motion-5);
     }
@@ -83,6 +83,14 @@
       --md-on-secondary: #5c1135;
       --md-secondary-container: #7b2950;
       --md-on-secondary-container: #fad8fd;
+      --md-tertiary: #efb8c8;
+      --md-on-tertiary: #492532;
+      --md-tertiary-container: #4a3f00;
+      --md-on-tertiary-container: #ffe082;
+      --md-error: #f2b8b5;
+      --md-on-error: #601410;
+      --md-error-container: #8c1d18;
+      --md-on-error-container: #f9dedc;
       --md-background: #242428;
       --md-on-background: #e6e1e5;
       --md-surface: #242428;
@@ -95,14 +103,6 @@
       --md-surface-container-low: #32323a;
       --md-surface-container: #3a3a42;
       --md-surface-container-high: #42424a;
-      --md-error: #f2b8b5;
-      --md-on-error: #601410;
-      --md-error-container: #8c1d18;
-      --md-on-error-container: #f9dedc;
-      --md-tertiary: #efb8c8;
-      --md-on-tertiary: #492532;
-      --md-tertiary-container: #4a3f00;
-      --md-on-tertiary-container: #ffe082;
       --md-scrim: rgba(0, 0, 0, 0.5);
       --auto-color: #e6e1e5;
     }
@@ -249,45 +249,47 @@
     }
     #NoticeSceneWrapper .SceneInner {
       position: relative; width: 1920px; height: 1080px;
-      opacity: 0;
     }
-    #NoticeSceneWrapper .SceneInner.visible {
-      animation: np-appear 0.4s ease-out forwards;
-    }
-    @keyframes np-appear {
-      0% { transform: scale(0.0); opacity: 0; }
-      40% { transform: scale(1.06); opacity: 1; }
-      60% { transform: scale(0.96); }
-      80% { transform: scale(1.01); }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    #NoticeSceneWrapper .SceneInner.closing {
-      animation: np-disappear 0.2s ease-in forwards;
-    }
-    @keyframes np-disappear {
-      0% { transform: scale(1); opacity: 1; }
-      25% { transform: scale(1.04); opacity: 1; }
-      100% { transform: scale(0.95); opacity: 0; }
-    }
-    #NoticeSceneWrapper .ListView_announcement {
-      opacity: 0; transform: scale(0.3);
+    #NoticeSceneWrapper .SceneInner.visible .Panel_all {
+      animation: np-appear 0.45s ease-out forwards;
     }
     #NoticeSceneWrapper .SceneInner.visible .ListView_announcement {
-      animation: np-list-bounce 0.45s 0.08s ease-out forwards;
+      animation: np-list-appear 0.70s ease-out forwards;
     }
     #NoticeSceneWrapper .SceneInner.closing .ListView_announcement {
-      opacity: 1; transform: scale(1); animation: none;
+      animation: np-list-fade 0.2s ease-in forwards;
     }
-    @keyframes np-list-bounce {
-      0% { transform: scale(0.3); opacity: 0; }
-      45% { transform: scale(1.08); opacity: 1; }
-      65% { transform: scale(0.95); }
-      80% { transform: scale(1.02); }
-      100% { transform: scale(1); opacity: 1; }
+    @keyframes np-list-fade { from { opacity: 1; transform: scale(1, 1); } to { opacity: 0; transform: scale(1, 1); } }
+    @keyframes np-list-appear {
+      0%    { transform: scale(0.73, 0.75); opacity: 0; }
+      16.7% { transform: scale(1.05, 0.98); opacity: 1; }
+      27.8% { transform: scale(0.98, 1.03); opacity: 1; }
+      38.9% { transform: scale(1, 0.98); opacity: 1; }
+      50%   { transform: scale(1.02, 1); opacity: 1; }
+      61.1% { transform: scale(1, 0.99); opacity: 1; }
+      77.8% { transform: scale(1.02, 1); opacity: 1; }
+      100%  { transform: scale(1, 1); opacity: 1; }
     }
     #NoticeSceneWrapper .Panel_all {
       position: absolute; left: 0px; top: 0px;
       width: 1920px; height: 1080px;
+      opacity: 0; transform: translateY(20px) scale(0.95, 0.95);
+    }
+    #NoticeSceneWrapper .SceneInner.closing .Panel_all {
+      animation: np-disappear 0.2s ease-in forwards;
+    }
+    @keyframes np-appear {
+      0%    { transform: translateY(20px) scale(0.95, 0.95); opacity: 0.5; }
+      20%   { transform: translateY(-1px) scale(1.05, 1); opacity: 1; }
+      40%   { transform: translateY(3px) scale(0.98, 1); opacity: 1; }
+      66.7% { transform: translateY(-2px) scale(1.01, 1); opacity: 1; }
+      100%  { transform: translateY(0) scale(1, 1); opacity: 1; }
+    }
+    @keyframes np-disappear {
+      0%    { transform: translateY(0) scale(1, 1); opacity: 1; }
+      25%   { transform: translateY(-2.5px) scale(1.02, 1); opacity: 0.8; }
+      50%   { transform: translateY(1.25px) scale(1, 0.995); opacity: 0.5; }
+      100%  { transform: translateY(5px) scale(0.98, 0.99); opacity: 0; }
     }
     #NoticeSceneWrapper .Panel_bg {
       position: absolute; left: 23.424px; top: -25.812px;
@@ -327,6 +329,7 @@
       position: absolute; left: 32px; top: 313.2214px;
       width: 362px; height: 580px;
       overflow-y: auto; overflow-x: hidden; z-index: 5;
+      opacity: 0; transform: scale(0.73, 0.75);
     }
     #NoticeSceneWrapper .ListView_announcement::-webkit-scrollbar { display: none; }
     #NoticeSceneWrapper .tab-cell {
@@ -457,12 +460,12 @@
       width: 305px; height: 55.914px; z-index: 8;
     }
     #NoticeSceneWrapper .Panel_arrow .Image_arrow {
-      position: absolute; left: 121.5px; top: 13.414px;
+      position: absolute; left: 50px; top: 13.414px;
       width: 40.3px; height: 37.7px;
       background: url('notice_panel_res/gui2/common/arrow/img_arrow6.png') no-repeat center / 100% 100%;
-      animation: np-arrow-bounce 1.6s ease-in-out infinite;
+      animation: np-arrow-loop 1.6s ease-in-out infinite;
     }
-    @keyframes np-arrow-bounce {
+    @keyframes np-arrow-loop {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-8px); }
     }
@@ -749,7 +752,7 @@
       transition: background 0.2s, transform 0.2s, width 0.25s ease, border-radius 0.25s ease;
       flex-shrink: 0;
     }
-    .gallery-dot.active { background: #fff; width: 20px; border-radius: 4px; }
+    .gallery-dot.active { background: var(--md-primary); width: 20px; border-radius: 4px; }
     .gallery-arrows {
       position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: space-between;
@@ -1145,8 +1148,8 @@
 </div>
 
 <div id="GameNoticeOverlay" onclick="closeGameNotice()"></div>
-<div id="NoticeSceneWrapper">
-  <div class="SceneScale" id="NoticeSceneScale">
+<div id="NoticeSceneWrapper" onclick="closeGameNotice()">
+  <div class="SceneScale" id="NoticeSceneScale" onclick="event.stopPropagation()">
     <div class="SceneInner" id="NoticeSceneInner">
       <div class="Panel_all">
         <div class="Panel_bg" onclick="closeGameNotice()">
@@ -2105,45 +2108,54 @@ var npListTotalHeight = 0;
 var npTab2Height = {};
 var npHeightList = [];
 var npIsDraggingSlider = false;
-var npIsClosing = false;
 var npLastTabRefreshTime = 0;
 var NP_TAB_REFRESH_THROTTLE = 120;
 var npSuppressTabRefresh = false;
 var NP_BANNER_PIC_MIDDLE_OFFSET = 136;
+var npCachedNoticeText = null;
+
+(function() {
+  fetch(NP_NOTICE_URL + '?_t=' + Date.now(), { cache: 'no-store' })
+    .then(function(r) { return r.text(); })
+    .then(function(t) { npCachedNoticeText = t; console.log('[公告] 预加载完成'); })
+    .catch(function(err) { console.error('[公告] 预加载失败:', err); });
+})();
+
+var npIsOpen = false;
 
 function openGameNotice() {
+  if (npIsOpen) return;
+  npIsOpen = true;
   closeDrawer();
   var ov = document.getElementById('GameNoticeOverlay');
   var sw = document.getElementById('NoticeSceneWrapper');
-  if (!ov || !sw) return;
+  var si = document.getElementById('NoticeSceneInner');
+  if (!ov || !sw || !si) { npIsOpen = false; return; }
+  si.classList.remove('closing');
   ov.classList.add('visible');
   sw.classList.add('visible');
   document.body.style.overflow = 'hidden';
   npResizeScene();
-  setTimeout(function() {
-    var si = document.getElementById('NoticeSceneInner');
-    if (si) si.classList.add('visible');
+  requestAnimationFrame(function() {
+    si.classList.add('visible');
     try { npFetchNoticeData(); } catch(e) { console.error(e); }
-  }, 50);
+  });
   window.addEventListener('resize', npResizeScene);
 }
 
 function closeGameNotice() {
-  if (npIsClosing) return;
-  npIsClosing = true;
-  var scene = document.getElementById('NoticeSceneInner');
-  scene.classList.remove('visible');
-  void scene.offsetWidth;
-  scene.classList.add('closing');
+  if (!npIsOpen) return;
+  npIsOpen = false;
+  var si = document.getElementById('NoticeSceneInner');
+  si.classList.add('closing');
+  si.classList.remove('visible');
   setTimeout(function() {
-    scene.classList.remove('closing');
-    scene.style.opacity = '0';
+    si.classList.remove('closing');
     document.getElementById('GameNoticeOverlay').classList.remove('visible');
     document.getElementById('NoticeSceneWrapper').classList.remove('visible');
     document.body.style.overflow = '';
-    npIsClosing = false;
     window.removeEventListener('resize', npResizeScene);
-  }, 210);
+  }, 220);
 }
 
 function npResizeScene() {
@@ -2157,10 +2169,18 @@ function npResizeScene() {
 }
 
 function npFetchNoticeData() {
+  if (npCachedNoticeText) {
+    var data;
+    try { data = JSON.parse(npCachedNoticeText); } catch(e) { data = npParseOldFormat(npCachedNoticeText); }
+    if (data && data.length > 0) npShowNoticeList(data);
+    else document.getElementById('NoticeSceneWrapper').querySelector('.RText_title').textContent = '暂无公告';
+    return;
+  }
   document.getElementById('NoticeSceneWrapper').querySelector('.RText_title').textContent = '加载中...';
   fetch(NP_NOTICE_URL + '?_t=' + Date.now(), { cache: 'no-store' })
     .then(function(r) { return r.text(); })
     .then(function(t) {
+      npCachedNoticeText = t;
       var data;
       try { data = JSON.parse(t); } catch(e) { data = npParseOldFormat(t); }
       if (data && data.length > 0) npShowNoticeList(data);
