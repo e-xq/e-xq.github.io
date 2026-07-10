@@ -238,6 +238,60 @@
     }
     #GameNoticeOverlay.visible { opacity: 1; pointer-events: auto; }
 
+    /* Notice Loading Dialog */
+    #NoticeLoadingOverlay {
+      position: fixed; inset: 0; z-index: 9002;
+      background: rgba(0,0,0,0.4);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s;
+    }
+    #NoticeLoadingOverlay.visible { opacity: 1; pointer-events: auto; }
+    #NoticeLoadingDialog {
+      background: var(--md-surface);
+      border-radius: 16px;
+      padding: 28px 32px 24px;
+      width: min(420px, 88vw);
+      box-shadow: var(--md-elevation-4, 0 8px 32px rgba(0,0,0,0.2));
+      transform: translateY(24px) scale(0.95);
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+      position: relative;
+    }
+    #NoticeLoadingOverlay.visible #NoticeLoadingDialog {
+      transform: translateY(0) scale(1);
+    }
+    .nl-header {
+      display: flex; align-items: center; margin-bottom: 20px;
+    }
+    .nl-title {
+      font-size: 16px; font-weight: 600; color: var(--md-on-surface);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nl-title .material-icons-round { font-size: 20px; color: var(--md-primary); }
+    .nl-close {
+      position: absolute; top: 12px; right: 12px;
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: var(--md-on-surface-variant);
+      transition: background 0.2s;
+      cursor: pointer; border: none; background: none;
+    }
+    .nl-close:hover { background: var(--md-surface-variant); }
+    .nl-progress-track {
+      height: 6px; background: var(--md-surface-variant);
+      border-radius: 3px; overflow: hidden;
+    }
+    .nl-progress-fill {
+      height: 100%; width: 0%;
+      background: var(--md-primary);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+    .nl-status {
+      margin-top: 12px; font-size: 13px; color: var(--md-on-surface-variant);
+      text-align: center;
+    }
+
     #NoticeSceneWrapper {
       position: fixed; inset: 0; z-index: 9001;
       display: none;
@@ -1159,6 +1213,19 @@
     </button>
   </div>
   <div class="announcement-dialog-content" id="announcementDialogContent"></div>
+</div>
+
+<div id="NoticeLoadingOverlay">
+  <div id="NoticeLoadingDialog">
+    <button class="nl-close" onclick="closeNoticeLoading()">✕</button>
+    <div class="nl-header">
+      <div class="nl-title"><span class="material-icons-round">cloud_download</span>正在加载公告资源...</div>
+    </div>
+    <div class="nl-progress-track">
+      <div class="nl-progress-fill" id="NLProgressFill"></div>
+    </div>
+    <div class="nl-status" id="NLStatus">准备中...</div>
+  </div>
 </div>
 
 <div id="GameNoticeOverlay" onclick="closeGameNotice()"></div>
@@ -2117,11 +2184,57 @@ var npCachedNoticeText = null;
 })();
 
 var npIsOpen = false;
+var npResourcesLoaded = false;
+var npResourceList = [
+  'notice_panel_res/gui2/background/notice/img_bg.png',
+  'notice_panel_res/gui2/background/notice/img_bg_mask.png',
+  'notice_panel_res/gui2/common/btn_close_1.png',
+  'notice_panel_res/gui2/background/notice/btn_tab_2.png',
+  'notice_panel_res/gui2/background/notice/img_notice_line.png',
+  'notice_panel_res/gui2/background/notice/img_banner_bg.png',
+  'notice_panel_res/gui2/common/arrow/img_arrow6.png',
+  'notice_panel_res/gui2/background/notice/img_notice_bg_bar.png',
+  'notice_panel_res/gui2/background/notice/img_notice_bg_bar_btn.png',
+  'notice_panel_res/gui2/background/notice/img_egg.png'
+];
 
-function openGameNotice() {
-  if (npIsOpen) return;
-  npIsOpen = true;
-  closeDrawer();
+function npPreloadResources(callback) {
+  var total = npResourceList.length;
+  var loaded = 0;
+  var fill = document.getElementById('NLProgressFill');
+  var status = document.getElementById('NLStatus');
+
+  function update() {
+    var pct = Math.round(loaded / total * 100);
+    fill.style.width = pct + '%';
+    status.textContent = loaded + '/' + total + ' (' + pct + '%)';
+  }
+
+  function oneDone() {
+    loaded++;
+    update();
+    if (loaded >= total) {
+      npResourcesLoaded = true;
+      setTimeout(function() { callback(); }, 150);
+    }
+  }
+
+  update();
+  npResourceList.forEach(function(path) {
+    var img = new Image();
+    img.onload = oneDone;
+    img.onerror = oneDone;
+    img.src = npFixResPath(path);
+  });
+}
+
+function closeNoticeLoading() {
+  npIsOpen = false;
+  document.getElementById('NoticeLoadingOverlay').classList.remove('visible');
+  document.body.style.overflow = '';
+}
+
+function showNoticePanel() {
   var ov = document.getElementById('GameNoticeOverlay');
   var sw = document.getElementById('NoticeSceneWrapper');
   var si = document.getElementById('NoticeSceneInner');
@@ -2136,6 +2249,24 @@ function openGameNotice() {
     try { npFetchNoticeData(); } catch(e) { console.error(e); }
   });
   window.addEventListener('resize', npResizeScene);
+}
+
+function openGameNotice() {
+  if (npIsOpen) return;
+  npIsOpen = true;
+  closeDrawer();
+
+  if (!npResourcesLoaded) {
+    document.getElementById('NoticeLoadingOverlay').classList.add('visible');
+    document.body.style.overflow = 'hidden';
+    npPreloadResources(function() {
+      document.getElementById('NoticeLoadingOverlay').classList.remove('visible');
+      showNoticePanel();
+    });
+    return;
+  }
+
+  showNoticePanel();
 }
 
 function closeGameNotice() {
