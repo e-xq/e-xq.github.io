@@ -734,7 +734,7 @@
     .gallery-img {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       opacity: 0; transition: opacity 0.4s ease;
       image-rendering: -webkit-optimize-contrast;
     }
@@ -772,6 +772,19 @@
     [data-theme="dark"] .gallery-nav { background: rgba(0,0,0,0.4); }
     [data-theme="dark"] .gallery-dot { background: var(--md-on-surface-variant); }
     [data-theme="dark"] .gallery-dot.active { background: var(--md-primary); }
+
+    .gallery-dl-btn {
+      position: absolute; bottom: 12px; left: 12px; z-index: 5;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(0,0,0,0.4); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(4px);
+      opacity: 0; transform: scale(0.8);
+      transition: opacity var(--md-motion-3), transform var(--md-motion-3), background 0.15s;
+    }
+    .gallery-container:hover .gallery-dl-btn { opacity: 1; transform: scale(1); }
+    .gallery-dl-btn:hover { background: rgba(0,0,0,0.55); }
+    .gallery-dl-btn .material-icons-round { font-size: 18px; color: #fff; }
 
     .section-header { margin-bottom: 32px; }
     .section-title {
@@ -1231,6 +1244,7 @@
             <button class="gallery-arrow ripple-host" onclick="galleryPrev()"><span class="material-icons-round">chevron_left</span></button>
             <button class="gallery-arrow ripple-host" onclick="galleryNext()"><span class="material-icons-round">chevron_right</span></button>
           </div>
+          <button class="gallery-dl-btn ripple-host" onclick="galleryDownload()" title="下载图片"><span class="material-icons-round">download</span></button>
         </div>
         <div class="gallery-nav" id="galleryNav"></div>
       </div>
@@ -1628,10 +1642,10 @@
       text.textContent = `加载中 ${loaded.v}/${total}`;
     }
     function onLoad() { loaded.v++; updateProgress(); if (loaded.v >= total) { loadingEl.classList.add('done'); setTimeout(() => loadingEl.remove(), 300); startAuto(); } }
-    images.forEach((f, i) => {
+    images.forEach((name, i) => {
       const img = new Image();
       img.className = 'gallery-img' + (i === 0 ? ' active' : '');
-      img.src = 'Screenshot/' + f.name; img.alt = f.alt || '截图 ' + (i + 1);
+      img.src = 'Screenshot/' + name; img.alt = name;
       img.onload = onLoad; img.onerror = onLoad;
       vp.insertBefore(img, vp.querySelector('.gallery-arrows')); imgs.push(img);
       const d = document.createElement('button');
@@ -1657,18 +1671,17 @@
   vp.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - gtx; if (Math.abs(dx) > 50) { dx < 0 ? galleryNext() : galleryPrev(); } }, { passive: true });
   vp.addEventListener('wheel', e => { e.preventDefault(); e.deltaY > 0 ? galleryNext() : galleryPrev(); }, { passive: false });
 
-  window.addEventListener('resize', () => {
-    const hero = document.querySelector('.hero');
-    const heroGallery = document.querySelector('.hero-gallery');
-    const heroContent = document.querySelector('.hero-content');
-    const heroAvatar = document.querySelector('.hero-avatar');
-    const sections = document.querySelectorAll('.section');
-    if (hero) hero.offsetHeight;
-    if (heroGallery) heroGallery.offsetWidth;
-    if (heroContent) heroContent.offsetWidth;
-    if (heroAvatar) heroAvatar.offsetWidth;
-    sections.forEach(s => s.offsetHeight);
-  });
+  function galleryDownload() {
+    if (!imgs[cur]) return;
+    const a = document.createElement('a');
+    a.href = imgs[cur].src; a.download = imgs[cur].src.split('/').pop();
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  }
+
+  vp.addEventListener('mouseenter', () => { clearInterval(autoTimer); });
+  vp.addEventListener('mouseleave', () => { startAuto(); });
+  vp.addEventListener('touchstart', () => { clearInterval(autoTimer); }, { passive: true });
+  document.addEventListener('click', e => { if (!vp.contains(e.target)) startAuto(); });
 
   /* ===== 选项卡 ===== */
   async function switchTab(scope, type) {
@@ -1766,18 +1779,15 @@
     return JSON.parse(stripComments(text));
   }
   function parseColorText(text) {
-    const parts = text.split(/(#[A-Za-z]+)/g).filter(p => p !== '');
+    const keys = Object.keys(COLOR_MAP).sort((a, b) => b.length - a.length);
+    const colorRegex = new RegExp('#(' + keys.join('|') + ')', 'g');
+    const parts = text.split(colorRegex).filter(p => p !== '');
     let result = '', inColor = false;
     for (const part of parts) {
-      const match = part.match(/^#(\w+)$/);
-      if (match && COLOR_MAP[match[1]]) {
+      if (COLOR_MAP[part]) {
         if (inColor) result += '</span>';
-        const color = COLOR_MAP[match[1]] === 'auto' ? 'var(--auto-color)' : COLOR_MAP[match[1]];
+        const color = COLOR_MAP[part] === 'auto' ? 'var(--auto-color)' : COLOR_MAP[part];
         result += `<span style="color:${color}">`;
-        inColor = true;
-      } else if (match && !COLOR_MAP[match[1]]) {
-        if (inColor) { result += '</span>'; inColor = false; }
-        result += `<span style="color:var(--auto-color)">${part}`;
         inColor = true;
       } else {
         if (!inColor) {
@@ -2016,26 +2026,10 @@ function showSnack(msg) {
 function checkDisclaimerConsent() {
   const accepted = localStorage.getItem('disclaimerAccepted');
   if (!accepted) {
-    fetch('disclaimer.html')
-      .then(res => res.text())
-      .then(html => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        const content = doc.querySelector('.info-card');
-        if (content) {
-          document.getElementById('disclaimerContent').innerHTML = content.outerHTML;
-        }
-        document.getElementById('disclaimerOverlay').classList.add('visible');
-        document.getElementById('disclaimerDialog').classList.add('visible');
-        document.body.style.overflow = 'hidden';
-        document.getElementById('disclaimerDialog').querySelector('.disclaimer-btn.accept').focus();
-      })
-      .catch(() => {
-        document.getElementById('disclaimerOverlay').classList.add('visible');
-        document.getElementById('disclaimerDialog').classList.add('visible');
-        document.body.style.overflow = 'hidden';
-        document.getElementById('disclaimerDialog').querySelector('.disclaimer-btn.accept').focus();
-      });
+    document.getElementById('disclaimerOverlay').classList.add('visible');
+    document.getElementById('disclaimerDialog').classList.add('visible');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('disclaimerDialog').querySelector('.disclaimer-btn.accept').focus();
     return false;
   }
   return true;
@@ -2288,7 +2282,10 @@ function npParseRichText(text) {
             else if (p.indexOf('i:') === 0) segType = p.substring(2);
           });
           var url = npEventName2Url[evtName] || '#';
-          html += '<a href="javascript:void(0)" style="color:#' + linkColor + '" onclick="npOnClickLink(\'' + evtName + '\',\'' + segType + '\')">' + linkText + '</a>';
+          var safeLinkText = linkText.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+          var safeEvtName = evtName.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+          var safeSegType = segType.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+          html += '<a href="javascript:void(0)" style="color:#' + linkColor + '" onclick="npOnClickLink(\'' + safeEvtName + '\',\'' + safeSegType + '\')">' + safeLinkText + '</a>';
           i = linkEnd + 2;
           continue;
         }
