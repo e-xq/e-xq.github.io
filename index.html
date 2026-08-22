@@ -2217,35 +2217,66 @@ var npResourceList = [
   'notice_panel_res/gui2/background/notice/img_egg.png'
 ];
 
-function npPreloadResources() {
-  return new Promise(function(resolve) {
-    var total = npResourceList.length;
-    var loaded = 0;
-    var fill = document.getElementById('NLProgressFill');
-    var status = document.getElementById('NLStatus');
-
-    function update() {
-      var pct = total === 0 ? 100 : Math.round(loaded / total * 100);
-      fill.style.width = pct + '%';
-      status.textContent = loaded + '/' + total + ' (' + pct + '%)';
-    }
-
-    function oneDone() {
-      loaded++;
-      update();
-      if (loaded >= total) {
-        npResourcesLoaded = true;
-        setTimeout(resolve, 150);
+function npCollectNoticeImagePaths() {
+  var result = [];
+  var text = npCachedNoticeText;
+  if (!text) return result;
+  var data;
+  try { data = JSON.parse(text); } catch(e) { data = npParseOldFormat(text); }
+  if (!data) return result;
+  data.forEach(function(item) {
+    if (!item) return;
+    if (item.title_bg_path) result.push(item.title_bg_path);
+    (item.content || []).forEach(function(c) {
+      if (typeof c !== 'string') return;
+      if (c.indexOf('#image#') === 0) {
+        result.push(c.replace('#image#', '').split('#height#')[0]);
+      } else {
+        var parts = c.split('#image#');
+        if (parts.length > 1) result.push(parts[1]);
       }
-    }
+    });
+  });
+  return result;
+}
 
-    if (total === 0) { npResourcesLoaded = true; resolve(); return; }
-    update();
-    npResourceList.forEach(function(path) {
-      var img = new Image();
-      img.onload = oneDone;
-      img.onerror = oneDone;
-      img.src = npFixResPath(path);
+function npPreloadResources() {
+  return npLoadNoticeData().then(function() {
+    return new Promise(function(resolve) {
+      var seen = {};
+      var paths = [];
+      npResourceList.concat(npCollectNoticeImagePaths()).forEach(function(path) {
+        var resolved = npFixResPath(path);
+        if (resolved && !seen[resolved]) { seen[resolved] = true; paths.push(resolved); }
+      });
+      var total = paths.length;
+      var loaded = 0;
+      var fill = document.getElementById('NLProgressFill');
+      var status = document.getElementById('NLStatus');
+
+      function update() {
+        var pct = total === 0 ? 100 : Math.round(loaded / total * 100);
+        fill.style.width = pct + '%';
+        status.textContent = loaded + '/' + total + ' (' + pct + '%)';
+      }
+
+      function oneDone() {
+        loaded++;
+        update();
+        if (loaded >= total) {
+          npResourcesLoaded = true;
+          setTimeout(resolve, 150);
+        }
+      }
+
+      if (total === 0) { npResourcesLoaded = true; resolve(); return; }
+      update();
+      paths.forEach(function(url) {
+        var img = new Image();
+        img.onload = oneDone;
+        img.onerror = oneDone;
+        img.src = url;
+      });
     });
   });
 }
@@ -2287,7 +2318,7 @@ function openGameNotice() {
   if (!npResourcesLoaded || !npCachedNoticeText) {
     document.getElementById('NoticeLoadingOverlay').classList.add('visible');
     document.body.style.overflow = 'hidden';
-    Promise.all([npPreloadResources(), npLoadNoticeData()]).then(finish);
+    npPreloadResources().then(finish);
     return;
   }
 
