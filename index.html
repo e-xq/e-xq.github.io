@@ -708,11 +708,12 @@
     .nav-rail-item.active .label { color: var(--md-on-secondary-container); }
 
     .main { margin-top: 64px; min-height: calc(100vh - 64px); transition: opacity var(--md-motion-5), margin-left var(--md-motion-5), filter var(--md-motion-5); }
-    body.is-mobile .drawer-backdrop.visible ~ .drawer ~ .top-app-bar ~ .main { filter: blur(2px); pointer-events: none; }
-    .drawer-backdrop.visible ~ .top-app-bar { filter: blur(2px); transition: filter var(--md-motion-5); }
+    body.is-mobile .drawer-backdrop.visible ~ .drawer ~ .top-app-bar ~ .main, body.is-mobile .drawer-backdrop.drag ~ .drawer ~ .top-app-bar ~ .main { filter: blur(var(--drawer-blur,2px)); pointer-events: none; }
+    .drawer-backdrop.visible ~ .top-app-bar, .drawer-backdrop.drag ~ .top-app-bar { filter: blur(var(--drawer-blur,2px)); transition: filter var(--md-motion-5); }
     body.is-desktop .main { margin-left: 80px; }
-    body.is-desktop .drawer-backdrop.visible ~ .drawer ~ .top-app-bar ~ .main { filter: blur(2px); pointer-events: none; }
-    body.is-desktop .drawer-backdrop.visible ~ .bg-video { filter: blur(1.5px); transition: filter var(--md-motion-5); }
+    body.is-desktop .drawer-backdrop.visible ~ .drawer ~ .top-app-bar ~ .main, body.is-desktop .drawer-backdrop.drag ~ .drawer ~ .top-app-bar ~ .main { filter: blur(var(--drawer-blur,2px)); pointer-events: none; }
+    body.is-desktop .drawer-backdrop.visible ~ .bg-video, body.is-desktop .drawer-backdrop.drag ~ .bg-video { filter: blur(calc(var(--drawer-blur,2px) * 0.75)); transition: filter var(--md-motion-5); }
+    body.is-mobile .drawer-backdrop.drag ~ .top-app-bar, body.is-desktop .drawer-backdrop.drag ~ .top-app-bar, body.is-mobile .drawer-backdrop.drag ~ .drawer ~ .top-app-bar ~ .main, body.is-desktop .drawer-backdrop.drag ~ .drawer ~ .top-app-bar ~ .main { transition: none; }
     body.is-desktop .main, body.is-mobile .main { transition: margin-left var(--md-motion-5), filter var(--md-motion-5), opacity var(--md-motion-5); }
 
     .section { padding: 48px 24px; max-width: 1200px; margin: 0 auto; scroll-margin-top: var(--scroll-offset, 80px); transition: padding 0.4s cubic-bezier(0.4, 0, 0.2, 1); will-change: padding; }
@@ -1575,7 +1576,14 @@
 
   /* ===== 抽屉 ===== */
   let dOpen = false;
+  function _setDrawerBlur(px) { document.documentElement.style.setProperty('--drawer-blur', px + 'px'); }
+  function _clearDrawerDrag() {
+    const bd = document.getElementById('drawerBackdrop');
+    if (bd) bd.classList.remove('drag');
+    document.documentElement.style.removeProperty('--drawer-blur');
+  }
   function openDrawer() {
+    _clearDrawerDrag();
     document.getElementById('drawer').classList.add('open');
     document.getElementById('drawerBackdrop').classList.add('visible');
     document.body.style.overflow = 'hidden';
@@ -1584,6 +1592,7 @@
     dOpen = true;
   }
   function closeDrawer() {
+    _clearDrawerDrag();
     document.getElementById('drawer').classList.remove('open');
     document.getElementById('drawerBackdrop').classList.remove('visible');
     document.body.style.overflow = '';
@@ -1607,6 +1616,7 @@
       if (dy > Math.abs(dx) && dy > 12) { tmode = null; return; }
       if (Math.abs(dx) < 8) return;
       tmoved = true;
+      document.getElementById('drawerBackdrop').classList.add('drag');
     }
     const d = document.getElementById('drawer'), bd = document.getElementById('drawerBackdrop');
     const W = d.offsetWidth || 320, base = d.classList.contains('open') ? 1 : 0;
@@ -1614,6 +1624,7 @@
     d.style.transition = 'none'; bd.style.transition = 'none'; bd.style.visibility = 'visible';
     d.style.transform = `translateX(${(r - 1) * W}px)`;
     bd.style.opacity = r * 0.4; bd.style.pointerEvents = r > 0.5 ? 'auto' : 'none';
+    _setDrawerBlur(r * 2);
     if (tmode === 'open' && dx > 10 && e.cancelable) e.preventDefault();
   }, { passive: false });
   document.addEventListener('touchend', e => {
@@ -1624,6 +1635,7 @@
     const should = tmode === 'open' ? r > 0.3 : r > 0.6;
     tmode = null; tmoved = false;
     if (should) openDrawer(); else closeDrawer();
+    _clearDrawerDrag();
     const d = document.getElementById('drawer'), bd = document.getElementById('drawerBackdrop');
     d.style.transition = ''; d.style.transform = '';
     bd.style.transition = ''; bd.style.opacity = ''; bd.style.pointerEvents = ''; bd.style.visibility = '';
