@@ -684,34 +684,62 @@
     .icon-btn:hover { background: var(--md-surface-container-high); }
     .icon-btn .material-icons-round { font-size: 24px; color: var(--md-on-surface-variant); }
 
+    /* Navigation rail — MD3 pattern (mio-left-nav-rail): icon pill indicator */
     .navigation-rail {
-      position: fixed; top: 64px; left: 0; bottom: 0; width: 80px;
-      background: var(--md-surface-container-low);
+      position: fixed; top: 64px; left: 0; bottom: 0; width: 88px;
+      background: var(--md-surface-container);
       z-index: 7000;
-      display: flex; flex-direction: column; align-items: center; padding: 8px 0;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 20px 0 16px;
+      overflow-y: auto; overflow-x: hidden;
       border-right: 1px solid var(--md-outline-variant);
       transition: transform var(--md-motion-5) var(--md-ease-2), opacity var(--md-motion-5);
     }
     body.is-mobile .navigation-rail { transform: translateX(-100%); opacity: 0; pointer-events: none; }
     body.is-mobile .main { margin-left: 0 !important; }
+
     .nav-rail-item {
-      width: 56px; height: 56px; border-radius: var(--md-sys-shape-corner-large);
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-      cursor: pointer; margin: 4px 0;
-      position: relative;
-      transition: background var(--md-motion-3) var(--md-ease-2);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 80px; margin: 0 auto 14px; padding: 2px;
+      cursor: pointer; position: relative;
+      background: transparent; color: var(--md-on-surface-variant);
+      transition: color var(--md-motion-4) linear;
     }
-    .nav-rail-item:hover { background: var(--md-surface-container-high); }
-    .nav-rail-item.active { background: var(--md-secondary-container); }
-    .nav-rail-item .icon { font-size: 24px; color: var(--md-on-surface-variant); transition: color var(--md-motion-3); }
-    .nav-rail-item.active .icon { color: var(--md-on-secondary-container); }
-    .nav-rail-item .label { font-size: 10px; font-weight: 500; color: var(--md-on-surface-variant); letter-spacing: 0.5px; }
-    .nav-rail-item.active .label { color: var(--md-on-secondary-container); }
+    .nav-rail-item:hover { background: transparent; color: var(--md-on-surface); }
+
+    .nav-rail-item .icon {
+      position: relative; z-index: 0;
+      display: flex; align-items: center; justify-content: center;
+      width: 56px; height: 32px; margin: 0 auto 4px;
+      border-radius: var(--md-sys-shape-corner-large);
+      font-size: 24px; line-height: 1;
+      color: var(--md-on-surface-variant);
+      transition: color var(--md-motion-4) linear;
+    }
+    .nav-rail-item .icon::before {
+      content: ""; position: absolute; inset: 0; z-index: -1;
+      border-radius: var(--md-sys-shape-corner-full);
+      background: var(--md-primary-container);
+      opacity: 0; transform: scaleX(.32);
+      transition: transform var(--md-motion-4) linear, opacity var(--md-motion-4) linear;
+    }
+    .nav-rail-item:hover .icon { color: var(--md-on-surface); }
+    .nav-rail-item.active .icon { color: var(--md-on-primary-container); }
+    .nav-rail-item.active .icon::before { opacity: 1; transform: scaleX(1); }
+
+    .nav-rail-item .label {
+      margin-bottom: 4px; text-align: center;
+      font-size: 12px; font-weight: 500; line-height: 16px; letter-spacing: 0.5px;
+      color: var(--md-on-surface-variant);
+      transition: color var(--md-motion-4) linear;
+    }
+    .nav-rail-item:hover .label { color: var(--md-on-surface); }
+    .nav-rail-item.active .label { color: var(--md-on-primary-container); }
 
     .main { margin-top: 64px; min-height: calc(100vh - 64px); transition: opacity var(--md-motion-5), margin-left var(--md-motion-5), filter var(--md-motion-5); }
     body.is-mobile .drawer-backdrop.visible ~ .drawer ~ .top-app-bar ~ .main, body.is-mobile .drawer-backdrop.drag ~ .drawer ~ .top-app-bar ~ .main { filter: blur(var(--drawer-blur,2px)); pointer-events: none; }
     .drawer-backdrop.visible ~ .top-app-bar, .drawer-backdrop.drag ~ .top-app-bar { filter: blur(var(--drawer-blur,2px)); transition: filter var(--md-motion-5); }
-    body.is-desktop .main { margin-left: 80px; }
+    body.is-desktop .main { margin-left: 88px; }
     body.is-desktop .drawer-backdrop.visible ~ .drawer ~ .top-app-bar ~ .main, body.is-desktop .drawer-backdrop.drag ~ .drawer ~ .top-app-bar ~ .main { filter: blur(var(--drawer-blur,2px)); pointer-events: none; }
     body.is-desktop .drawer-backdrop.visible ~ .bg-video, body.is-desktop .drawer-backdrop.drag ~ .bg-video { filter: blur(calc(var(--drawer-blur,2px) * 0.75)); transition: filter var(--md-motion-5); }
     body.is-mobile .drawer-backdrop.drag ~ .top-app-bar, body.is-desktop .drawer-backdrop.drag ~ .top-app-bar, body.is-mobile .drawer-backdrop.drag ~ .drawer ~ .top-app-bar ~ .main, body.is-desktop .drawer-backdrop.drag ~ .drawer ~ .top-app-bar ~ .main { transition: none; }
@@ -913,9 +941,9 @@
     .dep-code-text { flex: 1; word-break: break-all; color: var(--md-on-surface); }
     .dep-copy {
       background: none; border: none; cursor: pointer; display: flex; align-items: center; padding: 8px;
-      border-radius: var(--md-sys-shape-corner-small); transition: all var(--md-motion-3); color: var(--md-on-surface-variant);
+      border-radius: var(--md-sys-shape-corner-full); transition: all var(--md-motion-3); color: var(--md-on-surface-variant);
     }
-    .dep-copy:hover { background: var(--md-primary-container); color: var(--md-primary); }
+    .dep-copy:hover { background: var(--md-surface-container-high); color: var(--md-on-surface); }
     .dep-copy .material-icons-round { font-size: 20px; }
 
     .download-card {
@@ -956,16 +984,23 @@
       overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
 
+    /* filled = outlined geometry/motion, solid fill, no hover lift */
     .filled-button {
-      display: flex; align-items: center; gap: 8px; padding: 12px 24px;
-      background: var(--md-primary); color: var(--md-on-primary); border: none;
+      display: flex; align-items: center; gap: 6px; padding: 10px 20px;
+      background: var(--md-primary); color: var(--md-on-primary);
+      border: 1px solid var(--md-primary);
       border-radius: var(--md-sys-shape-corner-full); font-size: 14px; font-weight: 500; cursor: pointer;
-      transition: all var(--md-motion-3); box-shadow: 0 2px 8px rgba(102, 157, 246, 0.3);
+      transition: all var(--md-motion-3);
     }
-    .filled-button:hover { box-shadow: 0 4px 16px rgba(102, 157, 246, 0.4); transform: translateY(-1px); }
-    .filled-button:active { transform: translateY(0); }
-    .filled-button.secondary { background: var(--md-secondary); box-shadow: 0 2px 8px rgba(240, 98, 146, 0.3); }
-    .filled-button.secondary:hover { box-shadow: 0 4px 16px rgba(240, 98, 146, 0.4); }
+    .filled-button:hover {
+      background: var(--md-primary-container); color: var(--md-on-primary-container);
+      border-color: var(--md-primary);
+    }
+    .filled-button.secondary { background: var(--md-secondary); border-color: var(--md-secondary); }
+    .filled-button.secondary:hover {
+      background: var(--md-secondary-container); color: var(--md-on-secondary-container);
+      border-color: var(--md-secondary);
+    }
     .filled-button .material-icons-round { font-size: 18px; }
 
     .outlined-button {
@@ -1038,9 +1073,9 @@
     .cmd-code-text { flex: 1; word-break: break-all; color: var(--md-on-surface); }
     .cmd-copy {
       background: none; border: none; cursor: pointer; display: flex; align-items: center; padding: 4px;
-      border-radius: var(--md-sys-shape-corner-small); transition: all var(--md-motion-3); color: var(--md-on-surface-variant);
+      border-radius: var(--md-sys-shape-corner-full); transition: all var(--md-motion-3); color: var(--md-on-surface-variant);
     }
-    .cmd-copy:hover { background: var(--md-primary-container); color: var(--md-primary); }
+    .cmd-copy:hover { background: var(--md-surface-container-high); color: var(--md-on-surface); }
     .cmd-copy .material-icons-round { font-size: 18px; }
 
     .loading {
@@ -1257,24 +1292,24 @@
 </div>
 
 <nav class="navigation-rail" id="navRail">
-  <div class="nav-rail-item active ripple-host" data-section="hero-section">
-    <span class="material-icons-round icon">home</span>
+  <div class="nav-rail-item active" data-section="hero-section">
+    <span class="material-icons-round icon ripple-host">home</span>
     <span class="label">主页</span>
   </div>
-  <div class="nav-rail-item ripple-host" data-section="unpacker-section">
-    <span class="material-icons-round icon">folder_zip</span>
+  <div class="nav-rail-item" data-section="unpacker-section">
+    <span class="material-icons-round icon ripple-host">folder_zip</span>
     <span class="label">解包</span>
   </div>
-  <div class="nav-rail-item ripple-host" data-section="auto-unpacker-section">
-    <span class="material-icons-round icon">description</span>
+  <div class="nav-rail-item" data-section="auto-unpacker-section">
+    <span class="material-icons-round icon ripple-host">description</span>
     <span class="label">自动解包</span>
   </div>
-  <div class="nav-rail-item ripple-host" data-section="audio-renamer-section">
-    <span class="material-icons-round icon">audio_file</span>
+  <div class="nav-rail-item" data-section="audio-renamer-section">
+    <span class="material-icons-round icon ripple-host">audio_file</span>
     <span class="label">音频</span>
   </div>
-  <div class="nav-rail-item ripple-host" data-section="commands-section">
-    <span class="material-icons-round icon">terminal</span>
+  <div class="nav-rail-item" data-section="commands-section">
+    <span class="material-icons-round icon ripple-host">terminal</span>
     <span class="label">命令</span>
   </div>
 </nav>
@@ -1362,7 +1397,6 @@
         <div class="download-header">
           <span class="material-icons-round" style="color: var(--md-primary)">download</span>
           <span class="download-header-text">下载</span>
-          <span class="badge">GitHub API</span>
         </div>
         <div id="npk-dl"><div class="loading"><div class="spinner"></div>获取版本中...</div></div>
       </div>
@@ -1395,7 +1429,6 @@
         <div class="download-header">
           <span class="material-icons-round" style="color: var(--md-secondary)">download</span>
           <span class="download-header-text">下载</span>
-          <span class="badge secondary">GitHub API</span>
         </div>
         <div id="ppk-dl"><div class="loading"><div class="spinner secondary"></div>获取版本中...</div></div>
       </div>
@@ -1436,7 +1469,6 @@
         <div class="download-header">
           <span class="material-icons-round" style="color: var(--md-secondary)">download</span>
           <span class="download-header-text">下载</span>
-          <span class="badge secondary">Python</span>
         </div>
         <div id="filelist-dl"><div class="loading"><div class="spinner secondary"></div>加载中...</div></div>
       </div>
@@ -1467,7 +1499,6 @@
         <div class="download-header">
           <span class="material-icons-round" style="color: var(--md-secondary)">download</span>
           <span class="download-header-text">下载 · <span id="map-sub-label">字符串提取</span></span>
-          <span class="badge secondary">Python</span>
         </div>
         <div id="map-dl"><div class="loading"><div class="spinner secondary"></div>加载中...</div></div>
       </div>
@@ -1491,7 +1522,6 @@
       <div class="download-header">
         <span class="material-icons-round" style="color: var(--md-primary)">download</span>
         <span class="download-header-text">下载</span>
-        <span class="badge">Python</span>
       </div>
       <div id="audio-dl"><div class="loading"><div class="spinner"></div>加载中...</div></div>
     </div>
@@ -1658,22 +1688,39 @@
   });
 
   function updateNavRail(sectionId) {
+    activeSection = sectionId;
     navItems.forEach(item => {
       item.classList.toggle('active', item.dataset.section === sectionId);
     });
   }
   const sections = ['hero-section', 'unpacker-section', 'auto-unpacker-section', 'audio-renamer-section', 'commands-section'];
-  let isNavScrolling = false, navTimer = null;
-  const navObserver = new IntersectionObserver((entries) => {
+  let isNavScrolling = false, navTimer = null, navCommitTimer = null;
+  let activeSection = 'hero-section';
+  /* keep every section's latest ratio, not just the entries of the current callback —
+     a partial entry batch used to leave the rest stale and flip the indicator back and forth */
+  const navRatios = new Map();
+  const NAV_HYSTERESIS = 0.12;
+
+  function commitNavRail() {
     if (isNavScrolling) return;
-    let maxRatio = 0, visible = null;
-    entries.forEach(e => {
-      if (e.isIntersecting && e.intersectionRatio > maxRatio) {
-        maxRatio = e.intersectionRatio; visible = e.target.id;
-      }
+    let best = null, bestRatio = 0;
+    sections.forEach(id => {
+      const r = navRatios.get(id) || 0;
+      if (r > bestRatio) { bestRatio = r; best = id; }
     });
-    if (visible && maxRatio > 0.2) updateNavRail(visible);
-  }, { threshold: [0, 0.2, 0.4, 0.6, 0.8, 1], rootMargin: '-40px 0px -30% 0px' });
+    if (!best || best === activeSection) return;
+    /* require a clear lead over the section that is currently lit, otherwise a scroll
+       resting right on the boundary re-triggers on every frame */
+    if (bestRatio < (navRatios.get(activeSection) || 0) + NAV_HYSTERESIS) return;
+    updateNavRail(best);
+  }
+
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => navRatios.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0));
+    if (isNavScrolling) return;
+    clearTimeout(navCommitTimer);
+    navCommitTimer = setTimeout(commitNavRail, 90);
+  }, { threshold: [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1], rootMargin: '-64px 0px -35% 0px' });
   sections.forEach(id => {
     const el = document.getElementById(id);
     if (el) navObserver.observe(el);
@@ -1686,7 +1733,7 @@
       updateNavRail(id);
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       clearTimeout(navTimer);
-      navTimer = setTimeout(() => { isNavScrolling = false; }, 800);
+      navTimer = setTimeout(() => { isNavScrolling = false; commitNavRail(); }, 800);
     }
     if (dOpen) closeDrawer();
   }
