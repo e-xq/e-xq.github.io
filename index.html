@@ -884,16 +884,40 @@
       background: var(--md-surface-container-lowest); padding: 4px;
       border-radius: var(--md-sys-shape-corner-extra-large);
       border: 1px solid var(--md-outline-variant);
+      position: relative; touch-action: none;
+      --tab-n: 2; --tab-i: 0; --tab-gap: 4px; --tab-pad: 4px;
     }
+    /* sliding pill — geometry copied from DeepSeek's model switcher:
+       pill is 4px wider than a tab and bleeds 2px above/below, eating half the gap */
+    .tab-indicator {
+      --tab-w: calc((100% - 2 * var(--tab-pad) - (var(--tab-n) - 1) * var(--tab-gap)) / var(--tab-n));
+      position: absolute;
+      top: calc(var(--tab-pad) - 2px); bottom: calc(var(--tab-pad) - 2px);
+      left: calc(var(--tab-pad) + var(--tab-i) * (var(--tab-w) + var(--tab-gap)) - 2px);
+      width: calc(var(--tab-w) + 4px);
+      border-radius: 120px;
+      background: var(--md-primary-container);
+      pointer-events: none; z-index: 0;
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    /* dragging keeps the same 0.3s easing — DeepSeek does NOT kill the transition,
+       that easing is exactly what makes the pill chase the cursor smoothly */
+    .tabs.is-dragging { cursor: grabbing; }
+    .tabs.is-dragging .tab { cursor: grabbing; }
     .tab {
-      flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 12px 16px; border-radius: var(--md-sys-shape-corner-extra-large);
+      flex: 1; position: relative; z-index: 1;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 16px; border-radius: 120px;
       font-size: 14px; font-weight: 500; color: var(--md-on-surface-variant);
-      transition: all var(--md-motion-3) var(--md-ease-2);
+      transition: background var(--md-motion-3) var(--md-ease-2), color var(--md-motion-3) var(--md-ease-2);
       cursor: pointer; border: none; background: transparent;
+      -webkit-user-select: none; user-select: none;
     }
     .tab:hover { background: var(--md-surface-container-high); color: var(--md-on-surface); }
-    .tab.active { background: var(--md-primary-container); color: var(--md-on-primary-container); }
+    .tab.active { background: transparent; color: var(--md-on-primary-container); }
+    .tab.active:hover { background: transparent; }
+    /* 拖动中指针停在哪格，那格就会吃 :hover 把下面的胶囊盖住 —— 拖的时候一律不铺 */
+    .tabs.is-dragging .tab:hover { background: transparent; color: var(--md-on-surface); }
     .tab .material-icons-round { font-size: 20px; }
 
     .tab-content { display: none; }
@@ -1362,10 +1386,10 @@
       <p class="section-subtitle">蛋仔派对 NPK / PPK 文件解包工具，基于 Python 开发。</p>
     </div>
     <div class="tabs">
-      <button class="tab active ripple-host" data-tab="npk" onclick="switchTab('unpacker', 'npk')">
+      <button class="tab active" data-tab="npk" onclick="switchTab('unpacker', 'npk')">
         <span class="material-icons-round">inventory_2</span>NPK 解包
       </button>
-      <button class="tab ripple-host" data-tab="ppk" onclick="switchTab('unpacker', 'ppk')">
+      <button class="tab" data-tab="ppk" onclick="switchTab('unpacker', 'ppk')">
         <span class="material-icons-round">folder_zip</span>PPK 解包
       </button>
     </div>
@@ -1441,10 +1465,10 @@
       <p class="section-subtitle">蛋仔编辑器自动解包脚本，基于 Python 开发。</p>
     </div>
     <div class="tabs">
-      <button class="tab active ripple-host" data-tab="filelist" onclick="switchAutoTab('filelist')">
+      <button class="tab active" data-tab="filelist" onclick="switchAutoTab('filelist')">
         <span class="material-icons-round">list_alt</span>File_List 版本
       </button>
-      <button class="tab ripple-host" data-tab="map" onclick="switchAutoTab('map')">
+      <button class="tab" data-tab="map" onclick="switchAutoTab('map')">
         <span class="material-icons-round">map</span>Map 版本
       </button>
     </div>
@@ -1491,9 +1515,9 @@
         </div>
       </div>
       <div class="tabs" id="mapSubTabs">
-        <button class="tab active ripple-host" data-sub="filter" onclick="switchMapSub('filter')">字符串提取</button>
-        <button class="tab ripple-host" data-sub="root" onclick="switchMapSub('root')">根目录提取</button>
-        <button class="tab ripple-host" data-sub="full" onclick="switchMapSub('full')">全部提取</button>
+        <button class="tab active" data-sub="filter" onclick="switchMapSub('filter')">字符串提取</button>
+        <button class="tab" data-sub="root" onclick="switchMapSub('root')">根目录提取</button>
+        <button class="tab" data-sub="full" onclick="switchMapSub('full')">全部提取</button>
       </div>
       <div class="download-card fade-in" id="map-card">
         <div class="download-header">
@@ -1832,6 +1856,125 @@
     }
   }
   function switchAutoTab(type) { switchTab('auto-unpacker', type); }
+
+  /* ===== 分段胶囊滑动指示器 =====
+     位置全靠 CSS 算：容器上的 --tab-n / --tab-i 驱动 .tab-indicator 的 left/width
+     切换时只改一个数字，滑块自己过渡过去，不用测量像素 */
+  function syncTabBar(bar) {
+    const tabs = bar.querySelectorAll(':scope > .tab');
+    if (!tabs.length) return;
+    let ind = bar.querySelector(':scope > .tab-indicator');
+    if (!ind) {
+      ind = document.createElement('span');
+      ind.className = 'tab-indicator';
+      bar.insertBefore(ind, bar.firstChild);
+    }
+    let idx = 0;
+    tabs.forEach((t, i) => { if (t.classList.contains('active')) idx = i; });
+    bar.style.setProperty('--tab-n', String(tabs.length));
+    bar.style.setProperty('--tab-i', String(idx));
+  }
+  /* 命中判定 —— 照搬 DS：拿每个 tab 的 rect 判断指针落在谁身上
+     压在间隙上返回 null（DS 此刻不切），越过两端则吸附首尾 */
+  function tabHitTest(bar, clientX) {
+    const items = Array.from(bar.querySelectorAll(':scope > .tab'));
+    let first = null, last = null, minLeft = Infinity, maxRight = -Infinity;
+    for (const it of items) {
+      const r = it.getBoundingClientRect();
+      if (clientX >= r.left && clientX <= r.right) return items.indexOf(it);
+      if (r.left < minLeft) { minLeft = r.left; first = it; }
+      if (r.right > maxRight) { maxRight = r.right; last = it; }
+    }
+    if (first && clientX < minLeft) return items.indexOf(first);
+    if (last && clientX > maxRight) return items.indexOf(last);
+    return null;
+  }
+
+  let tabDrag = null;
+
+  function initTabDrag(bar) {
+    const listTabs = () => Array.from(bar.querySelectorAll(':scope > .tab'));
+    const actIdx = () => Math.max(0, listTabs().findIndex(t => t.classList.contains('active')));
+    const movePill = i => bar.style.setProperty('--tab-i', String(i));
+
+    function onMove(e) {
+      if (!tabDrag || tabDrag.bar !== bar || e.pointerId !== tabDrag.pointerId) return;
+      if (Math.abs(e.clientX - tabDrag.startX) > 2) tabDrag.moved = true;
+      const hit = tabHitTest(bar, e.clientX);
+      /* 过渡交给 CSS：这里只翻 index，位移自己缓动过去 */
+      if (hit !== null && hit !== tabDrag.previewIdx) {
+        tabDrag.previewIdx = hit;
+        movePill(hit);
+      }
+    }
+
+    function stopListen() {
+      document.removeEventListener('pointermove', onMove);
+      document.removeEventListener('pointerup', onUp, true);
+      document.removeEventListener('pointercancel', onCancel, true);
+    }
+
+    function takeDrag() {
+      if (!tabDrag || tabDrag.bar !== bar) return null;
+      const d = tabDrag;
+      tabDrag = null;
+      bar.classList.remove('is-dragging');
+      return d;
+    }
+
+    function onUp(e) {
+      stopListen();
+      const d = takeDrag();
+      if (!d) return;
+
+      /* 情况一 · 轻点：预览弹回原位，切换完全交给原生 click */
+      if (!d.moved) { movePill(actIdx()); return; }
+
+      /* 情况二 · 拖动：落到指针最终所在的格子 */
+      const hit = tabHitTest(bar, e.clientX);
+      const idx = hit === null ? d.previewIdx : hit;
+      if (idx !== actIdx()) listTabs()[idx].click();
+      else movePill(actIdx());
+    }
+
+    function onCancel() {
+      stopListen();
+      if (takeDrag()) movePill(actIdx());
+    }
+
+    bar.addEventListener('pointerdown', e => {
+      if (e.button !== 0) return;
+      if (listTabs().length < 2) return;
+      /* 不用 setPointerCapture：那会把后继 click 的 target 抢成容器，tab 的 onclick 就收不到了 */
+      tabDrag = { bar, pointerId: e.pointerId, startX: e.clientX, moved: false, previewIdx: actIdx() };
+      bar.classList.add('is-dragging');
+      document.addEventListener('pointermove', onMove, { passive: true });
+      document.addEventListener('pointerup', onUp, true);
+      document.addEventListener('pointercancel', onCancel, true);
+      /* DS 是「按下即预览」 */
+      const hit = tabHitTest(bar, e.clientX);
+      if (hit !== null && hit !== tabDrag.previewIdx) {
+        tabDrag.previewIdx = hit;
+        movePill(hit);
+      }
+    });
+  }
+
+  function syncAllTabs() {
+    document.querySelectorAll('.tabs').forEach(bar => {
+      syncTabBar(bar);
+      if (bar.dataset.tabObserved) return;
+      bar.dataset.tabObserved = '1';
+      initTabDrag(bar);
+      new MutationObserver(() => syncTabBar(bar))
+        .observe(bar, { attributes: true, attributeFilter: ['class'], subtree: true });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', syncAllTabs);
+  } else {
+    syncAllTabs();
+  }
 
   let currentMapSub = 'filter';
   async function switchMapSub(sub) {
